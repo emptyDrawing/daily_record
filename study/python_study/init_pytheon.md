@@ -35,14 +35,18 @@ pip3
 2. repo init
 
 ```bash
-
 ## fastapi
-pip3 install fastapi
+pip3 install "fastapi[all]"
 
 # ASGI 서버 설치
 pip3 install "uvicorn[standard]"
-## 잘안되서 아래 명령어 씀
-brew install unicorn
+
+## uvicon 실행
+# main: the file main.py (the Python "module").
+# app: the object created inside of main.py with the line app = FastAPI().
+# --reload: make the server restart after code changes. Only use for development.
+uvicorn main:app --reload
+
 
 ```
 
