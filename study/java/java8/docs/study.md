@@ -306,9 +306,50 @@
 
 ```
 
-- 
-
 
 ## Optional \<T\>
 
+- null 포인트문제..
 
+```java
+        // 이상태로 바로 시작하면 null 포인트...
+        OnClass testProgress = springClass.get(0);
+        System.out.println(testProgress.getProgress().getStudyDuration());
+```
+
+- 그래서 이걸 극복하는건 null 체크를 하던가 getter 에서 에러(IllegalStateException) 를 던지거나..
+- 이걸 명시적으로 할수 있는게 Optional ...
+
+```java
+    // return 할때만 이렇게 하는게 수정범위가 가장 적음.
+    public Optional<Progress> getProgress() {
+        return Optional.ofNullable(progress);
+    }
+    // 파라미터로 쓴경우 별도 채크를 해야됨.
+    public void setProgress(Optional<Progress> progress) {
+        progress.ifPresent( p -> this.progress = p );
+    }
+    // 그런데 객체에 Optional을 null 을 넣을수 있음..
+```
+
+- of / ofNullable : of 는 무조건 null 이 아닐때 쓰는데 null이면 nullPoint...
+- Collectionm, Map, Stream, Array 들은 Optional으로 감싸지 말것
+
+- 사용예 
+```java       
+        Optional<OnClass> checkClass = springClass.stream()
+            .filter( c -> c.getTitle().startsWith("jpa"))
+            .findFirst();
+        
+        System.out.println(checkClass.isPresent());
+
+```
+
+- Optional 에서 get() 으로 값을 가져올수 있지만 null 일수 있어서..
+- ifPresent() 를 써서 그안에서 할일을 쓰거나
+- orElse() ( 리턴은 Optional<T> 에서 T 형) : 이미 상수로 만들어진 경우에 쓰면 좋고 
+- orElseGet( Supplier  ) : Lazy하게 쓸 수 있어서 이미 있으면 해당코드가 안돌아서 좋음
+- orElseThrow()
+- filter()  / map() : 있다는 가정하에 돌아가는데.. 리턴형이 Optional 
+    - 그런데 map 으로 꺼낸 애가 또 Optional 이면? 복잡해짐.
+    - 그럴때는 flatMap()

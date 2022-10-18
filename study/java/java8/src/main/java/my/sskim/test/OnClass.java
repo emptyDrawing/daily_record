@@ -1,6 +1,7 @@
 package my.sskim.test;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class OnClass {
    
@@ -8,6 +9,36 @@ public class OnClass {
     private Integer id;
     private String title;
     private boolean closed;
+    private Progress progress;
+
+
+    
+    /**
+     * @param id
+     * @param title
+     * @param closed
+     * @param progress
+     */
+    public OnClass(Integer id, String title, boolean closed, Progress progress) {
+        this.id = id;
+        this.title = title;
+        this.closed = closed;
+        this.progress = progress;
+    }
+
+    /**
+     * @return the progress
+     */
+    public Optional<Progress> getProgress() {
+        return Optional.ofNullable(progress);
+    }
+
+    /**
+     * @param progress the progress to set
+     */
+    public void setProgress(Progress progress) {
+        this.progress = progress;
+    }
 
     public OnClass(Integer id, String title, boolean closed) {
         this.id = id;
