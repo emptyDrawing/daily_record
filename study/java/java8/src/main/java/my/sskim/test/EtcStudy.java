@@ -1,9 +1,5 @@
 package my.sskim.test;
 
-import java.util.Arrays;
-import java.util.Random;
-import java.util.stream.IntStream;
-
 @MyTestMark("test")
 @MyTestMark("test2")
 @MyTestMark("test3")
