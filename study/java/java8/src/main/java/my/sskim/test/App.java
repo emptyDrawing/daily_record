@@ -1,4 +1,4 @@
-package me.whiteship.java8to11;
+package my.sskim.test;
 
 import java.util.ArrayList;
 import java.util.Comparator;

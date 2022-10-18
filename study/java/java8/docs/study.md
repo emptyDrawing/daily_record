@@ -182,7 +182,7 @@
 
 
 - Collection
-    - steam() / parallelStream() / removeif(Predicate) / splitorator() 등등은 확인해보자.
+    - stream() / parallelStream() / removeif(Predicate) / splitorator() 등등은 확인해보자.
 
 - Comparator 
     - 정렬이랑 많이 쓰이는데
@@ -197,7 +197,117 @@
 - 그런데 이제는 Default Method 를 인터페이스에서 정의하고 클래스에서 Implemnts 를 함..
     - ex) WebMvcConfigurer 에 이제 default 가 나와서 WebMvcConfigurerAdapter 가 의미 없어짐
 
-## 스트림 API
+## *! 스트림 API !*
+
+- 데이터를 담는 저장소는 아니다.
+- Functional in nature / 소스를 변경하지 않는다....
+- 그래서 무제한이지만 Short Circult 을 통해서 제한을 할수 있다.
+- 중계 오퍼레이션은 Lazy 하게 동작한다.
+- stream을 이어가는 중계 오퍼레이터 / 끝마치는 터미널 오퍼레이터 으로 구분된다.
+
+- 손쉽게 병렬처리도 가능하다.
+    -  list.parallelStream().~~~
+    - spliterator 를 이용하여 알아서 병렬처리한다...
+    - 하지만 반드시 빠른건 아니다.
+
+    ```java
+        list.parallelStream().map( s -> {
+            System.out.println(s + " " + Thread.currentThread().getName());
+            return s.toUpperCase();
+        }).collect(Collectors.toList()).forEach(System.out::println);
+         
+        //결과
+        //cvbzxcvas main
+        //abds ForkJoinPool.commonPool-worker-1
+        //qweqweqwe ForkJoinPool.commonPool-worker-2
+        //ABDS
+        //CVBZXCVAS
+        //QWEQWEQWE
+
+    ```
+
+
+- 중계 오퍼레이터
+    - stream을 리턴함
+    - 터미널 형 만나기전까지 동작하지 않고 정의만 된다.
+    - stateless / stateful 로 구분되는데 외부 변수를 참조하면 stateful
+
+    ```java
+            List<String> list = new ArrayList<String>();
+
+            list.add("abds");
+            list.add("cvbzxcvas");
+            list.add("qweqweqwe");
+
+
+            list.stream().map(
+                s -> {
+                    System.out.println(s);
+                    return s.toUpperCase();
+                } 
+            );// .collecat(Collector.toList());
+
+            System.out.println("================================================================");
+            list.forEach(System.out::println);
+
+            // 중계형 오퍼레이터 는 터미널 만나기전까지 실행되지 않는다.
+            // 결과
+            // ================================================================
+            // abds
+            // cvbzxcvas
+            // qweqweqwe
+
+
+    ```
+
+
+-터미널 오퍼레이션
+    - stream 이 아닌 다른 타입으로 리턴한다.
+
+### 스트림 사용예제
+
+```java
+
+        List<OnClass> java8Class = new ArrayList<>();
+        java8Class.add(new OnClass(1,"stream",true));
+        java8Class.add(new OnClass(2,"ramda",true));
+        java8Class.add(new OnClass(3,"time",false));
+        java8Class.add(new OnClass(4,"refactor",false));
+
+        List<OnClass> springClass = new ArrayList<>();
+        springClass.add(new OnClass(5,"spring boot",true));
+        springClass.add(new OnClass(6,"spring data jpa",false));
+        springClass.add(new OnClass(7,"spring mvc",false));
+        springClass.add(new OnClass(8,"spring core",false));
+
+        List<List<OnClass>> toListenClass = new ArrayList<>();
+        toListenClass.add(java8Class);
+        toListenClass.add(springClass);
+
+
+        System.out.println("closed 되지 않는 수업은 ");
+        springClass.stream()
+            .filter(Predicate.not( OnClass::isClosed))
+            .forEach( c -> System.out.println(c.getId()) );
+
+                
+        System.out.println("FlatMap - 두 수업목록에 들어가 있는 수업아이디 출력");
+        toListenClass.stream()
+            .flatMap( Collection::stream )
+            .forEach( c -> System.out.println(c.getId()) );
+
+        System.out.println("10부터 1씩 증가하는 무제한 스트림중 앞 10개 빼고 최대 10개까지 수집");
+        Stream<Integer> justWord = Stream.iterate(10, i -> i+1 );  // 이렇게 만 하면 중계형이라서 일어나지 않는다.
+        justWord
+            .skip(10)
+            .limit(10)
+            .forEach(System.out::println);
+
+
+```
+
+- 
+
 
 ## Optional \<T\>
 
