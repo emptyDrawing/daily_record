@@ -1,0 +1,10 @@
+git clone git@10.0.55.101:9876/ers/v6.5/ers_am_avaya_v6.5.git 
+git clone git@10.0.55.101:9876/ers/v6.5/ers_mon_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/node_moni.git
+git clone git@10.0.55.101:9876/ers/v6.5/ers_monserver_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/ers_packaging_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/ers_pmon_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/ers_server_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/ers_web_v6.5.git
+git clone git@10.0.55.101:9876/ers/v6.5/install.git
+git clone git@10.0.55.101:9876/ers/v6.5/m2.git

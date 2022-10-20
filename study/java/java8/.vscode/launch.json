@@ -1,54 +1,24 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
     "configurations": [
-        {
-            "name": "Java",
-            "type": "java",
-            "request": "launch",
-            "stopOnEntry": true,
-            "jdkPath": "${env:JAVA_HOME}/bin",
-            "cwd": "${fileDirname}",
-            "startupClass": "${fileBasenameNoExtension}",
-            "classpath": [
-                ".",
-                "${fileDirname}"
-            ]
-        },
-        {
-            "name": "Java Console App",
-            "type": "java",
-            "request": "launch",
-            "stopOnEntry": true,
-            "jdkPath": "${env:JAVA_HOME}/bin",
-            "cwd": "${fileDirname}",
-            "startupClass": "${fileBasenameNoExtension}",
-            "classpath": [
-                ".",
-                "${fileDirname}"
-            ],
-            "externalConsole": true
-        },
-        {
-            "type": "java",
-            "name": "Launch Current File",
-            "request": "launch",
-            "mainClass": "${file}"
-        },
-        {
-            "type": "java",
-            "name": "Launch App",
-            "request": "launch",
-            "mainClass": "my.sskim.test.App",
-            "projectName": "java8_112ac391"
-        },
         {
             "type": "java",
             "name": "Launch SteamTest",
             "request": "launch",
-            "mainClass": "my.sskim.test.SteamTest",
+            "mainClass": "my.sskim.java8study.SteamTest",
+            "projectName": "java8_112ac391"
+        },
+        {
+            "type": "java",
+            "name": "Launch ConcurrentTest1",
+            "request": "launch",
+            "mainClass": "my.sskim.java8study.ConcurrentTest1",
+            "projectName": "java8_112ac391"
+        },
+        {
+            "type": "java",
+            "name": "Launch Java8OptionalAndDate",
+            "request": "launch",
+            "mainClass": "my.sskim.java8study.Java8OptionalAndDate",
             "projectName": "java8_112ac391"
         }
     ]

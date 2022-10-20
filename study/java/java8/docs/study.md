@@ -1,7 +1,6 @@
-### 자바버젼
+### 자바버젼 짤막상식
 
 - LTS : LTS는 Long Term Support
-
 - LTS 는 8 , 11, 17 이라서 상용은 이버젼을 이용하자.
 
 
@@ -353,3 +352,599 @@
 - filter()  / map() : 있다는 가정하에 돌아가는데.. 리턴형이 Optional 
     - 그런데 map 으로 꺼낸 애가 또 Optional 이면? 복잡해짐.
     - 그럴때는 flatMap()
+
+
+
+## Date / Time
+
+- 예전 타입은 뭔가 직관적이지 않음 ( Mutable 하여 값도 변경가능하다.) [참고링크](https://codeblog.jonskeet.uk/2017/04/23/all-about-java-util-date/)
+```java       
+        Date oldStyleDate = new Date(); // timeStamp...
+        long time = oldStyleDate.getTime();
+        
+        Calendar osCal = new GregorianCalendar();
+        SimpleDateFormat osSdf = new SimpleDateFormat();
+```
+- 그래서 multiThread 환경에서 유용하지 않음.
+- 그런데 또 typeSafity 도 없어서.. ( int 로 받거나 해서 ) 애매하다.
+- 그래서 [JodaTime](https://www.joda.org/joda-time/) 을 쓰기도 했는데 이게 표준화 되어 들어옴.
+
+- Clear / Flunet(계속 이어나갈수 있어서 유려해졌다.) / Immutable / Extendsible 해야된다는 원칙으로 만들어짐.
+
+- 변경된 API는 타임스탬프의 경우 Instant / 특정날짜 LocalDate / LocalTime / LocalDateTime 등이 있음.
+
+- 사용 예 ( 기계시간 )
+```java
+        // EPOCH 시간 / 기계시간
+        Instant instant = Instant.now();
+        System.out.println(instant); // 기준시 UTC, GMT 기준임
+
+
+        ZoneId systemDefault = ZoneId.systemDefault();
+        System.out.println(systemDefault);
+        System.out.println(instant.atZone(systemDefault)); // 존아이디로 가능함.
+
+        // 2022-10-18T04:12:33.208219291Z
+        // Asia/Seoul
+        // 2022-10-18T13:12:33.208219291+09:00[Asia/Seoul]
+```
+
+- 사용 예 ( 사람시간 )
+```java
+        // 사람시간
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now);
+        LocalDateTime birthDay = LocalDateTime.of(1989, Month.JUNE, 17, 5, 10, 0);
+        ZonedDateTime nowInKorea = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+    
+        System.out.println(nowInKorea);
+        System.out.println(birthDay);
+        
+        // 2022-10-18T13:15:59.818138946
+        // 2022-10-18T13:15:59.819253788+09:00[Asia/Seoul]
+        // 1989-06-17T05:10
+```
+
+- 기간 ( Period - 날짜 / Duration - 시간 )
+```java
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextYear = LocalDate.of(2023, Month.FEBRUARY, 1);
+
+        Period period= Period.between(today, nextYear);
+        System.out.printf("%d %d %d \n",period.getYears(),period.getMonths(),period.getDays());
+
+        Period until = today.until(nextYear);
+        System.out.println(until.get(ChronoUnit.DAYS));
+
+        System.out.println(ChronoUnit.DAYS.between(today, nextYear));
+
+        // 0 3 14 
+        // 14
+        // 106
+```
+
+- 포맷팅
+```java
+        LocalDateTime now = LocalDateTime.now();
+        final DateTimeFormatter MMddyyyy = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+        System.out.println(now.format(MMddyyyy)); // 10/18/2022
+        System.out.println(LocalDate.parse("10/10/2004", MMddyyyy)); //2004-10-10
+```
+
+- 예전 API 와도 호환은 됨
+```java
+        Date date = new Date();
+        Instant instant = date.toInstant();
+        Date newDate = Date.from(instant);
+
+        ZoneId zoneId = TimeZone.getTimeZone("PST").toZoneId();
+        TimeZone legecyId = TimeZone.getTimeZone(zoneId);
+```
+
+## CompletableFuture
+
+- 동시성 문제...자바에서 지원하는 컨커런트 프로그래밍
+    - 멀티프로세싱 (ProcessBuilder)
+    - 멀티쓰레드 ( Thread / Runnable )
+
+- Thread 는 순서가 애매하다.
+```java
+    public static void main(String[] args) {
+
+        final MyThread myThread = new MyThread();
+        myThread.start();
+
+
+        System.out.println("Hello :" +Thread.currentThread().getName());
+
+    }
+
+    static class MyThread extends Thread {
+        public void run() {
+            System.out.println("Thread : "+ Thread.currentThread().getName());
+        }
+    };
+
+    // 이게 정상같지만
+    // Thread : Thread-0
+    // Hello :main
+
+    // 이렇게도 나온다.
+    // Hello :main
+    // Thread : Thread-0
+```
+
+```java
+// 람다
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread( () -> {
+
+                while(true){
+                    System.out.println("lamda-awalk : "+ Thread.currentThread().getName());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        System.out.println("exit");
+                        return ; //이게 실제로 끝나는거, Interrupted 되었다고 끝나진 않음.
+                    }
+                }
+
+            }
+        );
+        thread.start();
+
+        System.out.println("Hello :" +Thread.currentThread().getName());
+        Thread.sleep(3000);
+        thread.interrupt();
+    }
+
+    // 결과
+    // lamda-awalk : Thread-0
+    // Hello :main
+    // lamda-awalk : Thread-0
+    // lamda-awalk : Thread-0
+    // exit
+```
+
+```java
+// join - 연결한 Thread를 기다림
+
+
+    public static void main(String[] args) throws InterruptedException {
+        Thread thread = new Thread( () -> {
+            System.out.println("lamda-awalk : "+ Thread.currentThread().getName());
+
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new IllegalStateException(e);
+            }    
+        });
+        thread.start();
+
+        System.out.println("Hello :" +Thread.currentThread().getName());
+        thread.join(); // 사실 여기에도 interrupt 관리도 해주어야됨.
+        System.out.println(thread + " is stop");
+
+    }
+
+    //결과
+    // Hello :main
+    // lamda-awalk : Thread-0
+    // Thread[Thread-0,5,] is stop // 3초뒤 결과
+```
+
+- 이래서 수십수백개 Thread 를 관리하기 어려움.
+
+
+### Executors
+
+- 쓰레드를 만드는 과정을 고수준의 API에 위임 ( 만들기 / 관리 / 작업처리 및 실행)
+```java
+    public static void main(String[] args) {
+
+        ExecutorService exSvc = Executors.newFixedThreadPool(2);
+        exSvc.submit(getRunnable("hello"));
+        exSvc.submit(getRunnable("now "));
+        exSvc.submit(getRunnable("abc "));
+        exSvc.submit(getRunnable("1235456 "));
+        exSvc.submit(getRunnable("1231231231231"));
+        // 프로세스가 살아있어서 shutdown 을 해야함.
+        exSvc.shutdown(); // graceful shutdown - 다 끝내고 죽어라
+
+    }
+
+    private static Runnable getRunnable(String message) {
+        return () -> System.out.println(message + " : " + Thread.currentThread().getName() );
+    }
+
+    // 결과
+    // hello : pool-1-thread-1
+    // now  : pool-1-thread-2
+    // abc  : pool-1-thread-1
+    // 1235456  : pool-1-thread-2
+    // 1231231231231 : pool-1-thread-1
+
+
+    // 스케줄
+    ScheduledExecutorService exSvc = Executors.newScheduledThreadPool(2);
+    exSvc.scheduleAtFixedRate(getRunnable("now "),1,2,TimeUnit.SECONDS);
+
+    Thread.sleep(10000); // 바로 죽으면 스케줄을 못보니 sleep
+    exSvc.shutdown(); 
+```
+
+- Runnable 은 return 이 void 라서 결과를 가져올려면 Callable / Future 
+```java
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        
+        ExecutorService exSvc = Executors.newSingleThreadExecutor();
+        Future<String> future = exSvc.submit(getCallable("now"));
+
+        System.out.println("start");
+        // blocking...
+        System.out.println("future status : " + future.isDone()); 
+        System.out.println(future.get());
+        System.out.println("future status : " + future.isDone()); 
+
+        System.out.println("end!");
+        exSvc.shutdown();
+    }
+
+
+
+    private static Callable<String> getCallable(String message) {  
+        return (() -> {
+            Thread.sleep(2000);
+            return message + " : " + Thread.currentThread().getName();
+        });
+    }
+
+    // 결과
+    // start
+    // future status : false
+    // now : pool-1-thread-1
+    // future status : true
+    // end!
+```
+- 그런데 한번 cancel() 시키면 값을 못가져옴.
+
+- 한번에 여러개 보낼수도 있음
+```java
+        
+        ExecutorService exSvc = Executors.newSingleThreadExecutor();
+        // 제일 길게 걸리는거 까지 기다린다.
+        // 안그럴거면 invokeAny()
+        List<Future<String>> futures = exSvc.invokeAll(Arrays.asList(
+            getCallable("1s",1000)
+            ,getCallable("4s",1000)
+            ,getCallable("2s",1000)
+        ));
+
+
+        System.out.println("start");
+        
+        futures.forEach(
+            (f) -> {
+                try {
+                    System.out.println( f.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+            }
+        );
+
+        System.out.println("end!");
+
+        exSvc.shutdown();
+    }
+
+
+
+    private static Callable<String> getCallable(String message, int time) {  
+        return (() -> {
+            Thread.sleep(time);
+            return message + " : " + Thread.currentThread().getName();
+        });
+    }
+```
+
+- CompletableFutre 심화
+    - 이제는 제대로 비동기적으로 멀티쓰레드 프로세싱을 할 수 있음.
+    - Future로는 하기 어렵던 작업들을 쉽게 할수 있음.
+    - 외부에서 완료 / 취소 /  get()에 타임아웃을 설정.
+    - 여러 Future를 조합 [ Event 정보 가져온 다음 Event에 참석하는 회원 목록 가져오기 ] 등을 할수 있음
+    - 예외 처리용 API를 제공
+
+```java
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        // 별도의 Executor 를 만들지 않아도 됨.
+        CompletableFuture<String> completeFuture = new CompletableFuture<>();
+         
+        completeFuture.complete("ok! "+ Thread.currentThread().getName());
+
+        System.out.println(completeFuture.get());
+
+        // 좀더 줄여쓰면
+        // return 이 없는 경우 
+        CompletableFuture.runAsync( () -> System.out.println("simple run " + Thread.currentThread().getName()) );
+        // return  있는 경우
+        CompletableFuture<String> simpleFutrue = CompletableFuture.supplyAsync( () -> {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "simple run ok!" + Thread.currentThread().getName();
+        });
+        // 하지만 아직 blocking 하는 방식이다.
+        System.out.println(simpleFutrue.get());
+
+    }
+```
+
+```java
+        CompletableFuture<String> simpleFutrue = CompletableFuture.supplyAsync( () -> {
+            System.out.println("supplyAsync : "  + Thread.currentThread().getName());
+            return "simple run ok!";
+        }).thenApply( (s) -> {
+            System.out.println("thenApply : " + Thread.currentThread().getName());
+            return s.toUpperCase();
+        });
+
+        System.out.println(simpleFutrue.get());
+
+        //결과
+        // supplyAsync : ForkJoinPool.commonPool-worker-1
+        // thenApply : main
+        // SIMPLE RUN OK!
+
+        // return 이 없을땐
+        CompletableFuture<Void> simpleFutrue = CompletableFuture.supplyAsync( () -> {
+            System.out.println("supplyAsync : "  + Thread.currentThread().getName());
+            return "simple run ok!";
+        }).thenAccept( (s) -> {
+            System.out.println("thenApply : " + Thread.currentThread().getName());
+            System.out.println(s.toUpperCase());
+        }).thenRun( ()->{
+            System.out.println("Runnable : " + Thread.currentThread().getName());
+        });
+
+        simpleFutrue.get();
+```
+
+- 그럼 왜 ThreadPool을 만들지 않고 동작하냐면, 자동적으로 ForkJoinPool 이 만들어지고, 여기서 Dequeue 에 작업이 쌓여서 Work stealing 을 쓴다고 한다.
+      
+- [더 읽어볼 자료1](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=jjoommnn&logNo=220240780407)
+- [더 읽어볼 자료2](https://m.blog.naver.com/jjoommnn/220262427804)
+
+- 하지만 직접 ThreadPool 부여도 가능함.
+```java
+    ExecutorService exSvc = Executors.newFixedThreadPool(4);
+    // 두번째 인자 확인.
+    CompletableFuture.supplyAsync( () -> { ~~~ }, exSvc).thenAccept( ~~~ );
+```
+
+- CompletableFuture 연결 / 조합하기
+```java
+// 연쇄적으로 되어야 되는 경우
+    public static void main(String[] args) throws InterruptedException, ExecutionException {
+        
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync( () -> {
+            System.out.println("hello : "  + Thread.currentThread().getName());
+            return "hello";
+        });
+
+        CompletableFuture<String> composeFuture = hello.thenCompose( ExecutorsTest::getMessageWorld );
+        System.out.println(composeFuture.get());
+    }
+
+    private static CompletableFuture<String> getMessageWorld(String message) {
+        return CompletableFuture.supplyAsync( () -> {
+            System.out.println("add World : "  + Thread.currentThread().getName());
+            return message + "world";
+        });
+    }
+```
+
+```java
+// 따로 따로 실행되어야 되는 경우
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync( () -> {
+            System.out.println("hello : "  + Thread.currentThread().getName());
+            return "hello";
+        });
+        
+        CompletableFuture<String> world = CompletableFuture.supplyAsync( () -> {
+            System.out.println("world : "  + Thread.currentThread().getName());
+            return "world";
+        });
+        
+       System.out.println(hello.thenCombine(world, (h, w) -> h + " "+ w).get());
+    // 결과
+    // hello : ForkJoinPool.commonPool-worker-1
+    // world : ForkJoinPool.commonPool-worker-2
+    // hello world
+```
+
+```java
+// 좀더 프로그래밍적으로 표편
+    CompletableFuture.allOf(hello, world)
+        .thenAccept( result -> {
+            ~~~~
+        // 하지만 result 에 뭐가 들어오는지 모른다.
+    } );
+// 예제 및 결과
+    System.out.println( CompletableFuture.allOf(hello, world).thenAccept(System.out::println).get() );
+    // 결과
+    // null
+    // null
+
+// 제대로 받아보자
+    List<CompletableFuture<String>> futures = Arrays.asList(hello, world);
+    CompletableFuture[] futuresArray = futures.toArray(new CompletableFuture[futures.size()]);
+    CompletableFuture<List<String>> results = 
+        CompletableFuture.allOf(futuresArray)
+            .thenApply( (v) -> futures.stream()
+                    .map(CompletableFuture::join) // join 은 unCheckedExecption
+                    .collect(Collectors.toList()));
+    results.get().forEach(System.out::println);
+// 아무거나 하나 빨리 끝나는거
+    // Aceept 은 Comsumer
+    CompletableFuture.anyOf(hello, world).thenAccept( System.out::println );
+```
+
+```java
+// 예외처리는 
+        boolean throwsError = true;
+        
+        CompletableFuture<String> world = CompletableFuture.supplyAsync( () -> {
+            if(throwsError){
+                throw new IllegalStateException("Test");
+            }
+            System.out.println("world : "  + Thread.currentThread().getName());
+            return "world";
+        }).exceptionally( ex -> {
+            return ex.getMessage();
+        });
+        
+// handle 은 정상 / 에러 두경우 사용 가능. 그래서 Bifuncation 이 들어옴
+        boolean throwsError = true;
+        
+        CompletableFuture<String> world = CompletableFuture.supplyAsync( () -> {
+
+            if(throwsError){
+                throw new IllegalStateException("Test");
+            }
+
+            System.out.println("world : "  + Thread.currentThread().getName());
+            return "world";
+        }).handle( (result, ex) -> {
+            if(ex != null) {
+                return "Error!";
+            }
+            return result;
+        });
+```
+
+- 더 공부할건 ForkJoin , Flow API
+
+
+## ETC
+
+### Annotaions 변화
+
+- 타입선언부에서 선언 가능 및 중복사용 가능
+```java
+@Target(ElementType.TYPE_PARAMETER)
+// 여기만 가능함 제레닉-타입지정하는 부분만.
+    static class MyWork<@MyTestMark T> {
+        public static <@MyTestMark C> void print(C c){
+        } 
+    }
+@Target(ElementType.TYPE_USE)
+// 이건 타입 선언하는 모든곳에서 가능함.
+    static class MyWork<@MyTestMark T> {
+        public static <@MyTestMark C> void print(@MyTestMark C c) throws @MyTestMark Exception{
+            List<@MyTestMark String> test = new ArrayList<> ();
+    }
+```
+
+```java
+// 중복사용법
+// Container dml Retention / Target 범위가 중복으로 사용할 애보다 넓어야 된다.
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE_USE)
+public @interface MyTestMarkContainer {
+     
+    MyTestMark[] value();
+}
+
+
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE_USE)
+@Repeatable(MyTestMarkContainer.class)
+public @interface MyTestMark {
+
+    String value();
+}
+
+@MyTestMark("test")
+@MyTestMark("test2")
+@MyTestMark("test3")
+
+public class EtcStudy {
+    
+    public static void main(String[] args) {
+        MyTestMark[] marks = EtcStudy.class.getAnnotationsByType(MyTestMark.class); 
+        Arrays.stream(marks).forEach( m -> System.out.println(m.value()));
+        System.out.println("=================== 위 -기존 / 아래 컨테이터 ===================");
+        Arrays.stream( EtcStudy.class.getAnnotation(MyTestMarkContainer.class).value())
+            .forEach( m -> System.out.println(m.value()));
+    }
+}
+
+// 결과
+// test
+// test2
+// test3
+// =================== 위 -기존 / 아래 컨테이터 ===================
+// test
+// test2
+// test3
+
+```
+
+### 배열 병렬 정렬
+```java
+    public static void main(String[] args) {
+        int size = 1500;
+        int[] numbers = new int[size];
+        Random random = new Random();
+        IntStream.range(0, size).forEach(i -> numbers[i] = random.nextInt());
+
+        long start = System.nanoTime();
+        Arrays.sort(numbers);
+        System.out.println("serial sorting took " + (System.nanoTime() - start));
+
+        IntStream.range(0, size).forEach(i -> numbers[i] = random.nextInt());
+        start = System.nanoTime();
+        Arrays.parallelSort(numbers);
+        System.out.println("parallel sorting took " + (System.nanoTime() - start));
+
+    }
+    // 결과
+    // serial sorting took 1034843
+    // parallel sorting took 1932415
+```
+
+### JVM 변경점
+- JVM의 여러 메모리 영역 중에 PermGen 메모리 영역이 없어지고 Metaspace 영역이 생겼다.
+- 동적으로 Class 가 만드는 경우가 생겨서 PermGen 이 꽉 차서 GBC 하는데 그래도 꽉차서 터질 수 있음.
+- 근본적으로는 이런 동적 생성하는 부분을 찾아서 해결해야되지만..
+- java8 에서는 Metaspace 로 변경되면서 일부 해소됨.
+    - Heap : Eden / Old 
+    - native Memory 영역에 Metaspace 라고 생겨 여기에 클래스 메타데이터를 담고 고정크기가 아님.
+
+
+- PermGen : permanent generation, 클래스 메타데이터를 담는 곳.
+    - Heap 영역에 속함.
+    - 기본값으로 제한된 크기를 가지고 있음.  
+    - `-XX:PermSize=N`, PermGen 초기 사이즈 설정
+    - `-XX:MaxPermSize=N`, PermGen 최대 사이즈 설정
+
+- Metaspace : 클래스 메타데이터를 담는 곳.
+    - Heap 영역이 아니라, Native 메모리 영역이다.
+    - 기본값으로 제한된 크기를 가지고 있지 않다. (필요한 만큼 계속 늘어난다.)
+    - 자바 8부터는 PermGen 관련 java 옵션은 무시한다.
+    - `-XX:MetaspaceSize=N`, Metaspace 초기 사이즈 설정.
+    - `-XX:MaxMetaspaceSize=N`, Metaspace 최대 사이즈 설정. ( 이걸 설정하지 않으면 서버 메모리가 계속 먹힘 )
+
+- 참고링크
+    - [http://mail.openjdk.java.net/pipermail/hotspot-dev/2012-September/006679.html]
+    - [https://m.post.naver.com/viewer/postView.nhn?volumeNo=23726161&memberNo=36733075]
+    - [https://m.post.naver.com/viewer/postView.nhn?volumeNo=24042502&memberNo=36733075]
+    - [https://dzone.com/articles/java-8-permgen-metaspace]
+    - [jstat-jvm cmd 로 간단히 모니터링](https://steady-coding.tistory.com/m/591) / [사용법2](https://hbase.tistory.com/m/237)

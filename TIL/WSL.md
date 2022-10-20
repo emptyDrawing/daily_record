@@ -7,7 +7,7 @@ wget https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/releas
 tar xvzf eclipse-jee-2022-09-R-linux-gtk-x86_64.tar.gz
 
 #### 실행용 alias
-alias ecpr='~/util/eclipse/eclipse'
+alias ecsr='~/util/eclipse/eclipse'
 #
 
 #### 아래 에러 발생시 로 의존성 파일 설치 - ubuntu v20.4
@@ -32,3 +32,4 @@ sudo apt install libswt-gtk-4-jni
 ##
 
 ```
+
