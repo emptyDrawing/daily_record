@@ -1,4 +1,4 @@
-package my.sskim.test;
+package my.sskim.java8study;
 
 @MyTestMark("test")
 @MyTestMark("test2")
