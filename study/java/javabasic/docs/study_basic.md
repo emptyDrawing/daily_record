@@ -1,6 +1,7 @@
 
-## JVM 이해하기
 
+
+## JVM 이해하기
 
 - JVM (Java Virtual Machine)
     - 자바 가상 머신으로 자바 바이트 코드(.class 파일)를 OS에 특화된 코드로 변환(인터프리터와 JIT 컴파일러)하여 실행한다.
@@ -415,6 +416,31 @@ mvn clean package -f "/home/ecsuser/study/daily_record/study/java/javabasic/byte
 
 ### 나만의 DI 만들어보기
 
-- 123
-- 
+- 준비물
+```java
 
+// 실제 동작하는 메소드
+package test.sskim.di;
+
+public class MyContainerSvc {
+    
+    public static <T> T getObject(Class<T> classType ){
+        return null;
+    }
+
+}
+// Annotaion
+package test.sskim.di;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+@Retention(RetentionPolicy.RUNTIME)
+public @interface MyInject {
+    
+}
+```
+
+- 그리고 적용해볼려고 하면
+  
+![](/docs/assets/2022-10-21-14-47-32.png)
