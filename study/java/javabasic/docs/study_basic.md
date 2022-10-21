@@ -443,3 +443,120 @@ public @interface MyInject {
 
 - 그리고 적용해볼려고 하면
 ![](assets/2022-10-21-14-51-14.png)
+    - 이런 에러가 나오는데 src 에서는 test 소스를 조회할 수 없어서 그렇다.
+    - 그래서 리플렉션을 이용하여 생성하게 한다.
+```java
+
+package test.sskim.di;
+
+import java.lang.reflect.InvocationTargetException;
+
+public class MyContainerSvc {
+
+    public static <T> T getObject(Class<T> classType) {
+
+        return createInstance(classType);
+    }
+
+    private static <T> T createInstance(Class<T> classType) {
+        try {
+            return classType.getConstructor(null).newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+}
+```
+![](assets/2022-10-21-15-11-02.png)
+
+- 하지만 아직 이런 문제가 있음 - 안에 있는 field 가 만들어지지 않음..
+![](assets/2022-10-21-15-13-29.png)
+
+- 그래서 필드도 체크해서 만들어준다.
+```java
+    public static <T> T getObject(Class<T> classType) {
+
+        T instance = createInstance(classType);
+        
+        Arrays.stream(classType.getDeclaredFields()).forEach( f -> {
+                if (f.getAnnotation(MyInject.class) != null) {
+                   Object fieldInstance = createInstance(f.getType());
+                   f.setAccessible(true);
+                   try {
+                    f.set(instance, fieldInstance);
+                    } catch (IllegalArgumentException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        );
+
+
+        return instance;
+    }
+
+    private static <T> T createInstance(Class<T> classType) {
+        try {
+            return classType.getConstructor(null).newInstance();
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+```
+
+![](assets/2022-10-21-15-19-27.png)
+
+
+- 그래서 새프로젝트에서 써보면
+![](assets/2022-10-21-15-39-20.png)
+```java
+// pom.xml 의존성 추가
+    <dependency>
+      <groupId>test.sskim</groupId>
+      <artifactId>myframework</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
+///
+
+public class App 
+{
+    public static void main( String[] args )
+    {
+        AccountService accountSvc = MyContainerSvc.getObject(AccountService.class);
+        accountSvc.join("ok");
+    }
+}
+
+public class AccountService {
+
+    @MyInject
+    AccountRepository accountRepository;
+
+
+    public void join(String joinMsg) {
+        accountRepository.save(joinMsg);
+    }
+}
+
+
+public class AccountRepository {
+    
+    public void save(String msg){
+        System.out.printf("save! ->  %s \n", msg);
+    }
+
+}
+
+/// 결과
+// /usr/bin/env /usr/lib/jvm/java-11-openjdk-amd64/bin/java @/tmp/cp_3n1z5566czb0xb8ew889czx4q.argfile test.sskim.App 
+// save! ->  ok 
+```
+
+- 그래서 springm, 하이버네이트, [junit](https://junit.org/junit5/docs/5.0.3/api/org/junit/platform/commons/util/ReflectionUtils.html) 등에서 다양하게 쓰임
+- 단 컴파일 타임에서는 확인이 어렵고 - runtime 에서 사용되어지 / 성능의 문제가 있을 수 있으니 주의 [더 읽을 자료](https://docs.oracle.com/javase/tutorial/reflect/index.html)
