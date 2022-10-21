@@ -246,6 +246,160 @@ mvn clean package -f "/home/ecsuser/study/daily_record/study/java/javabasic/byte
 - 스프링이 컴포넌트스캔 시 ASM 을 사용함.
   - @ComponentSacn  빈으로 등록할 후보 클래스 ( @Component )  정보를 찾는데 사용
   - ClassPathScanningCandidateComponentProvider -> SimpleMetadataReader
-    - 
     - ClassReader와 Visitor 사용해서 클래스에 있는 메타 정보를 읽어온다.
-  - [참고영상](https://www.youtube.com/watch?v=39kdr1mNZ_s)
+    - ASM, Javassist, ByteBuddy, CGl을 더 찾아보면 좋음
+    - [참고영상](https://www.youtube.com/watch?v=39kdr1mNZ_s)
+
+
+
+## 리플렉션
+
+- Class 객체 가져오는 법 ( 이정보는 메소드 영역에 있음 )
+```java
+        // 1. 타입을 가지고 가져옴
+        Class<Book> bookclass = Book.class;
+
+        // 2. 인스턴스에서 가져오기
+        Book book = new Book();
+        Class<? extends Book> bookclass2 = book.getClass();
+        
+        // 3. FQCN
+        try {
+            Class<?> bookClass3 = Class.forName("test.sskim.Book");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+//// 
+        Class<Book> bookclass = Book.class;
+        // public fields 만 리턴
+        Arrays.stream(bookclass.getFields()).forEach(System.out::println);
+        z
+        // 선언된 모든
+        Arrays.stream(bookclass.getDeclaredFields()).forEach(System.out::println);
+
+        // 결과
+        // public java.lang.String test.sskim.Book.pageNum
+        // ================================================================
+        // private static java.lang.String test.sskim.Book.author
+        // private static final java.lang.String test.sskim.Book.isbn
+        // private java.lang.String test.sskim.Book.title
+        // public java.lang.String test.sskim.Book.pageNum
+        // protected java.lang.String test.sskim.Book.category
+
+```
+
+- 그런데 이걸 직접 접근하려고 하면 이렇게 나온다
+```java
+        Arrays.stream(bookclass.getDeclaredFields()).forEach( f -> {
+
+            try {
+                System.out.printf("\n %s %s \n" , f, f.get(book) );
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+
+        // 결과 
+        // java.lang.IllegalAccessException: class test.sskim.App cannot access a member of class test.sskim.Book with modifiers "private static"
+        //         at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:361)
+        //         at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:591)
+        //         at java.base/java.lang.reflect.Field.checkAccess(Field.java:1075)
+        //         at java.base/java.lang.reflect.Field.get(Field.java:416)
+        //         at test.sskim.App.lambda$1(App.java:23)
+        //         at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+        //         at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+        //         at test.sskim.App.main(App.java:20)
+        // java.lang.IllegalAccessException: class test.sskim.App cannot access a member of class test.sskim.Book with modifiers "private static final"
+        //         at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:361)
+        //         at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:591)
+        //         at java.base/java.lang.reflect.Field.checkAccess(Field.java:1075)
+        //         at java.base/java.lang.reflect.Field.get(Field.java:416)
+        //         at test.sskim.App.lambda$1(App.java:23)
+        //         at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+        //         at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+        //         at test.sskim.App.main(App.java:20)
+        // java.lang.IllegalAccessException: class test.sskim.App cannot access a member of class test.sskim.Book with modifiers "private"
+        //         at java.base/jdk.internal.reflect.Reflection.newIllegalAccessException(Reflection.java:361)
+        //         at java.base/java.lang.reflect.AccessibleObject.checkAccess(AccessibleObject.java:591)
+        //         at java.base/java.lang.reflect.Field.checkAccess(Field.java:1075)
+        //         at java.base/java.lang.reflect.Field.get(Field.java:416)
+        //         at test.sskim.App.lambda$1(App.java:23)
+        //         at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:948)
+        //         at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+        //         at test.sskim.App.main(App.java:20)
+
+        //  public java.lang.String test.sskim.Book.pageNum 1234 
+
+        //  protected java.lang.String test.sskim.Book.category Java 
+```
+
+- 그래서 접근하게 하려면
+```java
+         Arrays.stream(bookclass.getDeclaredFields()).forEach( f -> {
+            try {
+                // 접근 가능하게 바꿔줄려면
+                f.setAccessible(true);
+                System.out.printf("\n %s %s \n" , f, f.get(book) );
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        });
+        // 결과
+        //private static java.lang.String test.sskim.Book.author sskim 
+
+        //private static final java.lang.String test.sskim.Book.isbn ISBN:1234 
+
+        //private java.lang.String test.sskim.Book.title null 
+
+        //public java.lang.String test.sskim.Book.pageNum 1234 
+
+        //protected java.lang.String test.sskim.Book.category Java
+```
+
+- 필드 / 메소드 / 상위 클래스 / 인터페이스 (목록) / 애노테이션 / 생성자 를 가져올 수 있음
+
+
+### 애노테이션 + 리플렉션
+
+- `public @interface MyAnnotation {}` 으로 생성가능함.
+- 하지만 아무런 주석없이 있으면 소스/클래스 파일까지만 존재(주석과 마찬가지)
+- 그래서 이 정보가 로딩(메모리) 상으로 올라갈때 까지 남게 하기 위해서
+```java
+    import java.lang.annotation.Retention;
+    import java.lang.annotation.RetentionPolicy;
+    // 기본값 Class
+    @Retention(RetentionPolicy.Runtime)
+    public @interface MyAnnotation {
+
+    }
+```
+- @Target 으로 원하는 위치 붙을수 있게 할수 있고
+   Annotaion에 값을 부여 할 수 있는데.. primitive Type 만 가능함
+
+```java
+    // 여러개는 {} 로 묶어서
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.TYPE, ElementType.FIELD})
+    // 이러면 자식 클래스에서 부모클래스에 해당 애노테이션이 있는지 추적가능함.
+    @Inherited
+    public @interface MyAnnotation {
+        // value 라고 하면 특별히 명시 하지 않아도 됨.
+        String value() default "myAnnotation";
+
+        String name();
+        
+        int number() default 100;
+
+    }
+
+    // 적용시
+    @MyAnnotation(name = "123", number = 123 )
+
+
+    // 부모꺼 까지도 가져오기
+    Arrays.stream(MyBook.class.getAnnotations()).forEach(System.out::println );
+    // 내꺼만 가져오기
+    Arrays.stream(MyBook.class.getDeclaredAnnotations()).forEach(System.out::println );
+
+```
