@@ -1,10 +1,28 @@
+<!-- code_chunk_output -->
+
+- [JVM 이해하기](#jvm-이해하기)
+  - [JVM 구조](#jvm-구조)
+  - [클래스로더 좀더 자세히](#클래스로더-좀더-자세히)
+- [바이트코드](#바이트코드)
+  - [바이트코드 조작](#바이트코드-조작)
+  - [agent-jar 로 만들어서 조작](#agent-jar-로-만들어서-조작)
+  - [바이트코드 조작툴 활용 예](#바이트코드-조작툴-활용-예)
+- [리플렉션](#리플렉션)
+  - [애노테이션 + 리플렉션](#애노테이션--리플렉션)
+  - [나만의 DI 만들어보기](#나만의-di-만들어보기)
+- [다이나믹 프록시](#다이나믹-프록시)
+  - [Proxy Pattern](#proxy-pattern)
+  - [다이나믹 프록시 실습](#다이나믹-프록시-실습)
+
+<!-- /code_chunk_output -->
+
 
 
 
 ## JVM 이해하기
 
 - JVM (Java Virtual Machine)
-    - 자바 가상 머신으로 자바 바이트 코드(.class 파일)를 OS에 특화된 코드로 변환(인터프리터와 JIT 컴파일러)하여 실행한다.
+  - 자바 가상 머신으로 자바 바이트 코드(.class 파일)를 OS에 특화된 코드로 변환(인터프리터와 JIT 컴파일러)하여 실행한다.
     - 바이트 코드를 실행하는 표준(JVM 자체는 표준)이자 구현체(특정 밴더가 구현한 JVM)다.
     - [JVM 스팩](https://docs.oracle.com/javase/specs/jvms/se11/html/)
     - JVM 밴더: 오라클, 아마존, Azul, ...
@@ -560,3 +578,98 @@ public class AccountRepository {
 
 - 그래서 springm, 하이버네이트, [junit](https://junit.org/junit5/docs/5.0.3/api/org/junit/platform/commons/util/ReflectionUtils.html) 등에서 다양하게 쓰임
 - 단 컴파일 타임에서는 확인이 어렵고 - runtime 에서 사용되어지 / 성능의 문제가 있을 수 있으니 주의 [더 읽을 자료](https://docs.oracle.com/javase/tutorial/reflect/index.html)
+
+
+## 다이나믹 프록시
+
+- Proxy / ProxyFactory(AoP) 클래스에 해당 내용이 있는데, JPA 이걸 잘 활용해서 사용함.
+- SpringDataJPA 는 SpringAOP를 기반으로 동작하며 `RepositoryFactorySupport` 를 이용함. 
+- jpa 테스트시 @DataJapTest 라고 하면 좀더많은 정보를 볼수 있음.
+
+
+### Proxy Pattern
+
+- 수업자료 내용
+![](assets/2022-10-21-16-09-57.png)
+
+  - 프록시와 리얼 서브젝트가 공유하는 인터페이스가 있고, 클라이언트는 해당 인터페이스 타입으로 프록시를 사용한다.  
+  - 클라이언트는 프록시를 거쳐서 리얼 서브젝트를 사용하기 때문에 프록시는 리얼  서브젝트에 대한 접근을 관리거나 부가기능을 제공하거나, 리턴값을 변경할 수도 있다.  
+  - 리얼 서브젠트는 자신이 해야 할 일만 하면서(SRP) 프록시를 사용해서 부가적인 기능(**접근 제한, 로깅, 트랜잭션**, 등)을 제공할 때 이런 패턴을 주로 사용한다.  
+
+  - 참고링크 
+    - https://www.oodesign.com/proxy-pattern.html  
+    - https://en.wikipedia.org/wiki/Proxy_pattern  
+    - https://en.wikipedia.org/wiki/Single_responsibility_principle
+
+### 다이나믹 프록시 실습
+
+- [공식문서](https://docs.oracle.com/javase/8/docs/technotes/guides/reflection/proxy.html)
+  
+- 뭔가 spring jpa 프로젝트 만들고 깨져서 그냥 강의내용만 정리함
+```java
+// 다음 메소드를 이용하는데
+// Object a = Proxy.newProxyInstance(ClassLoader,   Interfaces,   InvocationHandler)
+
+BookServcie bookServcie = (BookServcie) Proxy.newProxyInstance(
+    // classLoader
+    BookServcie.class.getClassLoader()
+    
+    , new Class[]{
+        // 인터페이스 목록, 클래스 들어오면 안됨.
+        BookServcie.class
+    }
+    , new InvocationHandler() {
+
+        // 프록시에서 할일 적기..
+        // 실제 오브젝트를 들고
+        BookService bookService = new DefaultBookService();
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            
+            // method 리플렉션 해서 하고 싶은거만 적용 할수 있고..
+            System.out.println("원래꺼 돌기전에 할거");
+            invoke = method.invoke(bookService, args);
+            System.out.println("원래꺼 끝나고 할거");
+            return invoke;
+        }
+    }
+);
+```
+
+- 그런데 위처럼 하면 코드가 너무 복잡하고 클래스 기반의 Proxy 를 사용하지 못함.
+- 저거를 쉽게 만든게 Spring AoP - `토비의 스프링 3.1, 6장 AOP` 참고
+- [CGlib](https://github.com/cglib/cglib/wiki) / ByteBuddy 를 활용하는 경우인데..
+```java
+// Cglib 방식
+MethodInterceptor handler = new MethodInterceptor() {
+    // 실제 참고할 객체는 넣어주고
+    BookService bookService = new BookService();  
+    @Override  
+    public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy throws Throwable {
+        // 역시 여기서 필요한 작업을 더한다. 
+        return method.invoke(bookService, objects);  
+    }  
+};  
+// Enhancer 이용해서 한다.
+BookService bookService = (BookService) Enhancer.create(BookService.class, handler);
+
+
+
+// ByteBuudy 에서 작업
+Class<? extends BookServcie> proxyClass = new ByteBuddy().subclass(BookServcie.class)
+    // 프록시 작업
+    .method(ElementMatchers.named("rent")).intercept(InvocationHandlerAdapter.of(new java.lang.reflect.InvocationHandler() {
+        BookServcie bookServcie = new BookServcie();
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            // 여기서 실제 작업 진행
+            return method.invoke(bookServcie, args);
+        }
+    }))
+    .make().load(BookServcie.class.getClassLoader()).getLoaded();
+
+BookServcie bookServcie = proxyClass.getConstructor(null).newInstance();
+```
+
+- 그런데 위 방법도 상속을 허용하지 않는 [private 생성자만 있을때 / final 일때 ] 문제가 생김.
