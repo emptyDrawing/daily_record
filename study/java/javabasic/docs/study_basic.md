@@ -125,3 +125,127 @@ $ java hellokt.jar 로 실행가능
     - ASM: https://asm.ow2.io/
     - Javassist: https://www.javassist.org/
     - [추천] ByteBuddy: https://bytebuddy.net/#/
+
+- code
+```java
+    // 이렇게 하면 println 하기전에 EmptyMoja를 한번 불러(조작)와서 값을 빼낼수 있는데 다른 곳에서 먼저 
+    // EmptyMoja 를 불러로 오면 잘 안된다.
+    public static void main(String[] args) {
+        ClassLoader classLoader = App.class.getClassLoader();
+        TypePool typePool = TypePool.Default.of(classLoader);
+
+        try {
+            new ByteBuddy()
+                    .redefine(
+                            typePool.describe("my.sskim.EmptyMoja").resolve(),
+                            ClassFileLocator.ForClassLoader.of(classLoader))
+                    .method(named("pullout")).intercept(FixedValue.value("Rabbit"))
+                    .make().saveIn(new File("/home/ecsuser/study/daily_record/study/java/javabasic/target/classes"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(new EmptyMoja().pullout());
+    }
+```
+
+### agent-jar 로 만들어서 조작
+
+- Javaagent JAR 파일 만들기 \[[오라클문서](https://docs.oracle.com/javase/8/docs/api/java/lang/instrument/package-summary.html)\]
+    - 붙이는 방식은 시작시 붙이는 방식 premain과 런타임 중에 동적으로 붙이는 방식 agentmain이 있다.
+    - Instrumentation을 사용한다.
+
+- Javaagent 붙여서 사용하기
+    - 클래스로더가 클래스를 읽어올 때 javaagent를 거쳐서 변경된 바이트코드를 읽어들여 사용한다.
+
+
+```java
+// 새로운 프로젝트를 만들어서 아래와 같이 작업한다.
+package my.sskim;
+
+import java.lang.instrument.Instrumentation;
+
+import net.bytebuddy.agent.builder.AgentBuilder;
+import net.bytebuddy.implementation.FixedValue;
+import net.bytebuddy.matcher.ElementMatchers;
+
+public class ByteCodeAgent {
+
+    // premain 을 오버라이딩 한거
+    public static void premain(String agentArgs, Instrumentation inst) {
+        new AgentBuilder.Default()
+            .type(ElementMatchers.any())
+            // 조작을  transform 쪽에 넣어주면 되는데...
+            .transform((builder, typeDescription, classLoader, module) -> builder.method(ElementMatchers.named("pullout")).intercept(FixedValue.value("NotEmpty"))).installOn(inst);
+    }
+}
+```
+```xml
+<!-- pom.xml 에 다음과 같이 수정함.-->
+<!-- google에 `maven jar manifest` 로 검색 링크 참고 : https://maven.apache.org/plugins/maven-jar-plugin/examples/manifest-customization.html -->
+
+<project>
+  ...
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <index>true</index>
+            <manifest>
+              <addClasspath>true</addClasspath>
+            </manifest>
+            <manifestEntries>
+              <mode>development</mode>
+              <url>${project.url}</url>
+              <key>value</key>
+            <!-- 추가분--> 
+        
+              <Premain-class>my.sskim.ByteCodeAgent</Premain-class>
+              <Can-Redefine-classes>true</Can-Redefine-classes>
+              <Can-REtransform-classes>true</Can-REtransform-classes>
+            <!-- 추가분 끝 -->
+              
+            </manifestEntries>
+          </archive>
+        </configuration>
+        ...
+      </plugin>
+    </plugins>
+  </build>
+  ...
+</project>
+
+```
+```shell
+#  그리고 package
+mvn clean package -f "/home/ecsuser/study/daily_record/study/java/javabasic/bytecode2/pom.xml"
+```
+```json
+// vscode 에서 실행할때 javaagent 추가
+        {
+            "type": "java",
+            "name": "bytecode with option",
+            "request": "launch",
+            "mainClass": "my.sskim.App",
+            "projectName": "bytecode",
+            "vmArgs": "-javaagent:/home/ecsuser/study/daily_record/study/java/javabasic/bytecode2/target/bytecode2-1.0-SNAPSHOT.jar"
+        }
+```
+
+### 바이트코드 조작툴 활용 예
+
+- 코드에서 버그 찾거나 복잡도 계산
+- 클래스 파일 생성 -> 프록시, 특정 API 호출 제한 가능
+
+- 프로파일러 ( 특정 Agent ) : Thread 활성도 정도 등 성능 분석시 쓰임.
+
+- 스프링이 컴포넌트스캔 시 ASM 을 사용함.
+  - @ComponentSacn  빈으로 등록할 후보 클래스 ( @Component )  정보를 찾는데 사용
+  - ClassPathScanningCandidateComponentProvider -> SimpleMetadataReader
+    - 
+    - ClassReader와 Visitor 사용해서 클래스에 있는 메타 정보를 읽어온다.
+  - [참고영상](https://www.youtube.com/watch?v=39kdr1mNZ_s)
