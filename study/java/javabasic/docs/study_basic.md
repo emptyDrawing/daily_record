@@ -443,4 +443,4 @@ public @interface MyInject {
 
 - 그리고 적용해볼려고 하면
   
-![](/docs/assets/2022-10-21-14-47-32.png)
+![](docs/assets/2022-10-21-14-47-32.png)
