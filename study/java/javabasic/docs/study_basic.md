@@ -402,4 +402,19 @@ mvn clean package -f "/home/ecsuser/study/daily_record/study/java/javabasic/byte
     // 내꺼만 가져오기
     Arrays.stream(MyBook.class.getDeclaredAnnotations()).forEach(System.out::println );
 
+
+    // 여러가지 조작해보기
+    Class<?> bookClass = Class.forName("test.sskim.Book");
+    Constructor<?> bookConstrutor = bookClass.getConstructor(String.class);
+    Book book = (Book) bookConstrutor.newInstance("myFirst");
+
+    System.out.println(book);
+    Field field = Book.class.getDeclaredField("title");
+    System.out.println(field.get(book));
 ```
+
+### 나만의 DI 만들어보기
+
+- 123
+- 
+

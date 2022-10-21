@@ -1,6 +1,8 @@
 package test.sskim;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Arrays;
  */
 public class App 
 {
-    public static void main( String[] args )
+    public static void main( String[] args ) throws ClassNotFoundException, NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchFieldException
     {
         // Class<Book> bookclass = Book.class;
         // Book book = new Book();
@@ -28,11 +30,17 @@ public class App
         //     }
         // });
 
-        // 부모꺼 까지도 가져오기
-        Arrays.stream(MyBook.class.getAnnotations()).forEach(System.out::println );
-        // 내꺼만 가져오기
-        Arrays.stream(MyBook.class.getDeclaredAnnotations()).forEach(System.out::println );
+        // // 부모꺼 까지도 가져오기
+        // Arrays.stream(MyBook.class.getAnnotations()).forEach(System.out::println );
+        // // 내꺼만 가져오기
+        // Arrays.stream(MyBook.class.getDeclaredAnnotations()).forEach(System.out::println );
+            
+        Class<?> bookClass = Class.forName("test.sskim.Book");
+        Constructor<?> bookConstrutor = bookClass.getConstructor(String.class);
+        Book book = (Book) bookConstrutor.newInstance("myFirst");
 
-
+        System.out.println(book);
+        Field field = Book.class.getDeclaredField("title");
+        System.out.println(field.get(book));
     }
 }

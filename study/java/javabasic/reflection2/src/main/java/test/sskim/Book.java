@@ -4,34 +4,34 @@ package test.sskim;
 public class Book {
     
     private static String author = "sskim";
-    private static final String isbn = "ISBN:1234";
 
-    private String title;
-    public String pageNum = "1234";
-    protected String category = "Java";
+    public String title ="nonamed";
+
+    public int nowPage = 0;
 
     public Book(){
 
     }
 
-    
-    public Book(String title, String pageNum, String category) {
+    /**
+     * @param title
+     * @param nowPage
+     */
+    public Book(String title) {
         this.title = title;
-        this.pageNum = pageNum;
-        this.category = category;
     }
 
-    private void privateF() {
-        System.out.println("private func");
+
+    public void printInfo() {
+        System.out.printf("%s %s \n", author, title);
     }
     
-    public void publicF() {
-        System.out.println("public func");
+    public int getMaxPage() {
+        return 3000;
     }
 
-    public Integer returnNum() {
-        return 100;
+    public int writePage(int page){
+        return nowPage += page;
     }
-
 
 }
