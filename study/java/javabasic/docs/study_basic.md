@@ -13,6 +13,11 @@
 - [다이나믹 프록시](#다이나믹-프록시)
   - [Proxy Pattern](#proxy-pattern)
   - [다이나믹 프록시 실습](#다이나믹-프록시-실습)
+  - [proxy 예제](#proxy-예제)
+- [Annotation 프로세서](#annotation-프로세서)
+  - [Lombak 동작원리](#lombak-동작원리)
+  - [Annotation 교육자료](#annotation-교육자료)
+  - [Annotation 실습](#annotation-실습)
 
 <!-- /code_chunk_output -->
 
@@ -673,3 +678,226 @@ BookServcie bookServcie = proxyClass.getConstructor(null).newInstance();
 ```
 
 - 그런데 위 방법도 상속을 허용하지 않는 [private 생성자만 있을때 / final 일때 ] 문제가 생김.
+
+### proxy 예제
+- [Mockito](https://site.mockito.org/)
+- [더 다양한 proxy예제](https://jenkov.com/tutorials/java-reflection/dynamic-proxies.html)
+
+
+
+## Annotation 프로세서
+
+### Lombak 동작원리
+
+- [공식문서](https://projectlombok.org/)
+- boilerplate ( getter,setter, equals, constructor 등 ) 코드 자동생성
+-  컴파일 시점에 [애노테이션 프로세서](https://docs.oracle.com/javase/8/docs/api/javax/annotation/processing/Processor.html) 를 사용하여 소스코드의 AST(abstract syntax tree)를 조작한다.
+
+### Annotation 교육자료
+- [AutoService](https://github.com/google/auto/tree/master/service) : [서비스 프로바이더](https://itnext.io/java-service-provider-interface-understanding-it-via-code-30e1dd45a091) 레지스트리 생성기
+ ```xml 
+<dependency>
+    <groupId>com.google.auto.service</groupId>
+    <artifactId>auto-service</artifactId>
+    <version>1.0.1</version>
+</dependency>
+ ``` 
+
+ ```java
+ // 자바에서 사용시
+ @AutoService(Processor.class)
+     public class MagicMojaProcessor extends AbstractProcessor {
+     ...
+ }
+ ```
+   - 컴파일 시점에 애노테이션 프로세서를 사용하여 
+   `META-INF/services/javax.annotation.processor.Processor` 파일 자동으로 생성해 줌.
+
+
+- 참고
+    - [http://hannesdorfmann.com/annotation-processing/annotationprocessing101]
+    - [http://notatube.blogspot.com/2010/12/project-lombok-creating-custom.html]
+    - [https://medium.com/@jintin/annotation-processing-in-java-3621cb05343a]
+    - [https://medium.com/@iammert/annotation-processing-dont-repeat-yourself-generate-your-code-8425e60c6657]
+    - [https://docs.oracle.com/javase/7/docs/technotes/tools/windows/javac.html#processing]
+
+- [Javapoet](https://github.com/square/javapoet): 소스 코드 생성 유틸리티   
+  - 실제 Processor 에서 새로운 파일(소스/class) 를 만들때 사용함.
+  ```xml
+  <dependency>
+    <groupId>com.squareup</groupId>
+    <artifactId>javapoet</artifactId>
+    <version>1.13.0</version>
+  </dependency>
+  ```
+
+### Annotation 실습
+
+  ```java
+  // @Magic annotation
+  package test.sskim;
+
+    import java.lang.annotation.Retention;
+    import java.lang.annotation.RetentionPolicy;
+
+    // 소스 레벨에서 읽어서 프로세서에서 처리해서 컴파일 하면 새로운 소스가 만들어지게 함
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Magic {
+        
+    }
+
+  // Processor
+    package test.sskim;
+
+    import java.util.Set;
+
+    import javax.annotation.processing.AbstractProcessor;
+    import javax.annotation.processing.RoundEnvironment;
+    import javax.lang.model.SourceVersion;
+    import javax.lang.model.element.Element;
+    import javax.lang.model.element.ElementKind;
+    import javax.lang.model.element.Name;
+    import javax.lang.model.element.TypeElement;
+    import javax.tools.Diagnostic;
+
+
+    public class MagicMojaProcessor extends AbstractProcessor{
+
+        // 이 프로세서가 어떤 어노테이션을 처리할 건지
+        @Override
+        public Set<String> getSupportedAnnotationTypes() {
+            return Set.of(Magic.class.getName());
+        }
+
+        @Override
+        public SourceVersion getSupportedSourceVersion() {
+            
+            // 부모꺼를 하던가
+            // return super.getSupportedSourceVersion();
+        
+            // 최신으로 하던가
+            return SourceVersion.latestSupported();
+        }
+
+        @Override
+        public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+            // RoundEnvironment : 필터 체인이랑 비슷하게 여러 과정에서 처리할수 있다고 보면 됨.
+
+            Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Magic.class);
+            elements.stream()
+                .forEach( e -> {
+                    Name simpleName = e.getSimpleName();
+
+                    if(e.getKind() != ElementKind.INTERFACE) {
+                        //import javax.tools.Diagnostic;
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "Magic Annotation can not be used on "+ simpleName);
+                    } else {
+                        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Magic Processing ->" + simpleName);
+                    }
+                });
+            // true 를 리턴하면 이 애노테이션이 처리됬다고 보면 됨. 
+            // (앞으로 더 다른 프로세서에서 처리 안한다는 뜻)
+            return true;
+        }
+    }
+
+  ```
+
+  - 이렇게 만든 프로젝트를 원래 package 하려면 `src\main\resources\META-INF.services\javax.annotetion.process.Processor` 라는 파일을 만들고
+ 우리가 구현한 풀패키지 경로 `test.sskim.MagicMojaProcessor` 를 적어주어야 한다.
+ - 그런데 그렇게 만들고 mvn clean install 을 하려고 해도 에러가 난다.
+   - 소스를 컴파일 하는 시점에 프로세서가 동작하려고 하는데 그때는 아직 프로세서가 없어서 문제가 생김.
+   - 그래서 풀패키지 경로를 한번 주석하고, `mvn clean install` 후 주석풀고 `mvn install` 해야된다
+   - 그래서 또 등록을 도와주는게 `auto-service` 이다
+     - 사용법
+     ```java
+        @AutoService(Processor.class)
+        public class MagicMojaProcessor extends AbstractProcessor{
+            .....
+        }  
+     ```
+     ```shell
+     mvn clean install -f "/home/ecsuser/study/daily_record/study/java/javabasic/moja/pom.xml"
+     ```
+     ![](assets/2022-10-24-12-27-29.png)
+
+
+  - 위까지 작업하고 적용할 프로젝트에 의존성 추가하면
+  ![](assets/2022-10-24-12-33-11.png)
+    - 에러가 사라진다!
+    ![](assets/2022-10-24-12-33-59.png)   
+        - 그리고 `class` 에 붙이면 에러가 나온다
+        ![](assets/2022-10-24-12-37-05.png)
+        ![](assets/2022-10-24-12-36-48.png)
+
+- 이제 본격적인 작업내용을 채우면
+  ``` java
+  public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+            // RoundEnvironment : 필터 체인이랑 비슷하게 여러 과정에서 처리할수 있다고 보면 됨.
+
+        Set<? extends Element> elements = roundEnv.getElementsAnnotatedWith(Magic.class);
+        elements.stream()
+            .forEach( e -> {
+
+            ~~~
+
+            // 새로운 소스코드 생성과정
+            TypeElement typeElement = (TypeElement) e;
+            ClassName className =  ClassName.get(typeElement);
+
+
+            MethodSpec pullOut = MethodSpec.methodBuilder("pullOut")
+            // import javax.lang.model.element.Modifier;
+                .addModifiers(Modifier.PUBLIC)
+                .returns(String.class)
+                .addStatement("return $S", className.simpleName())
+                .build();
+                
+            TypeSpec magicMoja = TypeSpec.classBuilder("Magic"+className.simpleName())
+                .addModifiers(Modifier.PUBLIC)
+                .addMethod(pullOut)
+                .addSuperinterface(className) // 인터페이스 추가
+                .build();
+            // 이렇게 하면 메모리-객체 가지만 정의
+            
+            // 소스파일을 만들자. Filer 이용 
+            // Filer 인터페이스 : 소스 코드, 클래스 코드 및 리소스를 생성할 수 있는 인터페이스
+            // https://docs.oracle.com/en/java/javase/11/docs/api/java.compiler/javax/annotation/processing/Filer.html
+            
+            Filer filer = processingEnv.getFiler();             
+            // javapoet 과 결합되면 쉽게 만듬.
+            try {
+                JavaFile.builder(className.packageName(), magicMoja)
+                    .build()
+                    .writeTo(filer);
+            } catch (IOException ex) {
+                processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, "FATAL ERROR-Bulid Source : " + ex);
+            }
+
+            return true;
+        });
+  }
+
+  ```
+  - 그러면 이렇게.. 나온다. 소스 파일은 없지만
+    ![](assets/2022-10-24-13-16-04.png)
+  - 그런데 코딩할때는 못쓴다... 컴파일 할때 만들어지는거라..  
+    - [해결책 유튜브](https://www.youtube.com/watch?v=cN9FNVtJeR8) : [google auto-value](https://mvnrepository.com/artifact/com.google.auto.value/auto-value) / [google auto-annotations](https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations)
+       ```xml
+        <!-- https://mvnrepository.com/artifact/com.google.auto.value/auto-value -->
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value</artifactId>
+            <version>1.9</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations -->
+        <dependency>
+            <groupId>com.google.auto.value</groupId>
+            <artifactId>auto-value-annotations</artifactId>
+            <version>1.9</version>
+        </dependency>
+        ```    
+    ![](assets/2022-10-24-13-38-37.png)
