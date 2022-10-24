@@ -1,5 +1,3 @@
-
-
 ### java rut config
 ```json
 // vscode run config에 잘안된거
@@ -23,7 +21,6 @@
 
 ```
 
-
 ### Makrdown 이미지 복사
 
 - window - wsl2를 사용하는 환경이었는데 makrdown 에 이미지 넣기 어려워서 어려 extendsion 을 찾아봄
@@ -36,3 +33,25 @@
 ### Markdown 목차 자동생성
   - //@import "[TOC]" {cmd="toc" depthFrom=1 depthTo=6 orderedList=false} 라는걸 입력하면 되는데
   - 해당 플러그인이 필요 : [Markdown Preview Enhanced](https://marketplace.visualstudio.com/items?itemName=shd101wyy.markdown-preview-enhanced)
+
+
+### vscode annotation processor enable
+  - [해결책 유튜브](https://www.youtube.com/watch?v=cN9FNVtJeR8) : [google auto-value](https://mvnrepository.com/artifact/com.google.auto.value/auto-value) / [google auto-annotations](https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations)
+   ```xml
+  <!-- https://mvnrepository.com/artifact/com.google.auto.value/auto-value -->
+  <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value</artifactId>
+      <version>1.9</version>
+      <scope>provided</scope>
+  </dependency>
+
+
+  <!-- https://mvnrepository.com/artifact/com.google.auto.value/auto-value-annotations -->
+  <dependency>
+      <groupId>com.google.auto.value</groupId>
+      <artifactId>auto-value-annotations</artifactId>
+      <version>1.9</version>
+  </dependency>
+
+  ```
