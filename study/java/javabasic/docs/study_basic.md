@@ -1,5 +1,5 @@
-<!-- code_chunk_output -->
 
+- [다루는 내용들](#다루는-내용들)
 - [JVM 이해하기](#jvm-이해하기)
   - [JVM 구조](#jvm-구조)
   - [클래스로더 좀더 자세히](#클래스로더-좀더-자세히)
@@ -18,11 +18,14 @@
   - [Lombak 동작원리](#lombak-동작원리)
   - [Annotation 교육자료](#annotation-교육자료)
   - [Annotation 실습](#annotation-실습)
+  - [Annotation 정리](#annotation-정리)
 
-<!-- /code_chunk_output -->
-
-
-
+## 다루는 내용들
+- JVM 구조
+- 바이트 코드 조작 - ASM 또는 Javassist, **ByteBuddy**
+- 리플렉션 API - 클래스 정보 참조 (메소드, 필드, 생성자, ...), 다른 기술과 범용적으로 사용가능
+- 다이나믹 프록시 기법 - Proxy, CGlib, **ByteBuddy**
+- 애노테이션 프로세서 - [ Abstract**Processor**, **Filer**, **TypeElement**, **RoundEnvironment** ] **AutoService**, **Javapoet**
 
 ## JVM 이해하기
 
@@ -901,3 +904,12 @@ BookServcie bookServcie = proxyClass.getConstructor(null).newInstance();
         </dependency>
         ```    
     ![](assets/2022-10-24-13-38-37.png)
+
+### Annotation 정리
+- 바이트 코드를 만들거나 소스파일을 수정하거나 할 수 있음
+- Lombak, AutoService, [@Override-Annotation 프로세서 로 동작함](https://stackoverflow.com/questions/18189980/how-do-annotations-like-override-work-internally-in-java/18202623)
+- [Dagger2](https://github.com/google/dagger) : 컴파일 타임 DI 프레임워크
+  - 런타임 비용이 제로 (소스 시점에 필요한 걸 다 만들 수 있으니)
+- 안드로이드 라이브러리인
+  - [ButterKinfe](http://jakewharton.github.io/butterknife/) : @BindView (뷰 아이디와 애노테이션 붙인 필드 바인딩)
+  - [DeepLinkDispatch](https://github.com/airbnb/DeepLinkDispatch) : 특정 URI 링크를 Activity로 연결할 때 사용
