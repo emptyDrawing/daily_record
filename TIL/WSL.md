@@ -53,3 +53,9 @@ sudo vim /etc/fonts/local.conf
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ```
+
+
+### Oracle 설치 꿀팁
+
+- [[종합적인 꿀Tips](https://positivemh.tistory.com/485)]
+- [ORA-01034](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=hymne&logNo=221448750630)
