@@ -5,17 +5,17 @@
 ```shell
 ### 키생성
 ssh-keygen
+#  ssh-keygen -t rsa -f ~/.ssh/my_vm_key
 
 ### 복사
 ssh-copy-id 
+#  ssh-copy-id -i ~/.ssh/my_vm_key root@10.0.55.221
+
 
 ### ssh-config 설정
 Host myTest
     HostName 10.0.55.221
     User root
-    IdentityFile /home/ecsuser/.ssh/id_rsa.pub
+    IdentityFile ~/.ssh/my_vm_key
     
-### 그런데 자꾸 
-# Load key "/home/ecsuser/.ssh/id_rsa.pub": invalid format 
-# 라고 뜨는데 확인 필요
 ```
