@@ -33,3 +33,23 @@ sudo apt install libswt-gtk-4-jni
 
 ```
 
+
+### Window fonts 공유
+
+- [참고링크](http://pinedance.github.io/blog/2021/02/08/WSL-fonts)
+```shell
+
+sudo touch /etc/fonts/local.conf
+
+sudo vim /etc/fonts/local.conf
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <dir>/mnt/c/Windows/Fonts</dir>
+</fontconfig>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```

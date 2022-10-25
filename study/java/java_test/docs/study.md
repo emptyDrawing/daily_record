@@ -83,5 +83,21 @@
     // afterEach
     // afterAll
     ```
-    ![](assets/2022-10-24-17-30-25.png)
+
+- @DisplayNameGeneration / @DisplayName
+  - 기본적으로 메소드 이름으로 테스트 이름이 적혀짐
+  ![](assets/2022-10-24-17-30-25.png)
+  - @DisplayNameGeneration : class, metho에 달수 있으며, 전략에 해당하는 구현체를 넣어주어야함.
+  - @DisplayName : 원하는 문자 모든지 넣어도 됨.
+  ![](assets/2022-10-24-17-41-56.png)
+
+### Assertion
+- 실제 테스트에서 검증하고자 하는 내용
+![](assets/2022-10-24-17-48-45.png)
+```java
+// 기대값 먼저, 실제 나오는 값, 메세지- 람다로도 가능함.
+// 람다로 만들면 실패했을때만 메세지 연산을 함.
+assertEquals(StudyStatus.DRAFT, study.getStatus(), () -> "스터디를 처음 만들면 Status 는 DRAFT");
+
+```
 
