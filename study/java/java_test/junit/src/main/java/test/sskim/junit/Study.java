@@ -8,8 +8,13 @@ public class Study {
     private int limit = 0;
 
 
+    public Study(int limit) {
+        if ( limit < 0 ) {
+            throw new IllegalArgumentException("limit 는 0보다 커야된다.");
+        }
+        this.limit = limit;
+    }
 
-    
     public StudyStatus getStatus() {
         return status;
     }
@@ -19,3 +24,6 @@ public class Study {
     }
     
 }
+
+
+
