@@ -7,6 +7,27 @@ public class Study {
     
     private int limit = 0;
 
+    private String name ="";
+
+
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    
+    @Override
+    public String toString() {
+        return "Study [limit=" + limit + ", name=" + name + "]";
+    }
+
+    /**
+     * @param limit
+     * @param name
+     */
+    public Study(int limit, String name) {
+        this.limit = limit;
+        this.name = name;
+    }
 
     public Study(int limit) {
         if ( limit < 0 ) {
@@ -22,6 +43,21 @@ public class Study {
     public int getLimit() {
         return limit;
     }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     
 }
 

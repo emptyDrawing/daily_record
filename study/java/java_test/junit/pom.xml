@@ -35,7 +35,63 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<includes>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*Tests.java</include>
+						<include>**/*TestCase.java</include>
+					</includes>
+					<properties>
+						<includeTags>fast</includeTags>
+						<!--
+						<configurationParameters>
+							junit.jupiter.conditions.deactivate = *
+						</configurationParameters>
+						-->
+					</properties>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.22.2</version>
+						<!-- 쓸수 있는 옵션은 
+							https://junit.org/junit5/docs/current/user-guide/#running-tests-tag-expressions	
+							위링크 참고
+						-->
+						<configuration>
+							<groups>fast</groups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>ci</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.22.2</version>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	
+	</profiles>
 
 </project>
