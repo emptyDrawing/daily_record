@@ -23,7 +23,9 @@ import org.junit.jupiter.api.condition.EnabledOnJre;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -35,20 +37,28 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 
+// @ExtendWith(FindSlowTestExtension.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class StudyTest {
 
-	@DisplayName("조건별 테스트")
-	@FastTestTag
+
+	// field 에 정의한다.
+	@RegisterExtension
+	static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1005L);
+
+
+	@DisplayName("조건별 테스트[느림]")
+	@SlowTestTag
 	@Order(1)
-	void conditionalTest() {
+	void conditionalSlowTest() throws InterruptedException {
 		// import static org.junit.jupiter.api.Assumptions.*;
 		// 그런데 환경변수는 vscode 가 들고가고 있어서 잘 안됨.
 		System.out.println(System.getenv("TEST_ENV"));
+		Thread.sleep(1005L);
 		assumeTrue("LOCAL".equalsIgnoreCase(System.getenv("TEST_ENV")));
 		// 위조건이 만족해야지 나머지 조건이 도는 구조이다.
 		
-		assertTimeoutPreemptively(Duration.ofMillis(10),() -> {
+		assertTimeoutPreemptively(Duration.ofMillis(1000),() -> {
 			new Study(0);
 		});
 	}

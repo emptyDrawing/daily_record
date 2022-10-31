@@ -1,5 +1,6 @@
-## 다루는 내용
-- Junit5 / Mockito
+# 다루는 내용
+- [Junit5](./study_junit.md)
+- [Mockito](./study_mockito.md)
 
 ## JUnit5
 
@@ -473,23 +474,78 @@ junit.jupiter.displayname.generator.default = \
 - JUnit 4의 확장 모델은 @RunWith(Runner), TestRule, MethodRule. 
 - JUnit 5의 확장 모델은 단 하나, Extension.
 
+- 만드는 방법 : 예제코드
+    ```java
+    import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
+    import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
+    import org.junit.jupiter.api.extension.ExtensionContext;
+
+
+    public class FindSlowTestExtension implements BeforeTestExecutionCallback, AfterTestExecutionCallback {
+
+        private static final long THRESHOLD = 1000L;
+
+        @Override
+        public void beforeTestExecution(ExtensionContext context) throws Exception {
+            
+            ExtensionContext.Store store = getStore(context);
+            store.put("START_TIME", System.currentTimeMillis());
+        }
+
+        @Override
+        public void afterTestExecution(ExtensionContext context) throws Exception {
+            String testMethodName = context.getRequiredTestMethod().getName();
+            ExtensionContext.Store store = getStore(context);
+        
+            Long startTime = store.remove("START_TIME", long.class);
+            long duration = System.currentTimeMillis() - startTime;
+            if( duration > THRESHOLD ) {
+                System.out.printf("Please consider mark method [%s] with @slowTest .\n",testMethodName);
+            }
+        
+        }
+        
+        private ExtensionContext.Store getStore(ExtensionContext context) {
+            String testClassName = context.getRequiredTestClass().getName();
+            String testMethodName = context.getRequiredTestMethod().getName();
+            ExtensionContext.Store store = context.getStore(ExtensionContext.Namespace.create(testClassName, testMethodName));
+            return store;
+        }
+    }
+
+    ```
+
 - 등록 방법 : [공식문서링크](https://junit.org/junit5/docs/current/user-guide/#extensions)
     - 선언적인 등록 @ExtendWith
     ```java
-
-
+    @ExtendWith(FindSlowTestExtension.class)
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    public class StudyTest {
+        ...
+    }
     ```
 
-    
     - 프로그래밍 등록 @RegisterExtension
+      - 선언적인 @ExtensionWith 로 셋팅하면 별다른 수정을 가할 수가 없음
+      - test 마다 다른 값으로 셋팅한다거나..
     ```java
-
-
+    public class StudyTest {
+        ...
+        // field 에 정의한다.
+        @RegisterExtension
+        static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1005L);
+        ...
+    }
     ```
-
 
     - 자동 등록 자바 ServiceLoader 이용
-    ```java
+      - 이방법은 기본적으로 옵션값 `junit.jupiter.extensions.autodetection.enabled` 이 false 로 셋팅되어 있음.
+      - 그런데 좀 경우가 까다로워서 공식문서를 확인하자.
 
 
-    ```
+### Junit4 마이그레이션
+- 기본적으로 마이그레이션이 될려면 `junit-vintage-engine` 이 있어야됨.
+- 차이점 정도만 수업자료 내용 옮김
+![](assets/2022-10-31-11-47-22.png)
+
+
