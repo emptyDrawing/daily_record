@@ -1,5 +1,6 @@
-package test.sskim.junit;
+package test.sskim.junit.domain;
 
+import test.sskim.junit.study.StudyStatus;
 
 public class Study {
 
@@ -56,6 +57,9 @@ public class Study {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setOwner(Member member) {
     }
     
     
