@@ -1,5 +1,7 @@
 package test.sskim.junit.domain;
 
+import java.util.Date;
+
 import test.sskim.junit.study.StudyStatus;
 
 public class Study {
@@ -10,12 +12,22 @@ public class Study {
 
     private String name ="";
 
+    private Member owner;
+
+    private Date openedDataTime;
 
     
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
     
+    /**
+     * @return the owner
+     */
+    public Member getOwner() {
+        return owner;
+    }
+
     @Override
     public String toString() {
         return "Study [limit=" + limit + ", name=" + name + "]";
@@ -60,8 +72,21 @@ public class Study {
     }
 
     public void setOwner(Member member) {
+        this.owner = member;
     }
-    
+
+    public void open() {
+        this.status = StudyStatus.OPEN;
+        this.openedDataTime = new Date();
+
+    }
+
+    /**
+     * @return the openedDataTime
+     */
+    public Date getOpenedDataTime() {
+        return openedDataTime;
+    }
     
 }
 
