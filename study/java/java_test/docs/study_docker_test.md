@@ -3,6 +3,8 @@
 
 ### 준비물
 - https://www.testcontainers.org/
+- git-tag `docker-test` 참고
+  - `git push origin refs/tags/docker-test --verbose` 명령어는 외우자
 ```java
 @SpringBootTest
 @ActiveProfiles("test")
@@ -24,7 +26,7 @@ public class StudyServiceTest {
 #src/resources/application.properties
 spring.jpa.hibernate.ddl-auto=update
 
-spring.datasource.url=jdbc:postgresqlL://localhost:5432/study
+spring.datasource.url=jdbc:postgresql://localhost:5432/study
 spring.datasource.username=study
 spring.datasource.password=study
 
@@ -54,3 +56,27 @@ spring.jpa.hibernate.ddl-auto=create-drop
 	<scope>test</scope>
 </dependency>
 ```
+
+```yaml
+version: "3"
+
+services:
+  study-db:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: study
+      POSTGRES_USER: study
+      POSTGRES_DB: study
+  study-test-db:
+    image: postgres
+    ports:
+      - 15432:5432
+    environment:
+      POSTGRES_PASSWORD: studytest
+      POSTGRES_USER: studytest
+      POSTGRES_DB: studytest
+```
+
+- 그런데 이렇게 테스트 컨테이너를 따로 관리하면 매우 귀찮음.

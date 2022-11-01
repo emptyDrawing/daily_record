@@ -1,4 +1,5 @@
 {
     "java.configuration.updateBuildConfiguration": "automatic",
-    "DockerRun.DisableDockerrc": true
+    "DockerRun.Containers": [],
+    "DockerRun.DisableAutoGenerateConfig": true
 }
