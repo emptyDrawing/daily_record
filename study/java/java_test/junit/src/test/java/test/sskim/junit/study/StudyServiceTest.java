@@ -9,6 +9,7 @@ import static org.mockito.Mockito.times;
 
 import java.util.Optional;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -73,7 +74,7 @@ public class StudyServiceTest {
 		Study study = new Study(10, "더 자바, 테스트");
 		
 		Member member = new Member(1L, "sskim@test.com");
-		BDDMockito.given(repository.save(study)).willReturn(study);
+		// BDDMockito.given(repository.save(study)).willReturn(study);
 		
 		// When
 		studyService.openStudy(study);
@@ -82,40 +83,39 @@ public class StudyServiceTest {
 		assertNotNull(study.getOpenedDateTime());
 		BDDMockito.then(memberService).should().notify(study);
 	}
-	
-		// @Test
-	// void stubbing_test() {
+		
+	@Disabled("수업끝")
+	@Test
+	void stubbing_test() {
 
-	// 	// Given
-	// 	Study study = new Study(10, "Mockito Test");
-	// 	StudyService studyService = new StudyService(memberService, repository);
-	// 	Member member = new Member(1L, "sskim@test.com");
-
-
-	// 	// when(memberService.findById(1L)).thenReturn(Optional.of(member));
-	// 	// when(repository.save(study)).thenReturn(study);
-	// 	BDDMockito.given(memberService.findById(1L)).willReturn(Optional.of(member));
-	// 	BDDMockito.given(repository.save(study)).willReturn(study);
-
-	// 	// When
-	// 	studyService.createNewStudy(1L, study);
+		// Given
+		Study study = new Study(10, "Mockito Test");
+		StudyService studyService = new StudyService(memberService, repository);
+		Member member = new Member(1L, "sskim@test.com");
 
 
-	// 	// Then
-	// 	assertNotNull(study.getOwnerId());
-	// 	assertEquals(member.getId(), study.getOwnerId());
+		// when(memberService.findById(1L)).thenReturn(Optional.of(member));
+		// when(repository.save(study)).thenReturn(study);
+		BDDMockito.given(memberService.findById(1L)).willReturn(Optional.of(member));
+		BDDMockito.given(repository.save(study)).willReturn(study);
 
-	// 	// verify(memberService, times(1)).notify(study);
-	// 	// verifyNoMoreInteractions(memberService);
-	// 	BDDMockito.then(memberService).should(times(1)).notify(study);
-	// 	BDDMockito.then(memberService).shouldHaveNoMoreInteractions();
+		// When
+		studyService.createNewStudy(1L, study);
 
+		// Then
+		assertNotNull(study.getOwnerId());
+		assertEquals(member.getId(), study.getOwnerId());
 
-	// 	// 만약 순서도 중요하다면
-	// 	// InOrder inOrder = inOrder(memberService);
-	// 	// inOrder.verify(memberService).notify(study);
-	// 	// verifyNoMoreInteractions(memberService);
-	// 	//inOrder.verify(memberService).notify(member);
-	// }
+		// verify(memberService, times(1)).notify(study);
+		// verifyNoMoreInteractions(memberService);
+		BDDMockito.then(memberService).should(times(1)).notify(study);
+		BDDMockito.then(memberService).shouldHaveNoMoreInteractions();
+
+		// 만약 순서도 중요하다면
+		// InOrder inOrder = inOrder(memberService);
+		// inOrder.verify(memberService).notify(study);
+		// verifyNoMoreInteractions(memberService);
+		//inOrder.verify(memberService).notify(member);
+	}
 
 }
