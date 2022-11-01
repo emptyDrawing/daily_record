@@ -1,3 +1,14 @@
+### WSL 에 Node 환경셋팅하기
+
+-
+
+
+### WSL 에 Java 환경셋팅하기
+
+- TODO
+
+
+
 ### WSL 에서 Eclispe  설치
 
 ```shell
@@ -59,3 +70,24 @@ sudo vim /etc/fonts/local.conf
 
 - [[종합적인 꿀Tips](https://positivemh.tistory.com/485)]
 - [ORA-01034](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=hymne&logNo=221448750630)
+
+
+### WSL Make 파일 명렁어 추가
+```shell
+apt-get install gcc make
+```
+
+### Jmeter 설치
+```shell
+mkdir -p ~/util/jmeter && cd ~/util/jmeter
+wget https://dlcdn.apache.org//jmeter/binaries/apache-jmeter-5.5.tgz
+tar xzvf apache-jmeter-5.5.tgz
+vim ~/.zshrc
+### alisa add
+alias jmeter='~/util/jmeter/apache-jmeter-5.5/bin/jmeter.sh'
+####
+source ~/.zshrc
+```
+
+
+
