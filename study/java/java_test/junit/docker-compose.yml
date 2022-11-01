@@ -9,11 +9,3 @@ services:
       POSTGRES_PASSWORD: study
       POSTGRES_USER: study
       POSTGRES_DB: study
-  study-test-db:
-    image: postgres
-    ports:
-      - 15432:5432
-    environment:
-      POSTGRES_PASSWORD: studytest
-      POSTGRES_USER: studytest
-      POSTGRES_DB: studytest
