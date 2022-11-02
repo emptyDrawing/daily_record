@@ -1,12 +1,49 @@
+## 더 읽어볼 자료
+
+- Awesome-WSL : https://github.com/sirredbeard/Awesome-WSL
+- Awesome-command-line :https://git.herrbischoff.com/awesome-command-line-apps/about/
+
+
+
+### WSL Python3 깔기
+- [ms 공식문서 참고](https://learn.microsoft.com/ko-kr/windows/python/web-frameworks)
+
+```shell
+sudo apt update && sudo apt upgrade
+sudo apt upgrade python3
+# 파이썬 패키지 관리
+sudo apt install python3-pip
+# 파이썬 가상환경
+sudo apt install python3-venv
+
+```
+
+
 ### WSL 에 Node 환경셋팅하기
 
--
+- [ms 공식문서참고](https://learn.microsoft.com/ko-kr/windows/dev-environment/javascript/nodejs-on-wsl)
+  
+```shell
+sudo apt-get install curl
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 
+# 아래 내용 ~/.zshrc 에 자동추가
+#export NVM_DIR="$HOME/.nvm"
+#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+## 명령확인
+command -v nv
+
+### 설치된 node 확인
+nvm ls
+### 안정된 노드 버젼 설치
+nvm install --lts # 설치당신튼 18.12
+# yarn 설치
+npm install --global yarn
+```
 
 ### WSL 에 Java 환경셋팅하기
-
-- TODO
-
 
 
 ### WSL 에서 Eclispe  설치
@@ -91,3 +128,38 @@ source ~/.zshrc
 
 
 
+### 유용한 유틸
+
+- 참고사이트 : https://scalereal.com/devops/2020/05/15/10-cli-tools-for-developers-productivity.html
+
+- autojump
+  ```shell
+  git clone https://github.com/wting/autojump.git
+  cd autojump
+  python3 ./install.py  #or ./uninstall.py
+  ```
+- [tldr pages](https://tldr.sh/) : 명령어 간단한 예제 보여주는 명령어
+  ```shell
+  npm install -g tldr
+  ```
+- [jq](https://stedolan.github.io/jq/) : json 결과 예쁘게 보여주기
+- [httpip](https://httpie.io/) : curl 비슷한건데 http 콜을 편하게 보여줄 수 있음
+  ```shell
+  apt install httpie 
+  ```
+- [pbcopy 처럼 쓰기](https://superuser.com/questions/288320/whats-like-osxs-pbcopy-for-linux)
+  ```shell
+  # alias 등록
+  # command -v xlcip 있을때
+  alias pbcopy='xclip -selection clipboard'
+  alias pbpaste='xclip -selection clipboard -o'
+  # commannd -v xsel 있을때
+  alias pbcopy='xsel --clipboard --input'
+  alias pbpaste='xsel --clipboard --output'
+  
+  #########################
+  # 사용법
+  #########################
+  echo 'go to my clipboard' | pbcopy
+  pbpaste # 'go to my clipboard'
+  ```  
