@@ -42,6 +42,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import lombok.extern.slf4j.Slf4j;
 import test.sskim.junit.domain.Member;
 import test.sskim.junit.domain.Study;
+import test.sskim.junit.domain.StudyStatus;
 import test.sskim.junit.member.MemberService;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

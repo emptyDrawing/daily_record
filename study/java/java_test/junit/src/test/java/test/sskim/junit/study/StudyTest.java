@@ -1,4 +1,4 @@
-package test.sskim.junit;
+package test.sskim.junit.study;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +39,10 @@ import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import test.sskim.junit.FindSlowTestExtension;
+import test.sskim.junit.SlowTestTag;
 import test.sskim.junit.domain.Study;
-import test.sskim.junit.study.StudyStatus;
+import test.sskim.junit.domain.StudyStatus;
 
 
 @ExtendWith(FindSlowTestExtension.class)

@@ -4,7 +4,6 @@ package test.sskim.junit.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import test.sskim.junit.study.StudyStatus;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

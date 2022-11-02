@@ -40,6 +40,8 @@ public class StudyService {
         return openedStudy;
     }
      
+    public void hi() {
 
+    }
 
 }
