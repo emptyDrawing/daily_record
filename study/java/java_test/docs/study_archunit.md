@@ -129,3 +129,44 @@ studyPackageRule4.check(importedClass);
 
 
 ### 예제2 : JUnit5와 연동해서 간추리기
+
+- 읽어들이 패키지-class 셋팅
+```java
+// App.class 가 있는 위치에 있는 Bytecode 를 읽어오겠다.
+import test.sskim.junit.App;
+@AnalyzeClasses(packagesOf = App.class)
+
+public class ArchTests {
+    // 그리고 룰 배치
+    @ArchTest
+    // 1) ..domain.. 패키지에 있는 클래스는 ..study.., ..member.., ..domain..에서 참조 가능.
+    ArchRule domainPackageRule = ArchRuleDefinition.classes().that()
+        .resideInAPackage("..domain..")
+        .should().onlyBeAccessed().byClassesThat()
+        .resideInAnyPackage("..study..","..member..","..domain..");
+
+    @ArchTest
+    // 2) ..member.. 패키지에 있는 클래스는 ..study..와 ..member..에서만 참조 가능.
+    ArchRule domainPackageRule2 = ArchRuleDefinition.classes().that()
+        .resideInAPackage("..member..")
+        .should().onlyBeAccessed().byClassesThat()
+        .resideInAnyPackage("..study..","..member..");
+    ...
+}
+```
+![](assets/2022-11-02-16-12-49.png)
+
+- 그런데 애넨 기존의 @Test 를 확장해서 만든게 아니라 
+- 별도의 jupiter 엔진을 만들어서 돌림
+![](assets/2022-11-02-16-13-36.png)
+![](assets/2022-11-02-16-14-12.png)
+
+
+### 예제3 : Class 간 의존성 확인
+
+![](assets/2022-11-02-16-16-44.png)
+
+```java
+
+
+```
