@@ -1,128 +1,114 @@
-2022-11-02 11:27:49,357 INFO o.a.j.u.JMeterUtils: Setting Locale to en
-2022-11-02 11:27:49,384 INFO o.a.j.JMeter: Loading user properties from: /home/ecsuser/util/jmeter/apache-jmeter-5.5/bin/user.properties
-2022-11-02 11:27:49,385 INFO o.a.j.JMeter: Loading system properties from: /home/ecsuser/util/jmeter/apache-jmeter-5.5/bin/system.properties
-2022-11-02 11:27:49,391 INFO o.a.j.JMeter: Copyright (c) 1998-2022 The Apache Software Foundation
-2022-11-02 11:27:49,391 INFO o.a.j.JMeter: Version 5.5
-2022-11-02 11:27:49,391 INFO o.a.j.JMeter: java.version=11.0.16
-2022-11-02 11:27:49,391 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
-2022-11-02 11:27:49,391 INFO o.a.j.JMeter: os.name=Linux
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: os.arch=amd64
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: os.version=5.15.68.1-microsoft-standard-WSL2
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: file.encoding=UTF-8
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: java.awt.headless=null
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: Max memory     =2046820352
-2022-11-02 11:27:49,392 INFO o.a.j.JMeter: Available Processors =8
-2022-11-02 11:27:49,404 INFO o.a.j.JMeter: Default Locale=English
-2022-11-02 11:27:49,404 INFO o.a.j.JMeter: JMeter  Locale=English
-2022-11-02 11:27:49,405 INFO o.a.j.JMeter: JMeterHome=/home/ecsuser/util/jmeter/apache-jmeter-5.5
-2022-11-02 11:27:49,405 INFO o.a.j.JMeter: user.dir  =/home/ecsuser/study/daily_record/study/java/java_test
-2022-11-02 11:27:49,405 INFO o.a.j.JMeter: PWD       =/home/ecsuser/study/daily_record/study/java/java_test
-2022-11-02 11:27:49,406 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: DESKTOP-J91JMOO FullName: DESKTOP-J91JMOO.
-2022-11-02 11:27:49,415 INFO o.a.j.JMeter: Loaded icon properties from org/apache/jmeter/images/icon.properties
-2022-11-02 11:27:49,847 INFO o.a.j.JMeterGuiLauncher: Setting LAF to: com.github.weisj.darklaf.DarkLaf:com.github.weisj.darklaf.theme.DarculaTheme
-2022-11-02 11:31:27,019 INFO o.a.j.s.FileServer: Default base='/home/ecsuser/study/daily_record/study/java/java_test'
-2022-11-02 11:31:27,021 INFO o.a.j.s.FileServer: Set new base='/home/ecsuser/study/daily_record/study/java/java_test'
-2022-11-02 11:31:27,191 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
-2022-11-02 11:31:27,204 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
-2022-11-02 11:31:27,206 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
-2022-11-02 13:08:43,297 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-11-02 13:08:43,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-11-02 13:08:43,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-11-02 13:08:43,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
-2022-11-02 13:08:43,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
-2022-11-02 13:08:43,300 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
-2022-11-02 13:10:09,783 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
-2022-11-02 13:10:09,784 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
-2022-11-02 13:10:09,784 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
-2022-11-02 13:10:09,784 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
-2022-11-02 13:10:10,074 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2022-11-02 13:10:19,304 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2022-11-02 13:10:24,306 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2022-11-02 13:10:29,902 INFO o.a.j.v.ViewResultsFullVisualizer: Add JavaFX to your Java installation if you want to use renderer: org.apache.jmeter.visualizers.RenderInBrowser
-2022-11-02 13:11:26,003 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2022-11-02 13:11:26,005 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2022-11-02 13:11:26,005 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2022-11-02 13:11:26,007 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
-2022-11-02 13:11:26,007 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
-2022-11-02 13:11:26,354 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2022-11-02 13:11:26,419 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Thread Group
-2022-11-02 13:11:26,419 INFO o.a.j.e.StandardJMeterEngine: Starting 10 threads for group Thread Group.
-2022-11-02 13:11:26,419 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
-2022-11-02 13:11:26,420 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=10 ramp-up=10 delayedStart=false
-2022-11-02 13:11:26,425 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-1
-2022-11-02 13:11:26,433 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2022-11-02 13:11:26,433 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2022-11-02 13:11:26,448 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = DESKTOP-J91JMOO
-2022-11-02 13:11:26,459 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
-2022-11-02 13:11:27,050 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-1
-2022-11-02 13:11:27,050 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-1
-2022-11-02 13:11:27,422 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-2
-2022-11-02 13:11:27,767 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-2
-2022-11-02 13:11:27,767 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-2
-2022-11-02 13:11:28,421 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-3
-2022-11-02 13:11:28,855 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-3
-2022-11-02 13:11:28,855 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-3
-2022-11-02 13:11:29,421 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-4
-2022-11-02 13:11:29,746 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-4
-2022-11-02 13:11:29,747 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-4
-2022-11-02 13:11:30,422 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-5
-2022-11-02 13:11:30,760 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-5
-2022-11-02 13:11:30,760 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-5
-2022-11-02 13:11:31,424 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-6
-2022-11-02 13:11:31,728 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-6
-2022-11-02 13:11:31,728 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-6
-2022-11-02 13:11:32,422 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-7
-2022-11-02 13:11:33,095 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-7
-2022-11-02 13:11:33,096 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-7
-2022-11-02 13:11:33,426 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-8
-2022-11-02 13:11:33,766 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-8
-2022-11-02 13:11:33,766 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-8
-2022-11-02 13:11:34,422 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-9
-2022-11-02 13:11:34,697 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-9
-2022-11-02 13:11:34,697 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-9
-2022-11-02 13:11:35,423 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-10
-2022-11-02 13:11:35,744 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-10
-2022-11-02 13:11:35,744 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-10
-2022-11-02 13:11:35,744 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2022-11-02 13:11:35,745 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
-2022-11-02 13:20:29,170 INFO o.a.j.e.StandardJMeterEngine: Running the test!
-2022-11-02 13:20:29,171 INFO o.a.j.s.SampleEvent: List of sample_variables: []
-2022-11-02 13:20:29,173 INFO o.a.j.g.u.JMeterMenuBar: setRunning(true, *local*)
-2022-11-02 13:20:29,214 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Thread Group
-2022-11-02 13:20:29,214 INFO o.a.j.e.StandardJMeterEngine: Starting 10 threads for group Thread Group.
-2022-11-02 13:20:29,214 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
-2022-11-02 13:20:29,214 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=10 ramp-up=1 delayedStart=false
-2022-11-02 13:20:29,215 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-1
-2022-11-02 13:20:29,217 INFO o.a.j.t.ThreadGroup: Started thread group number 1
-2022-11-02 13:20:29,218 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
-2022-11-02 13:20:29,268 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-1
-2022-11-02 13:20:29,269 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-1
-2022-11-02 13:20:29,316 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-2
-2022-11-02 13:20:29,320 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-2
-2022-11-02 13:20:29,320 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-2
-2022-11-02 13:20:29,416 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-3
-2022-11-02 13:20:29,424 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-3
-2022-11-02 13:20:29,424 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-3
-2022-11-02 13:20:29,516 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-4
-2022-11-02 13:20:29,524 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-4
-2022-11-02 13:20:29,524 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-4
-2022-11-02 13:20:29,615 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-5
-2022-11-02 13:20:29,620 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-5
-2022-11-02 13:20:29,621 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-5
-2022-11-02 13:20:29,716 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-6
-2022-11-02 13:20:29,720 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-6
-2022-11-02 13:20:29,720 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-6
-2022-11-02 13:20:29,816 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-7
-2022-11-02 13:20:29,820 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-7
-2022-11-02 13:20:29,820 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-7
-2022-11-02 13:20:29,915 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-8
-2022-11-02 13:20:29,925 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-8
-2022-11-02 13:20:29,925 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-8
-2022-11-02 13:20:30,016 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-9
-2022-11-02 13:20:30,024 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-9
-2022-11-02 13:20:30,024 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-9
-2022-11-02 13:20:30,116 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-10
-2022-11-02 13:20:30,121 INFO o.a.j.t.JMeterThread: Thread is done: Thread Group 1-10
-2022-11-02 13:20:30,121 INFO o.a.j.t.JMeterThread: Thread finished: Thread Group 1-10
-2022-11-02 13:20:30,122 INFO o.a.j.e.StandardJMeterEngine: Notifying test listeners of end of test
-2022-11-02 13:20:30,122 INFO o.a.j.g.u.JMeterMenuBar: setRunning(false, *local*)
+2022-11-02 14:14:03,759 INFO o.a.j.u.JMeterUtils: Setting Locale to en
+2022-11-02 14:14:03,780 INFO o.a.j.JMeter: Loading user properties from: /home/ecsuser/util/jmeter/apache-jmeter-5.5/bin/user.properties
+2022-11-02 14:14:03,780 INFO o.a.j.JMeter: Loading system properties from: /home/ecsuser/util/jmeter/apache-jmeter-5.5/bin/system.properties
+2022-11-02 14:14:03,785 INFO o.a.j.JMeter: Copyright (c) 1998-2022 The Apache Software Foundation
+2022-11-02 14:14:03,785 INFO o.a.j.JMeter: Version 5.5
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: java.version=11.0.16
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: java.vm.name=OpenJDK 64-Bit Server VM
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: os.name=Linux
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: os.arch=amd64
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: os.version=5.15.68.1-microsoft-standard-WSL2
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: file.encoding=UTF-8
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: java.awt.headless=true
+2022-11-02 14:14:03,786 INFO o.a.j.JMeter: Max memory     =2046820352
+2022-11-02 14:14:03,787 INFO o.a.j.JMeter: Available Processors =8
+2022-11-02 14:14:03,794 INFO o.a.j.JMeter: Default Locale=English
+2022-11-02 14:14:03,795 INFO o.a.j.JMeter: JMeter  Locale=English
+2022-11-02 14:14:03,795 INFO o.a.j.JMeter: JMeterHome=/home/ecsuser/util/jmeter/apache-jmeter-5.5
+2022-11-02 14:14:03,795 INFO o.a.j.JMeter: user.dir  =/home/ecsuser/study/daily_record/study/java/java_test
+2022-11-02 14:14:03,795 INFO o.a.j.JMeter: PWD       =/home/ecsuser/study/daily_record/study/java/java_test
+2022-11-02 14:14:03,796 INFO o.a.j.JMeter: IP: 127.0.1.1 Name: DESKTOP-J91JMOO FullName: DESKTOP-J91JMOO.
+2022-11-02 14:14:03,805 INFO o.a.j.s.FileServer: Default base='/home/ecsuser/study/daily_record/study/java/java_test'
+2022-11-02 14:14:03,807 INFO o.a.j.s.FileServer: Set new base='/home/ecsuser/study/daily_record/study/java/java_test'
+2022-11-02 14:14:03,984 INFO o.a.j.s.SaveService: Testplan (JMX) version: 2.2. Testlog (JTL) version: 2.2
+2022-11-02 14:14:04,008 INFO o.a.j.s.SaveService: Using SaveService properties version 5.0
+2022-11-02 14:14:04,012 INFO o.a.j.s.SaveService: Using SaveService properties file encoding UTF-8
+2022-11-02 14:14:04,016 INFO o.a.j.s.SaveService: Loading file: Get Start.jmx
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/html is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xhtml+xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for application/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/xml is org.apache.jmeter.protocol.http.parser.LagartoBasedHtmlParser
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/vnd.wap.wml is org.apache.jmeter.protocol.http.parser.RegexpHTMLParser
+2022-11-02 14:14:04,066 INFO o.a.j.p.h.s.HTTPSamplerBase: Parser for text/css is org.apache.jmeter.protocol.http.parser.CssParser
+2022-11-02 14:14:04,091 INFO o.a.j.JMeter: Creating summariser <summary>
+2022-11-02 14:14:04,107 INFO o.a.j.e.StandardJMeterEngine: Running the test!
+2022-11-02 14:14:04,109 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2022-11-02 14:14:04,109 INFO o.a.j.s.SampleEvent: List of sample_variables: []
+2022-11-02 14:14:04,130 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must contain the string: '.functions.'
+2022-11-02 14:14:04,131 INFO o.a.j.e.u.CompoundVariable: Note: Function class names must not contain the string: '.gui.'
+2022-11-02 14:14:04,526 INFO o.a.j.JMeter: Running test (1667366044526)
+2022-11-02 14:14:04,553 INFO o.a.j.e.StandardJMeterEngine: Starting ThreadGroup: 1 : Thread Group
+2022-11-02 14:14:04,553 INFO o.a.j.e.StandardJMeterEngine: Starting 10 threads for group Thread Group.
+2022-11-02 14:14:04,553 INFO o.a.j.e.StandardJMeterEngine: Thread will continue on error
+2022-11-02 14:14:04,554 INFO o.a.j.t.ThreadGroup: Starting thread group... number=1 threads=10 ramp-up=1 delayedStart=false
+2022-11-02 14:14:04,589 INFO o.a.j.t.ThreadGroup: Started thread group number 1
+2022-11-02 14:14:04,591 INFO o.a.j.e.StandardJMeterEngine: All thread groups have been started
+2022-11-02 14:14:04,598 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-1
+2022-11-02 14:14:04,635 INFO o.a.j.p.h.s.HTTPHCAbstractImpl: Local host = DESKTOP-J91JMOO
+2022-11-02 14:14:04,643 INFO o.a.j.p.h.s.HTTPHC4Impl: HTTP request retry count = 0
+2022-11-02 14:14:04,646 INFO o.a.j.s.SampleResult: Note: Sample TimeStamps are START times
+2022-11-02 14:14:04,646 INFO o.a.j.s.SampleResult: sampleresult.default.encoding is set to ISO-8859-1
+2022-11-02 14:14:04,646 INFO o.a.j.s.SampleResult: sampleresult.useNanoTime=true
+2022-11-02 14:14:04,646 INFO o.a.j.s.SampleResult: sampleresult.nanoThreadSleep=5000
+2022-11-02 14:14:04,688 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-2
+2022-11-02 14:14:04,786 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-3
+2022-11-02 14:14:04,884 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-4
+2022-11-02 14:14:04,917 INFO o.a.j.r.Summariser: summary +      1 in 00:00:00 =    2.6/s Avg:    94 Min:    94 Max:    94 Err:     0 (0.00%) Active: 4 Started: 4 Finished: 0
+2022-11-02 14:14:04,983 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-5
+2022-11-02 14:14:05,080 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-6
+2022-11-02 14:14:05,178 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-7
+2022-11-02 14:14:05,273 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-8
+2022-11-02 14:14:05,363 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-9
+2022-11-02 14:14:05,464 INFO o.a.j.t.JMeterThread: Thread started: Thread Group 1-10
+2022-11-02 14:14:30,112 INFO o.a.j.r.Summariser: summary +    574 in 00:00:25 =   22.8/s Avg:   410 Min:     2 Max:  3003 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:14:30,113 INFO o.a.j.r.Summariser: summary =    575 in 00:00:26 =   22.5/s Avg:   409 Min:     2 Max:  3003 Err:     0 (0.00%)
+2022-11-02 14:15:00,241 INFO o.a.j.r.Summariser: summary +    693 in 00:00:30 =   23.0/s Avg:   440 Min:     2 Max:  2961 Err:     0 (0.00%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:15:00,241 INFO o.a.j.r.Summariser: summary =   1268 in 00:00:56 =   22.8/s Avg:   426 Min:     2 Max:  3003 Err:     0 (0.00%)
+2022-11-02 14:15:30,002 INFO o.a.j.r.Summariser: summary +   8479 in 00:00:30 =  284.9/s Avg:    36 Min:     2 Max:  2848 Err:  2803 (33.06%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:15:30,003 INFO o.a.j.r.Summariser: summary =   9747 in 00:01:25 =  114.0/s Avg:    86 Min:     2 Max:  3003 Err:  2803 (28.76%)
+2022-11-02 14:16:00,001 INFO o.a.j.r.Summariser: summary +   7970 in 00:00:30 =  265.7/s Avg:    37 Min:     1 Max:  1364 Err:  2672 (33.53%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:16:00,049 INFO o.a.j.r.Summariser: summary =  17717 in 00:01:55 =  153.4/s Avg:    64 Min:     1 Max:  3003 Err:  5475 (30.90%)
+2022-11-02 14:16:30,001 INFO o.a.j.r.Summariser: summary +  10837 in 00:00:30 =  361.2/s Avg:    27 Min:     2 Max:   851 Err:  3630 (33.50%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:16:30,002 INFO o.a.j.r.Summariser: summary =  28554 in 00:02:25 =  196.3/s Avg:    50 Min:     1 Max:  3003 Err:  9105 (31.89%)
+2022-11-02 14:17:00,001 INFO o.a.j.r.Summariser: summary +  14656 in 00:00:30 =  488.5/s Avg:    20 Min:     1 Max:   303 Err:  4953 (33.80%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:17:00,003 INFO o.a.j.r.Summariser: summary =  43210 in 00:02:55 =  246.2/s Avg:    40 Min:     1 Max:  3003 Err: 14058 (32.53%)
+2022-11-02 14:17:30,003 INFO o.a.j.r.Summariser: summary +  15551 in 00:00:30 =  518.3/s Avg:    19 Min:     1 Max:   241 Err:  5168 (33.23%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:17:30,004 INFO o.a.j.r.Summariser: summary =  58761 in 00:03:25 =  286.0/s Avg:    34 Min:     1 Max:  3003 Err: 19226 (32.72%)
+2022-11-02 14:18:00,009 INFO o.a.j.r.Summariser: summary +  15387 in 00:00:30 =  512.8/s Avg:    19 Min:     1 Max:   227 Err:  5199 (33.79%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:18:00,010 INFO o.a.j.r.Summariser: summary =  74148 in 00:03:55 =  314.9/s Avg:    31 Min:     1 Max:  3003 Err: 24425 (32.94%)
+2022-11-02 14:18:30,001 INFO o.a.j.r.Summariser: summary +  16419 in 00:00:30 =  547.4/s Avg:    18 Min:     1 Max:   207 Err:  5371 (32.71%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:18:30,002 INFO o.a.j.r.Summariser: summary =  90567 in 00:04:25 =  341.2/s Avg:    29 Min:     1 Max:  3003 Err: 29796 (32.90%)
+2022-11-02 14:19:00,002 INFO o.a.j.r.Summariser: summary +  15496 in 00:00:30 =  516.5/s Avg:    19 Min:     1 Max:   256 Err:  5213 (33.64%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:19:00,003 INFO o.a.j.r.Summariser: summary = 106063 in 00:04:55 =  359.0/s Avg:    27 Min:     1 Max:  3003 Err: 35009 (33.01%)
+2022-11-02 14:19:30,035 INFO o.a.j.r.Summariser: summary +  15908 in 00:00:30 =  529.7/s Avg:    18 Min:     1 Max:   241 Err:  5387 (33.86%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:19:30,036 INFO o.a.j.r.Summariser: summary = 121971 in 00:05:26 =  374.7/s Avg:    26 Min:     1 Max:  3003 Err: 40396 (33.12%)
+2022-11-02 14:20:00,006 INFO o.a.j.r.Summariser: summary +  16559 in 00:00:30 =  552.6/s Avg:    17 Min:     1 Max:   252 Err:  5425 (32.76%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:20:00,007 INFO o.a.j.r.Summariser: summary = 138530 in 00:05:55 =  389.7/s Avg:    25 Min:     1 Max:  3003 Err: 45821 (33.08%)
+2022-11-02 14:20:30,002 INFO o.a.j.r.Summariser: summary +  15510 in 00:00:30 =  517.1/s Avg:    19 Min:     1 Max:   284 Err:  5299 (34.17%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:20:30,003 INFO o.a.j.r.Summariser: summary = 154040 in 00:06:25 =  399.6/s Avg:    24 Min:     1 Max:  3003 Err: 51120 (33.19%)
+2022-11-02 14:21:00,094 INFO o.a.j.r.Summariser: summary +  15231 in 00:00:30 =  506.2/s Avg:    19 Min:     1 Max:   291 Err:  5096 (33.46%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:21:00,098 INFO o.a.j.r.Summariser: summary = 169271 in 00:06:56 =  407.3/s Avg:    24 Min:     1 Max:  3003 Err: 56216 (33.21%)
+2022-11-02 14:21:30,002 INFO o.a.j.r.Summariser: summary +  15857 in 00:00:30 =  530.2/s Avg:    18 Min:     1 Max:   446 Err:  5300 (33.42%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:21:30,003 INFO o.a.j.r.Summariser: summary = 185128 in 00:07:25 =  415.6/s Avg:    23 Min:     1 Max:  3003 Err: 61516 (33.23%)
+2022-11-02 14:22:00,002 INFO o.a.j.r.Summariser: summary +  15753 in 00:00:30 =  525.1/s Avg:    18 Min:     1 Max:   241 Err:  5253 (33.35%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:22:00,003 INFO o.a.j.r.Summariser: summary = 200881 in 00:07:55 =  422.5/s Avg:    23 Min:     1 Max:  3003 Err: 66769 (33.24%)
+2022-11-02 14:22:30,001 INFO o.a.j.r.Summariser: summary +  10825 in 00:00:30 =  360.8/s Avg:    27 Min:     1 Max:   489 Err:  3599 (33.25%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:22:30,002 INFO o.a.j.r.Summariser: summary = 211706 in 00:08:25 =  418.8/s Avg:    23 Min:     1 Max:  3003 Err: 70368 (33.24%)
+2022-11-02 14:23:00,001 INFO o.a.j.r.Summariser: summary +  11355 in 00:00:30 =  378.5/s Avg:    26 Min:     1 Max:   298 Err:  3816 (33.61%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:23:00,002 INFO o.a.j.r.Summariser: summary = 223061 in 00:08:55 =  416.6/s Avg:    23 Min:     1 Max:  3003 Err: 74184 (33.26%)
+2022-11-02 14:23:30,001 INFO o.a.j.r.Summariser: summary +   9866 in 00:00:30 =  328.9/s Avg:    30 Min:     1 Max:   372 Err:  3357 (34.03%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:23:30,001 INFO o.a.j.r.Summariser: summary = 232927 in 00:09:25 =  411.9/s Avg:    24 Min:     1 Max:  3003 Err: 77541 (33.29%)
+2022-11-02 14:24:00,003 INFO o.a.j.r.Summariser: summary +  11416 in 00:00:30 =  380.5/s Avg:    26 Min:     1 Max:   336 Err:  3806 (33.34%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:24:00,004 INFO o.a.j.r.Summariser: summary = 244343 in 00:09:55 =  410.3/s Avg:    24 Min:     1 Max:  3003 Err: 81347 (33.29%)
+2022-11-02 14:24:30,119 INFO o.a.j.r.Summariser: summary +  14193 in 00:00:30 =  471.3/s Avg:    20 Min:     1 Max:   369 Err:  4610 (32.48%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:24:30,120 INFO o.a.j.r.Summariser: summary = 258536 in 00:10:26 =  413.3/s Avg:    24 Min:     1 Max:  3003 Err: 85957 (33.25%)
+2022-11-02 14:25:00,001 INFO o.a.j.r.Summariser: summary +  10555 in 00:00:30 =  353.2/s Avg:    28 Min:     1 Max:   572 Err:  3509 (33.24%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:25:00,006 INFO o.a.j.r.Summariser: summary = 269091 in 00:10:55 =  410.5/s Avg:    24 Min:     1 Max:  3003 Err: 89466 (33.25%)
+2022-11-02 14:25:30,003 INFO o.a.j.r.Summariser: summary +  15416 in 00:00:30 =  513.8/s Avg:    19 Min:     1 Max:   224 Err:  5155 (33.44%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:25:30,004 INFO o.a.j.r.Summariser: summary = 284507 in 00:11:25 =  415.0/s Avg:    23 Min:     1 Max:  3003 Err: 94621 (33.26%)
+2022-11-02 14:26:00,053 INFO o.a.j.r.Summariser: summary +  15583 in 00:00:30 =  518.6/s Avg:    19 Min:     1 Max:   371 Err:  5167 (33.16%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:26:00,054 INFO o.a.j.r.Summariser: summary = 300090 in 00:11:56 =  419.4/s Avg:    23 Min:     1 Max:  3003 Err: 99788 (33.25%)
+2022-11-02 14:26:30,005 INFO o.a.j.r.Summariser: summary +  15421 in 00:00:30 =  514.9/s Avg:    19 Min:     1 Max:   324 Err:  5213 (33.80%) Active: 10 Started: 10 Finished: 0
+2022-11-02 14:26:30,006 INFO o.a.j.r.Summariser: summary = 315511 in 00:12:25 =  423.2/s Avg:    23 Min:     1 Max:  3003 Err: 105001 (33.28%)
+2022-11-02 14:26:30,585 INFO o.a.j.r.ResultCollector: Shutdown hook started
+2022-11-02 14:26:30,586 INFO o.a.j.r.ResultCollector: Shutdown hook ended
