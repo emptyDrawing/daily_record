@@ -126,7 +126,16 @@ alias jmeter='~/util/jmeter/apache-jmeter-5.5/bin/jmeter.sh'
 source ~/.zshrc
 ```
 
-
+### Apache Util
+```shell
+sudo apt-get install apache2-utils
+```
+- [ab](https://httpd.apache.org/docs/2.4/programs/ab.html) : Apache-bench
+  ```shell
+  # -n : 전체 요청의 갯수
+  # -c : concurrency
+  ab -n 100 -c 10 localhost:8080/study/2
+  ```
 
 ### 유용한 유틸
 
