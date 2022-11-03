@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <div id="app">
+        <!-- <app-header v-on:하위컴포넌트에서 발생한 이벤트 이름="상위 컴포넌트의 메서드 이름"></app-header> -->
+        <app-header v-on:pass이벤트="logText"></app-header>
+        <app-content v-on:add_num="addDataNum"></app-content>
+        <app-footer v-bind:click_num="num"></app-footer>
+    </div>
+
+    <script>
+        var appHeader = {
+            template : '<button v-on:click="passEvent">click me </button>',
+            methods : {
+                passEvent : function() {
+                    this.$emit('pass이벤트');
+                }
+            }
+        }
+
+        var appContent = {
+            template : '<button type="button" v-on:click="addNumber">add</button>',
+            methods: {
+                addNumber : function() {
+                    this.$emit('add_num');
+                }
+            }
+        }
+        
+        new Vue({
+            el : '#app',
+            components : {
+                'app-header' : appHeader,
+                'app-content' : appContent,
+                'app-footer' : {
+                    template : '<div>{{ click_num }}</div>',
+                    props : [ 'click_num' ]
+                }
+            },
+            methods : {
+                logText : function(e) {
+                    console.log('hi',e)
+                },
+                addDataNum : function() {
+                    ++this.num;
+                }
+            },
+            data :{
+                num : 10
+            }
+
+        });
+    </script>
+</body>
+</html>

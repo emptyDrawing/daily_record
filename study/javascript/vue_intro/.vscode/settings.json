@@ -1,0 +1,4 @@
+{
+    "DockerRun.DisableDockerrc": true,
+    "livePreview.defaultPreviewPath": "/home/ecsuser/study/daily_record/study/javascript/vue_intro/lecture_source/getting-started/index.html"
+}
