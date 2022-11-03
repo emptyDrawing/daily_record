@@ -97,11 +97,11 @@ Mockito.when(memberService.findById(any())).thenReturn(Optional.of(member));
 
 		Member member = new Member(1L, "sskim@test.com");
 
-		// TODO memberService 객체에 findById 메소드를 1L 값으로 호출하면 
+		// memberService 객체에 findById 메소드를 1L 값으로 호출하면 
 		// Optional.of(member) 객체를 리턴하도록 Stubbing
 		when(memberService.findById(1L)).thenReturn(Optional.of(member));
 		
-		// TODO studyRepository 객체에 save 메소드를 study 객체로 호출하면 
+		// studyRepository 객체에 save 메소드를 study 객체로 호출하면 
 		// study 객체 그대로 리턴하게 Stubbing
 		when(repository.save(study)).thenReturn(study);
 

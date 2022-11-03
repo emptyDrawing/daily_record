@@ -98,7 +98,7 @@ domainPackageRule3ReverseCheck.check(importedClass);
 
 - 4번 문제
 ```java
-// TODO 4) ..study.. 패키지에 있는 클래스는 ..study.. 에서만 참조 가능
+// 4) ..study.. 패키지에 있는 클래스는 ..study.. 에서만 참조 가능
 ArchRule studyPackageRule4 = ArchRuleDefinition.noClasses().that()
     .resideOutsideOfPackage("..study..")
     .should().accessClassesThat()
@@ -167,6 +167,44 @@ public class ArchTests {
 ![](assets/2022-11-02-16-16-44.png)
 
 ```java
+@ArchTest
+// 1) ..Controller는 ..Service와 ..Repository를 사용할 수 있다.
+ArchRule controllerClassRule = ArchRuleDefinition.classes().that()
+    .haveSimpleNameEndingWith("Controller")
+    .should().accessClassesThat().haveSimpleNameEndingWith("Service")
+    .orShould().accessClassesThat().haveSimpleNameEndingWith("Repository");
 
+
+@ArchTest
+// 2) ..Repository는 ...Service와 ...Controller를 사용할 수 없다.
+ArchRule repositoryClassRule = ArchRuleDefinition.noClasses().that()
+    .haveSimpleNameEndingWith("Repository")
+    .should().accessClassesThat().haveSimpleNameEndingWith("Service")
+    .orShould().accessClassesThat().haveSimpleNameEndingWith("Controller");
+
+
+@ArchTest
+// 3) Study* 로 시작하는 클래스는 ..study.. 패키지에 있어야 한다.
+// 그냥하니까 domain에 있는 Study, StudyStatus 때문에 안됨.
+ArchRule studyNameRule = ArchRuleDefinition.classes().that()
+    .haveSimpleNameStartingWith("Study")
+    .and().areNotAnnotatedWith(Entity.class)     // domain.study 제외
+    .and().areNotEnums()                                        // StudyStatus 제외
+    .should().resideInAPackage("..study..");
 
 ```
+  - 일부러 테스트 실패하게 만들었는데..
+  ![](assets/2022-11-02-16-33-01.png)
+  ![](assets/2022-11-02-16-33-48.png)
+  - vscode 에서는 에노테이션 쓰니까 원인 찾기가 어렵다.. -> `ctrl + ;` + `ctrl + 0`
+  ![](assets/2022-11-03-09-17-18.png)
+
+
+### 더 찾아볼 것
+  
+- [Freezing Arch Rules](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) 를 쓰면 현재 패키지에서 깨진걸 두고 새롭게 만들어지는 애한테도 적용가능하다.
+
+- [PlantUML](https://www.archunit.org/userguide/html/000_Index.html#_plantuml_component_diagrams_as_rules) 과도 연동가능함.
+
+- 공식 가이드 문서 : https://www.archunit.org/userguide/html/000_Index.html
+- 사용법 공식 : https://www.archunit.org/use-cases
