@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p v-bind:id="uuid" v-bind:class="name">{{ num }}</p>
+        <p>{{ doubleNum }}</p>
+        <div v-if="loading">
+            v-if : Loading...
+        </div>
+        <div v-else>
+            test user has been logged in
+        </div>
+        <div v-show="loading">
+            v-show : Loading...
+        </div>
+
+        <!-- TODO : 인풋박스 만들고 입력된 값을 P태그에 출력-->
+        <input v-model = "input_message" placeholder="write something" />
+        <p class="text_target">{{ input_message }}</p>
+
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var myApp = new Vue({
+            el : '#app',
+            data : {
+                num : 10,
+                uuid : 'user_id',
+                name : 'text-blue',
+                loading : true,
+                input_message : ''
+            },
+            computed : {
+                doubleNum : (myApp) => {
+                    console.log(myApp);
+                    return myApp.num * 2;
+                }
+            }
+        });
+    </script>
+
+
+</body>
+</html>

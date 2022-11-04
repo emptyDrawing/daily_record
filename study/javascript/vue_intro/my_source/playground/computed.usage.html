@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style type="text/css">
+        .warning { color : red; font-weight : bold }
+        .blue-text { color : blue; font-weight : bold }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!--              클래스 이름 : 조건변수              -->
+       <!-- <p v-bind:class="{ warning: isError }">Hello</p>  -->
+       <p v-bind:class="errorTextColor">Hello</p>
+    </div>
+    <script>
+        new Vue({
+            el : '#app',
+            data : {
+                cname : 'blue-text',
+                isError: false
+            },
+            computed : {
+                errorTextColor : (that) => {
+                    return that.isError ? 'warning' : that.cname;
+                }
+            }
+        })
+
+
+    </script>
+
+</body>
+</html>

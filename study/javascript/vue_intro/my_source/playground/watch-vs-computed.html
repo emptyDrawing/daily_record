@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <p> num : {{ num }} </p>
+        <button v-on:click="addNum">increase</button>
+        <p>doubleNum : {{ doubleNum }}</p>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        var myApp = new Vue({
+            el : '#app',
+            data : {
+                num : 10,
+            },
+            watch : {
+                // args 에 [ 최신값, 이전값 ]
+                'num' : (...args) => {
+                    console.log("watch - args", args)
+                    myApp.logText(args)
+                }
+            },
+            computed : {
+                // that 에는 myApp, ..args
+                doubleNum : (that, ...args) => { 
+                    console.log("this -> ", ... args)
+                    return that.num * 2 
+                }
+            },
+            methods : {
+                'addNum' : (e) => { myApp.num++; },            
+                'logText' : (e) => console.log('change', e) ,
+            },
+        })
+
+    </script>
+
+</body>
+</html>

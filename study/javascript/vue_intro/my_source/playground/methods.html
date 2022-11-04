@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <div id="app">
+        <button v-on:click="click_me">click me</button>
+        <input type="text" v-on:keyup.enter="logText"/>
+    </div>
+    <script>
+        var myApp = new Vue({
+            el: '#app',
+            methods: {
+                'click_me': (e,... args) => {
+                    console.log(myApp,e,args)
+                },
+                'logText' : (e) => {
+                    console.log("enter!")
+                }
+            }
+
+
+        })
+
+
+    </script>
+</body>
+</html>
