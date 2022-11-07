@@ -33,7 +33,7 @@ export default {
   },
   methods: {
     addOneItem(newTodoItem) {
-      var obj = { completed : false, item : newTodoItem }
+      const obj = { completed : false, item : newTodoItem }
       localStorage.setItem(newTodoItem, JSON.stringify(obj))
       this.todoItems.push(obj)
     },
@@ -52,7 +52,6 @@ export default {
       this.todoItems = [];
     }
   },
-  
   
   components : {
     TodoHeader, TodoInput, TodoList, TodoFooter,
