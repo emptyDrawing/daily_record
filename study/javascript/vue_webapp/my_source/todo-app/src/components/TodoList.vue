@@ -1,61 +1,46 @@
 <template>
   <div>
-    <ul>
-      <li v-for="(todoItem, index) in todoItems" v-bind:key="todoItem.item" class="shadow">
-        <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted: todoItem.completed}" 
+    <transition-group name="list" tag="ul">
+      
+      <li v-for="(todoItem, index) in todolist" v-bind:key="todoItem.item" class="shadow">
+        <i class="checkBtn fas fa-check" 
+          v-bind:class="{checkBtnCompleted: todoItem.completed}" 
           v-on:click="toggleComplete(todoItem, index)"></i>
         <span v-bind:class="{textCompleted: todoItem.completed}">{{ todoItem.item }}</span>
-
-        <span class="removeBtn" v-on:click="removeTodo(todoItem, index)">
+        <span class="removeBtn" 
+          v-on:click="removeTodo(todoItem, index)">
           <i class="fas fa-trash-alt"></i>
         </span>
       </li>
-    </ul>
+
+    </transition-group>
   </div>
+
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      todoItems : []
-    }
-  },
-  // life-cycle 이 있는데 그중 하나
-  created() {
-    if(localStorage.length > 0) {
-      const that = this
-      Object.keys(localStorage).forEach(function(key){
-
-
-        that.todoItems.push( JSON.parse(localStorage.getItem(key)) )
-      });
-    }
-  },
-  methods : {
-    toggleComplete(todoItem, index){
-      console.log(todoItem, index)
-      todoItem.completed = !todoItem.completed
-      localStorage.removeItem(todoItem.item);
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
+ export default { 
+  props : ["todolist"], 
+  methods : { 
+    toggleComplete(todoItem, index){ 
+      this.$emit("toggleTodoEvent", todoItem, index)
     },
-    removeTodo(todoItem, index) {
-      localStorage.removeItem(todoItem.item)
-      this.todoItems.splice(index, 1)
-    }
-  }
+    removeTodo(todoItem, index){ 
+      this.$emit("removeTodoEvent", todoItem, index) 
+    } 
+  } 
 }
 </script>
 
 <style scoped>
-  ul {
+ul {
   list-style-type: none;
   padding-left: 0px;
   margin-top: 0;
   text-align: left;
-  }
+}
 
-  li {
+li {
   display: flex;
   min-height: 50px;
   height: 50px;
@@ -64,24 +49,37 @@ export default {
   padding: 0 0.9rem;
   background-color: white;
   border-radius: 5px;
-  }
+}
 
-  .checkBtn {
+.checkBtn {
   line-height: 45px;
   color: #62acde;
   margin-right: 5px;
-  }
-  
-  .checkBtnCompleted {
-  color: #b3adad;
-  }
-  
-  .textCompleted {
-  text-decoration: line-through;
-  }
+}
 
-  .removeBtn {
+.checkBtnCompleted {
+  color: #b3adad;
+}
+
+.textCompleted {
+  text-decoration: line-through;
+}
+
+.removeBtn {
   margin-left: auto;
   color: #de4343;
-  }
+}
+/** list tranactions */
+.list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+.list-enter-active,
+.list-leave-active {
+  transition: all 1s;
+}
+.list-enter, .list-leave-to /* .list-leave-active below version 2.1.8 */ {
+  opacity: 0;
+  transform: translateY(30px);
+}
 </style>
