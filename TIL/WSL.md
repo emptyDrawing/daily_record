@@ -2,7 +2,7 @@
 
 - Awesome-WSL : https://github.com/sirredbeard/Awesome-WSL
 - Awesome-command-line :https://git.herrbischoff.com/awesome-command-line-apps/about/
-
+- 공식자습서 : https://learn.microsoft.com/ko-kr/windows/wsl/setup/environment?source=recommendations
 
 
 ### WSL Python3 깔기

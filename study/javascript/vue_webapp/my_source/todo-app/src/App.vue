@@ -1,10 +1,10 @@
 <template>
   <div id="app">
+      <DemoVue/>
       <TodoHeader></TodoHeader>
-      <TodoInput v-on:addTodoEvent="addOneItem"></TodoInput>
-      <TodoList v-bind:todolist="todoItems" 
-        v-on:removeTodoEvent="removeOneItem" v-on:toggleTodoEvent="toggleOneItem"></TodoList>
-      <TodoFooter v-on:clearAllEvent="clearAllItems"></TodoFooter>
+      <TodoInput></TodoInput>
+      <TodoList></TodoList>
+      <TodoFooter></TodoFooter>
   </div>
 </template>
 
@@ -14,47 +14,12 @@ import TodoHeader from './components/TodoHeader'
 import TodoInput from './components/TodoInput.vue'
 import TodoList from './components/TodoList.vue'
 import TodoFooter from './components/TodoFooter.vue'
+import DemoVue from './components/DemoVue.vue'
 
 export default {
   
-  data() {
-    return {
-      todoItems : []
-    }
-  },
-  // life-cycle 이 있는데 그중 하나
-  created() {
-    if(localStorage.length > 0) {
-      const that = this
-      Object.keys(localStorage).forEach(function(key){
-        that.todoItems.push( JSON.parse(localStorage.getItem(key)) )
-      });
-    }
-  },
-  methods: {
-    addOneItem(newTodoItem) {
-      const obj = { completed : false, item : newTodoItem }
-      localStorage.setItem(newTodoItem, JSON.stringify(obj))
-      this.todoItems.push(obj)
-    },
-    removeOneItem(todoItem, index) {
-      localStorage.removeItem(todoItem.item)
-      this.todoItems.splice(index, 1)
-    },
-    toggleOneItem(todoItem, index) {
-      // todoItem.completed = !todoItem.completed // 이렇게 하면 여러번 이벤트버스가 생겨서 안티패턴
-      this.todoItems[index].completed = !this.todoItems[index].completed;  
-      localStorage.removeItem(todoItem.item);
-      localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
-    },
-    clearAllItems() {
-      localStorage.clear();
-      this.todoItems = [];
-    }
-  },
-  
   components : {
-    TodoHeader, TodoInput, TodoList, TodoFooter,
+    TodoHeader, TodoInput, TodoList, TodoFooter, DemoVue
   }
 }
 </script>

@@ -1,12 +1,19 @@
 <template>
   <header>
-    <h1>TODO it</h1>
+    <h1>{{ this.todoHeaderText }}</h1>
   </header>
 </template>
 
 <script>
-export default {
+ import { mapGetters } from 'vuex'
 
+
+export default {
+  computed : {
+    ...mapGetters(
+      { 'todoHeaderText' : "getHeaderText"}
+    )
+  }
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="inputBox shadow"> 
-    <input type="text" v-model="newTodoItem" v-on:keyup.enter="addTodo"/>
+    <input type="text" v-model="newTodoItem" @keyup.enter="addTodo"/>
     <span class="addContainer" v-on:click="addTodo">
       <i class="fas fa-plus addBtn"></i>
     </span>
@@ -18,6 +18,8 @@
 
 <script>
 import AlertModal from "./common/AlertModal.vue"
+import { mapMutations } from 'vuex'
+
 
 export default {
   data() {
@@ -27,14 +29,19 @@ export default {
     }
   },
   methods : {
+    ...mapMutations({
+      "sendAddEvent" : "addTodoEvent"
+    }),
+
     addTodo(){
       if(!this.newTodoItem) { 
         this.showModal = true;
         return;
       }
-      this.$emit("addTodoEvent",this.newTodoItem);
+      this.sendAddEvent(this.newTodoItem);
       this.clearInput()
     },
+
     clearInput() {
       this.newTodoItem = ''
     },
