@@ -258,7 +258,3 @@ export const store = new Vuex.Store({
     ```
 
     ![](assets/2022-11-08-13-36-00.png)
-
-
-
-- 모듈화 ( store.js )
