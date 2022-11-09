@@ -1,12 +1,31 @@
 <template>
   <div>
-    news
+    <p v-for="news in newsList" :key='news.id'>
+      <a :href="news.url">
+        {{ news.title }}
+      </a>
+      <small>{{news.time_ago}} by {{ news.user }}</small>
+    </p>
   </div>
 </template>
 
 <script>
-export default {
 
+import { mapGetters } from 'vuex';
+
+export default {
+  computed : {
+    // ...mapState({
+    //   news : (state, getters) => state.data.newsList
+    // })
+    ...mapGetters({
+      newsList : 'getNewsList'
+    })
+  },
+
+  created() {
+    this.$store.dispatch('FETCH_DATA',{'name' : 'news'})     
+  }
 }
 </script>
 
