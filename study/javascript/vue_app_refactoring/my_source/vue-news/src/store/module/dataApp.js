@@ -1,11 +1,10 @@
-
-import { callAPIList } from '../../api/index.js'
-
+import { callAPIList, callItemInfo } from '../../api/index.js'
 
 const state = {
     newsList : [],
     jobsList : [],
     askList : [],
+    itemList : []
 }
 
 const getters =  {
@@ -17,7 +16,11 @@ const getters =  {
     },
     getAskList() {
         return state.askList;
-    }
+    },
+    getItem(state) {
+        // orgInfo.id -> number / id -> string....
+        return ({id}) => state.itemList.find((orgInfo) => orgInfo.id == id )
+    } 
 }
 
 const mutations = {
@@ -32,6 +35,16 @@ const mutations = {
             case 'ask':
                 state.askList = data;
                 break;
+            case 'item' :
+                (() => {
+                    const orgList = state.itemList;
+                    const findIndex= orgList.findIndex( org => org.id == data.id);
+                    if ( findIndex >= 0){
+                        orgList.splice(findIndex,1);
+                    }
+                    orgList.push(data);
+                })()
+                break;    
         }
     }
 }
@@ -48,7 +61,13 @@ const actions = {
               commit('setAPIData',{ name, data }) 
             })
           .catch( err => console.error(err) )
+    },
+    FETCH_ITEM( {commit}, {id}) {
+        callItemInfo(id)
+            .then(({ data }) =>  commit('setAPIData',{ name : "item", data }))
+            .catch( err => console.error(err) )
     }
+
 }
 
 export default {

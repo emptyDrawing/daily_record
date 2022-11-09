@@ -286,3 +286,194 @@ yarn add vuex@3.6.2
   <style></style>
 
   ```
+  - 그리고 기본적인 스타일링
+  ```javascript
+  // AskView.vue
+  <template>
+    <div>
+      <p v-for="ask in askList" :key='ask.id'>
+        <a :href="ask.url">
+          {{ ask.title }}
+        </a>
+        <small>{{ask.time_ago}} by {{ ask.user }}</small>
+      </p>
+    </div>
+  </template>
+
+  <script>
+  import { mapGetters } from 'vuex'
+
+  export default {
+    computed : {
+      ...mapGetters({
+        askList : 'getAskList'
+      })
+    },
+    created() {
+      this.$store.dispatch('FETCH_DATA',{'name' : 'ask'})     
+    }
+  }
+  </script>
+  ```
+
+
+
+### 동적라우팅 매칭 + mapGetter 특이하게 이용해보기
+- 공식문서 : https://router.vuejs.org/guide/essentials/dynamic-matching.html
+```javascript
+
+export const router = new VueRouter({
+    mode: "history", // 이러면 # 라우터 없어짐
+    routes: [
+        { path: '/',        redirect: '/news'      },
+        { path: '/news',    component: NewView,    },
+        { path: '/ask',     component: AskView,    },
+        { path: '/jobs',    component: JobsView,   },
+        { path: '/user/:id', component: UserView,   }, // 파람추가
+        { path: '/item',    component: ItemView,   },
+    ],
+});
+```
+![](assets/2022-11-09-13-43-34.png)
+
+- 그럼 보낸 param을 꺼내보는데 `mapGetters` 를 이상하게 써보자 : [참고링크](https://www.rrrhys.com/vue-js-mapgetters-with-params/)
+```javascript
+// userApp.js
+import { callUserInfo } from "@/api"
+
+const state = {
+    userList : [],
+}
+// https://www.rrrhys.com/vue-js-mapgetters-with-params/
+const getters =  {
+    getUserInfo : (state) => (user) => {
+        return state.userList.filter( userInfo => userInfo.id === user.id);
+    }
+}
+
+const mutations = {
+    setUserInfo(state, { data }) {
+        state.userList.push(data)
+    }
+}
+
+const actions = {
+    FETCH_USER( { state, commit }, { name: userName }) {
+        if( state.userList.findIndex( userInfo => userInfo.id === userName ) < 0 ) {
+            callUserInfo(userName)
+            .then( ({ data }) => {
+                commit('setUserInfo',{ data }) 
+            })
+            .catch( err => console.error(err) )        
+        }
+    }
+}
+
+export default {
+    state, 
+    getters, 
+    mutations,
+    actions,
+}
+
+//////////////////////////
+// UserView.vue
+//////////////////////////
+
+<template>
+  <div>
+    <p>userName : {{user.id}}</p>
+    <p>karma : {{user.karma}}</p>
+    <p>created: {{user.created}}</p>
+    <p v-if="user.about"> about : {{user.about}} </p>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+
+export default {
+  computed : {
+    ...mapGetters([
+      'getUserInfo'
+    ])
+    ,user() {
+      const userName = this.$route.params.id ?? '';
+      return this.getUserInfo({ id : userName });
+    }
+  }
+  ,created() {
+    const userName = this.$route.params.id ?? '';
+    if(userName) {
+      this.$store.dispatch('FETCH_USER', {name: userName})
+    }
+  }
+
+}
+</script
+
+```
+
+
+### v-html vs data-bind
+```
+<template>
+  <div>
+    <section>
+      <div class="user-container">
+        <div><i class="fas fa-user"></i></div>
+        <div class="user-description">
+            <router-link :to="`/user/${item.user}`">{{ item.user }}</router-link>
+            <div class="time">{{ item.time_ago }}</div>
+        </div>
+      </div>
+      <h2>{{ item.title}}</h2>
+    </section>
+    <section>
+      <div v-html="item.content"/>
+    </section>
+  </div>
+</template>
+```
+- 참고문서 
+  - https://vuejs.org/api/#v-html 
+  - https://vuejs.org/guide/essentials/template-syntax.html#Raw-HTML
+
+
+### Route Transition 효과 넣기
+
+```javascript
+// App.vue
+
+<template>
+  <div id="app"> 
+    <tool-bar></tool-bar>
+    <transition name="page">
+      <router-view></router-view>
+    </transition>   
+  </div>
+</template>
+
+
+<style>
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/** router transition */
+.page-enter-active, .page-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.page-enter-from, .page-leave-to {
+  opacity: 0;
+}
+</style>
+
+```
+-참고문서
+  - [transition 기본문서](https://vuejs.org/guide/built-ins/transition.html)
+  - [route transition 문서](https://router.vuejs.org/guide/advanced/transitions.html#per-route-transition)
+

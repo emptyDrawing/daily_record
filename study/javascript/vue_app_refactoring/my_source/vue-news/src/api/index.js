@@ -19,12 +19,21 @@ const callAPIList = (name) => {
     });
 }
 
-const callListByName= (name) => {
+const callListByName = (name) => {
     return axios.get(`${config.baseurl}/${name}/1.json`)
 }
 
+const callUserInfo = (userName) => {
+    return axios.get(`${config.baseurl}/user/${userName}.json`)
+}
+
+const callItemInfo = ( id ) => {
+    return axios.get(`${config.baseurl}/item/${id}.json`)
+}
 
 // 3. export
 export {
-    callAPIList
+    callAPIList,
+    callUserInfo,
+    callItemInfo,
 }
