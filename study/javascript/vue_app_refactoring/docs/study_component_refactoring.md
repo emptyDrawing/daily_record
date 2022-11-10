@@ -366,3 +366,60 @@ export default {
   </style>
   ``` 
   ![](assets/2022-11-10-10-23-43.png)
+
+### Mixins 활용법
+- 공식문서 : https://v2.vuejs.org/v2/guide/mixins.html?redirect=true
+- HOC 를 많이 쓰면 Depth가 깊어져서 통신이 애매해짐.
+- 기존꺼에서 JobsView 만 살리고 적용함
+  ```javascript
+  // mixins/ListMixin.js
+  import bus from '../utils/bus'
+
+  export default {
+      // 재사용할 컴포넌트 옵션
+      created(){
+          bus.$emit('start:spinner')
+          this.$store.dispatch('FETCH_DATA',{'name' : this.$route.name})
+              .then( () => { bus.$emit('end:spinner')} )
+              .catch( (e) => { console.log(e); bus.$emit('end:spinner'); } );
+      },
+  }
+  // route..
+  export const router = new VueRouter({
+      mode: "history", // 이러면 # 라우터 없어짐
+      routes: [
+          { path: '/',            redirect: '/news'      },
+          { path: '/news',        name: 'news',   component: createListView('NewView'),    },
+          { path: '/ask',         name: 'ask',    component: createListView('AskView'),    },
+          { path: '/jobs',        name: 'jobs',   component: JobsView,   },
+          { path: '/user/:id',    name: 'user',   component: UserView,   },
+          { path: '/item/:id',    name: 'item',   component: ItemView,   },
+      ],
+  });
+  // views/JobsView.vue
+  <template>
+    <div>
+      <Common-list></Common-list>
+    </div>
+  </template>
+
+  <script>
+  import CommonList from '../components/CommonList.vue'
+  import ListMixin from '../mixins/ListMixin.js'
+
+  export default {
+      components: {
+          CommonList,
+      },
+      mixins: [ ListMixin ]
+  }
+  </script>
+
+  <style>
+
+  </style>
+  ```
+- 그래서 Mixin은 이렇고
+  ![](assets/2022-11-10-10-45-09.png)
+- HOC 는 이렇습니다
+  ![](assets/2022-11-10-10-49-13.png)

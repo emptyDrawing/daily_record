@@ -6,11 +6,13 @@
 
 <script>
 import CommonList from '../components/CommonList.vue'
+import ListMixin from '../mixins/ListMixin.js'
 
 export default {
     components: {
         CommonList,
-    }
+    },
+    mixins: [ ListMixin ]
 }
 </script>
 
