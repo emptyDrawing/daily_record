@@ -19,12 +19,14 @@ const mutations = {
 const actions = {
     FETCH_USER( { state, commit }, { name: userName }) {
         if( state.userList.findIndex( userInfo => userInfo.id === userName ) < 0 ) {
-            callUserInfo(userName)
-            .then( ({ data }) => {
-                commit('setUserInfo',{ data }) 
-            })
-            .catch( err => console.error(err) )        
+            return callUserInfo(userName)
+                .then( ({ data }) => {
+                    commit('setUserInfo',{ data }) 
+                })
+                .catch( err => console.error(err) )        
         }
+        
+        return new Promise();
     }
 }
 

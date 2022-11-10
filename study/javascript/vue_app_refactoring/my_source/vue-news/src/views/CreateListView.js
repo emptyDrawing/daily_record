@@ -8,12 +8,11 @@ export default function createListView(componentName) {
         name: componentName, // HighOrder Component 이름
         created(){
             bus.$emit('start:spinner')
-            this.$store.dispatch('FETCH_DATA',{'name' : this.$route.name})
-                .then( () => { bus.$emit('end:spinner')} )
+            this.$store.dispatch('FETCH_DATA', {'name' : this.$route.name})
+                .then( (data) => { console.log(data,'in CreateListView'); bus.$emit('end:spinner')} )
                 .catch( (e) => { console.log(e); bus.$emit('end:spinner'); } );
         },
         render(createElement) {
-            console.log(createElement)
             return createElement(ListView);
         }
     }

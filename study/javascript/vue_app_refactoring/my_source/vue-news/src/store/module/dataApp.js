@@ -56,15 +56,15 @@ const mutations = {
  
 const actions = {
     FETCH_DATA( { commit }, { name }) {
-        callAPIList(name)
+        return callAPIList(name)
           .then( ({ data }) => {
               commit('setAPIData',{ name, data })
-              return data; // promise 리턴
+              return data;
             })
           .catch( err => console.error(err) )
     },
     FETCH_ITEM( {commit}, {id}) {
-        callItemInfo(id)
+        return callItemInfo(id)
             .then(({ data }) =>  commit('setAPIData',{ name : "item", data }))
             .catch( err => console.error(err) )
     }
