@@ -12,10 +12,10 @@ export const router = new VueRouter({
     mode: "history", // 이러면 # 라우터 없어짐
     routes: [
         { path: '/',            redirect: '/news'      },
-        { path: '/news',        component: NewView,    },
-        { path: '/ask',         component: AskView,    },
-        { path: '/jobs',        component: JobsView,   },
-        { path: '/user/:id',    component: UserView,   },
-        { path: '/item/:id',    component: ItemView,   },
+        { path: '/news',        name: 'news',   component: NewView,    },
+        { path: '/ask',         name: 'ask',    component: AskView,    },
+        { path: '/jobs',        name: 'jobs',   component: JobsView,   },
+        { path: '/user/:id',    name: 'user',   component: UserView,   },
+        { path: '/item/:id',    name: 'item',   component: ItemView,   },
     ],
 });

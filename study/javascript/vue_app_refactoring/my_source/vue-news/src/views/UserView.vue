@@ -1,33 +1,37 @@
 <template>
   <div>
-    <p>userName : {{user.id}}</p>
-    <p>karma : {{user.karma}}</p>
-    <p>created: {{user.created}}</p>
-    <p v-if="user.about"> about : {{user.about}} </p>
+    <User-profile :info='user'>
+      <div slot='username'>{{user.id}}</div>
+      <!-- template slot 은 태그없이 텍스트만 들어감 -->
+      <span slot='time'>{{ 'Joined ' + user.created}}, </span>
+      <span slot='karma'>{{user.karma}}</span>
+    </User-profile>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-
+import UserProfile from '../components/UserProfile.vue'
 
 export default {
   computed : {
     ...mapGetters([
       'getUserInfo'
-    ])
-    ,user() {
+    ]),
+    user() {
       const userName = this.$route.params.id ?? '';
       return this.getUserInfo({ id : userName });
     }
-  }
-  ,created() {
+  },
+  created() {
     const userName = this.$route.params.id ?? '';
     if(userName) {
       this.$store.dispatch('FETCH_USER', {name: userName})
     }
+  },
+  components: {
+    UserProfile
   }
-
 }
 </script>
 

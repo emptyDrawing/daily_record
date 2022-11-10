@@ -8,16 +8,21 @@ const state = {
 }
 
 const getters =  {
-    getNewsList() {
-        return state.newsList;
-    },
-    getJobsList() {
-        return state.jobsList;
-    },
-    getAskList() {
-        return state.askList;
-    },
-    getItem(state) {
+    getAPIList(state) {
+        return ({name}) => {
+            switch (name) {
+                case 'news':
+                    return state.newsList
+                case 'jobs':
+                    return state.jobsList
+                case 'ask':
+                    return state.askList
+                default :
+                    return []
+            }
+        };
+    }
+    ,getItem(state) {
         // orgInfo.id -> number / id -> string....
         return ({id}) => state.itemList.find((orgInfo) => orgInfo.id == id )
     } 
@@ -50,14 +55,9 @@ const mutations = {
 }
  
 const actions = {
-    // FETCH_DATA( context, { name })
     FETCH_DATA( { commit }, { name }) {
         callAPIList(name)
-          .then( 
-              //(resp) => { 
-              //    const data = resp.data
-              //    context.commit('setAPIData',{ name, data })      
-              ({ data }) => {
+          .then( ({ data }) => {
               commit('setAPIData',{ name, data }) 
             })
           .catch( err => console.error(err) )
@@ -67,7 +67,6 @@ const actions = {
             .then(({ data }) =>  commit('setAPIData',{ name : "item", data }))
             .catch( err => console.error(err) )
     }
-
 }
 
 export default {
