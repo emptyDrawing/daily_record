@@ -58,7 +58,8 @@ const actions = {
     FETCH_DATA( { commit }, { name }) {
         callAPIList(name)
           .then( ({ data }) => {
-              commit('setAPIData',{ name, data }) 
+              commit('setAPIData',{ name, data })
+              return data; // promise 리턴
             })
           .catch( err => console.error(err) )
     },

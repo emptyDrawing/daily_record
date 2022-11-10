@@ -48,10 +48,6 @@ export default {
         return this.getList({name : routerName});
     }
   },
-  
-  created() {
-    this.$store.dispatch('FETCH_DATA',{'name' : this.$route.name})     
-  }
 }
 </script>
 

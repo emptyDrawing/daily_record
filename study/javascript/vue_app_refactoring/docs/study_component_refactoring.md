@@ -228,3 +228,141 @@ export default {
 }
 </script>
 ```
+
+### PageComponent 재활용
+- HighOrderComponent / Mixin component 를 사용한다고 함.
+- 일단 기본적으로 로딩바를 위해서 [스피너](https://github.com/joshua1988/vue-advanced/blob/12_spinner/vue-news/src/components/Spinner.vue)를 사용함
+![](assets/2022-11-10-09-16-58.png)
+
+- 그럼 이걸 언제 시작하고 끝낼건가 고민필요.
+- 이때 이벤트버스를 사용하는데
+  ![](assets/2022-11-10-09-20-42.png)
+  - 빈 vue 를 던져주는데 현재 `NewsView`의 부모가 `App.vue` 라서 이벤트 리스너는 `App.vue` 에 단다
+  ```javascript
+  <template>
+    <div id="app"> 
+      <tool-bar></tool-bar>
+      <transition name="page">
+        <router-view></router-view>
+      </transition>
+      <Load-spinner :loading="loadingStatus"></Load-spinner>
+    </div>
+  </template>
+
+  <script>
+  import ToolBar from "./components/ToolBar.vue"
+  import LoadSpinner from "./components/LoadSpinner.vue"
+  import bus from "./utils/bus.js"
+
+
+  export default {
+    components: {
+      ToolBar, LoadSpinner,
+    },
+    data(){
+      return {
+        loadingStatus : false,
+      }
+    },
+    methods: {
+      startSpinner() {
+        this.loadingStatus = true;
+      },
+      endSpinner() {
+        this.loadingStatus = false;
+      }
+    },
+    created() {
+      bus.$on('start:spinner', this.startSpinner);
+      bus.$on('end:spinner', this.endSpinner);
+    },
+    // 컴포넌트가 사라질때 off 를 해서 이벤트 객체를 삭제시킴.
+    beforeDestroy() {
+      bus.$off('start:spinner', this.startSpinner);
+      bus.$off('end:spinner', this.endSpinner);
+    }
+  }
+  </script>
+  ```
+  - 그리고 하위 `NewView.vue` 에서 이벤트를 발생시키면 `App.vue` 에서 받아서 `LoadSpinner` 의 속성을 내려줄 수 있게 됨
+  ```javascript
+  // store.js 에서 promise 리턴을 위해서 리턴 추가
+  const actions = {
+      FETCH_DATA( { commit }, { name }) {
+          callAPIList(name)
+            .then( ({ data }) => {
+                commit('setAPIData',{ name, data })
+                return data; // promise 리턴
+              })
+            .catch( err => console.error(err) )
+      },
+
+  // `NewView.vue
+  <template>
+    <div>
+      <List-item></List-item>
+    </div>
+  </template>
+
+  <script>
+  import ListItem from '../components/ListItem.vue'
+  import bus from '../utils/bus.js'
+
+  export default {
+    components: {
+      ListItem
+    },
+    created() {
+      bus.$emit('start:spinner')
+      this.$store.dispatch('FETCH_DATA',{'name' : this.$route.name})
+        .then( () => bus.$emit('end:spinner'))
+    }
+  }
+  ```
+-  사실 지금 임시로 NewView 에 created() 를 만들었는데 이게 Ask, Job 도 똑같음.
+   -  그리고 이렇게 합니다. [HighOrderComponent](https://reactjs.org/docs/higher-order-components.html)
+  ![](assets/2022-11-10-09-55-47.png)
+  ```javascript
+  // views/createListView.js
+  import ListView from './ListView.vue'
+  import bus from '../utils/bus'
+
+
+  export default function createListView(componentName) {
+      return {
+          // 재사용할 인스턴스(컴포넌트) 옵션들이 들어가는 자리
+          name: "HOC-"+componentName, // HighOrder Component 이름
+          created(){
+              bus.$emit('start:spinner')
+              this.$store.dispatch('FETCH_DATA',{'name' : this.$route.name})
+                  .then( () => { bus.$emit('end:spinner')} )
+                  .catch( (e) => { console.log(e); bus.$emit('end:spinner'); } );
+          },
+          render(createElement) {
+              return createElement(ListView);
+          }
+      }
+  }
+  ///////////////////////////////////////////////////////////////
+  // views/ListView.vue 
+  <template>
+    <div>
+      <List-item></List-item>
+    </div>
+  </template>
+
+  <script>
+  import ListItem from '../components/ListItem.vue'
+
+  export default {
+      components: {
+          ListItem,
+      }
+  }
+  </script>
+
+  <style>
+
+  </style>
+  ``` 
+  ![](assets/2022-11-10-10-23-43.png)
