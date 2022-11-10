@@ -55,14 +55,25 @@ const mutations = {
 }
  
 const actions = {
-    FETCH_DATA( { commit }, { name }) {
-        return callAPIList(name)
-          .then( ({ data }) => {
-              commit('setAPIData',{ name, data })
-              return data;
-            })
-          .catch( err => console.error(err) )
+    async FETCH_DATA( { commit }, { name }) {
+        try {
+            const callResp = await callAPIList(name)
+            if( callResp.data ) {
+                commit('setAPIData',{ name, 'data' : callResp.data })
+                return callResp;
+            }
+        } catch (error) {
+            console.log(error)
+        }
     },
+    // FETCH_DATA( { commit }, { name }) {
+    //     return callAPIList(name)
+    //       .then( ({ data }) => {
+    //           commit('setAPIData',{ name, data })
+    //           return data;
+    //         })
+    //       .catch( err => console.error(err) )
+    // },
     FETCH_ITEM( {commit}, {id}) {
         return callItemInfo(id)
             .then(({ data }) =>  commit('setAPIData',{ name : "item", data }))

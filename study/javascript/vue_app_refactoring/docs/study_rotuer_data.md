@@ -46,3 +46,29 @@ export const router = new VueRouter({
 });
 
 ```
+
+### async / await 간단하게 변경
+```javascript
+// store/moddule/dataApp.js 쪽을 변경한건데... 
+// 사실 나는 callAPIList 쪽이 뭔가 더 수정해서 이부분을 고치는게 현명해보임
+async FETCH_DATA( { commit }, { name }) {
+    try {
+        const callResp = await callAPIList(name)
+        if( callResp.data ) {
+            commit('setAPIData',{ name, 'data' : callResp.data })
+            return callResp;
+        }
+    } catch (error) {
+        console.log(error)
+    }
+},
+// FETCH_DATA( { commit }, { name }) {
+//     return callAPIList(name)
+//       .then( ({ data }) => {
+//           commit('setAPIData',{ name, data })
+//           return data;
+//         })
+//       .catch( err => console.error(err) )
+// },
+
+```

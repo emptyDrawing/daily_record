@@ -10,7 +10,6 @@ const config = {
 
 const callAPIList = (name) => {
     return new Promise((resolve, reject) => {
-
         if( config.apiList.includes(name) ){
             resolve(callListByName(name));
         }
