@@ -46,7 +46,6 @@ const L = {};
 
 // 제너레이터 *
 L.range = function *(stop){
-    
     let i = -1;
     while( ++i < stop ) { console.log("range"); yield i } ;
 }
@@ -87,15 +86,18 @@ const reduce = curry(function(f, acc, iter) {
 
 const add = curry((a, b) => a + b); 
 
+
+const goPromise = (a, f) =>  a instanceof Promise ? a.then(f) : f(a);
+
 // 함수도 축약 가능하다.
 const go = (...fs) => reduce(
-    (a, f) => f(a), fs
+    goPromise, fs
 )
 
 
 
 // 읽는 법은 맨 오른쪽 부터 왼쪽으로
-const f = (list, length) =>
+const f1 = (list, length) =>
     reduce( add, 0, 
         take( length, 
             L.map( a => a * a , 
@@ -134,7 +136,7 @@ go(
 
 
 function main() {
-    log( f([1, 2, 3, 4, 5], 2) );
+    log( f1([1, 2, 3, 4, 5], 2) );
     log( f2([1, 2, 3, 4, 5], 2) );
     log( f3([1, 2, 3, 4, 5], 2) );
     log( f4([1, 2, 3, 4, 5], 2) );
@@ -145,6 +147,7 @@ main();
 
 </script>
 
+<div></div>
 
 ### 2차원 배열
 
@@ -221,13 +224,75 @@ console.clear();
 </script>
 
 
+<div>
+    그런데 여기서 문제는 만약에 하나도 없는 케이스 일때는 어찌 해결해야되나
+    reduce 를 할때 iterable 하지않아요.
+</div>
 
 
+### 모나드, Promise
+- f . g
+
+- f(g(x)) = f(g(x))
+
+- f(g(x)) = x
+
+<script type="module">
+//const g = a => a + 1;
+//const z = a => a * a;
+
+//[4].map(g).map(z).forEach( a => log(a) );
+// Promise.resolve(4).then(g).then(z).then( a => log(a) );
+
+</script>
 
 
+<div></div>
+### Kleisli Composition - Promise : 
+<div></div>
+- f(g(x)) = g(x) : f 하다가 에러나도 g(x) 한거랑 같이 하게 하는거
+
+<script type="module">
+const g = JSON.parse;
+const f = ({k}) => k;
+
+const fg = x => Promise.resolve(x)
+    .then(g)
+    .then(f);
+    
+// fg('{"k": 10}').catch(_=> '미안..').then(log);
+// fg('{k": 10}').catch(_=> '미안..').then(log);
+
+</script>
 
 
+<div></div>
 
+### 일급, Promise, go1
+
+<script>
+// deploy
+const delay = (time, a) => new Promise( resolve => 
+    setTimeout( () => resolve(a), time)
+)
+// delay(1000,"ok").then(log);
+
+// go1
+const go1 = ( a, f) =>  a instanceof Promise ? a.then(f) : f(a);
+
+// go1( 1, log);
+// go1( delay(1000, 5), log )
+
+
+log(
+go(
+    Promise.resolve(1),
+    a => a+100,
+    a => delay(100,a),
+    log
+))
+
+</script>
 
 
 
