@@ -9,7 +9,7 @@ export default function createListView(componentName) {
         created(){
             bus.$emit('start:spinner')
             this.$store.dispatch('FETCH_DATA', {'name' : this.$route.name})
-                .then( (data) => { console.log(data,'in CreateListView'); bus.$emit('end:spinner')} )
+                .then( (data) => { bus.$emit('end:spinner'); return data; } )
                 .catch( (e) => { console.log(e); bus.$emit('end:spinner'); } );
         },
         render(createElement) {

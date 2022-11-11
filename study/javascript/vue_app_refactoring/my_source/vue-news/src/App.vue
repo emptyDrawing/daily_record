@@ -25,20 +25,21 @@ export default {
   },
   methods: {
     startSpinner() {
-      this.loadingStatus = true;
+      this.loadingStatus = true
     },
     endSpinner() {
-      this.loadingStatus = false;
+      this.loadingStatus = false
     }
   },
   created() {
-    bus.$on('start:spinner', this.startSpinner);
-    bus.$on('end:spinner', this.endSpinner);
+    console.log("env",process.env.VUE_APP_TITLE)
+    bus.$on('start:spinner', this.startSpinner)
+    bus.$on('end:spinner', this.endSpinner)
   },
   // 컴포넌트가 사라질때 off 를 해서 이벤트 객체를 삭제시킴.
   beforeDestroy() {
-    bus.$off('start:spinner', this.startSpinner);
-    bus.$off('end:spinner', this.endSpinner);
+    bus.$off('start:spinner', this.startSpinner)
+    bus.$off('end:spinner', this.endSpinner)
   }
 }
 </script>
