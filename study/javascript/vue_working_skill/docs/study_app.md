@@ -70,3 +70,133 @@
 }
 ```
 
+### 필요 vue 라이브러리 설치
+- vue router : ` yarn add vue-router@3.5.3 && yarn add vue-router@3.5.3:`
+- axios : `yarn add axios`
+
+
+### code splitting [ router 설정 ]
+- 참고링크 :
+  - [window.history](https://developer.mozilla.org/en-US/docs/Web/API/Window/history)
+  - [webpack-code-splitting](https://webpack.js.org/guides/code-splitting/)
+  - [vue.js 다이나믹 임포트](https://vuejs.org/guide/built-ins/keep-alive.html#ad) 
+![](assets/2022-11-14-13-47-33.png)
+- 처음 로딩하면 이렇게 모든 페이지가 다 `app.js`가 들어간다.
+- 그래서 이걸 링크 들어갈때만 해당 페이지를 로딩하게 하는게 `code splitting`
+```js
+// /route/index.js
+// redirect 까지 끝낸 소스
+// 그런데 없는 페이지 호출시 반응하는 것도 필요하니 그것도 설정
+export default new VueRouter({
+  routes: [
+    {
+      path: '/',
+      redirect: '/login',
+    },
+    {
+      path: '/login',
+      component: () => import('@/views/LoginPage.vue'),
+    },
+    {
+      path: '/signup',
+      component: () => import('@/views/SignupPage.vue'),
+    },
+    {
+      path: '*',
+      component: () => import('@/views/NotFoundPage.vue'),
+    },
+  ],
+});
+
+```
+![](assets/2022-11-14-13-49-44.png)
+
+- router 에서 [history 모드를 켰을 때](https://router.vuejs.org/guide/essentials/history-mode.html) 
+  서버에서 이게 `라우터에서 관리하는건지 아닌지`를 알려주어야 됨.
+
+
+### axios 셋팅
+```js
+// api/index.js
+import axios from 'axios';
+
+const instance = axios.create({
+  baseURL: 'http://localhost:3000/',
+});
+
+const registerUser = userData => instance.post('signup', userData);
+
+export { registerUser };
+
+////////////////////////////////
+// components/SigunupForm.vue
+
+<script>
+import { registerUser } from '@/api/index';
+
+export default {
+  data() {
+    return {
+      username: '',
+      password: '',
+      nickname: '',
+      //log
+      logMessage: '',
+    };
+  },
+  methods: {
+    async submitForm() {
+      const userData = {
+        username: this.username,
+        password: this.password,
+        nickname: this.nickname,
+      };
+
+      const { data } = await registerUser(userData);
+
+      this.logMessage = `${data?.username}님이 가입되었습니다.`;
+      this.initForm();
+    },
+    initForm() {
+      this.username = '';
+      this.password = '';
+      this.nickname = '';
+    },
+  },
+};
+</script>
+```
+
+- 그런데 endpoint를 환경변수로도 써보자.
+  - ![](assets/2022-11-14-15-40-28.png)
+  - `VUE_APP_` 접두사 활용!
+- 그런데 이것도[ 환경별로 도 나눌수 있음](https://cli.vuejs.org/guide/mode-and-env.html)
+![](assets/2022-11-14-15-45-12.png)
+![](assets/2022-11-14-15-46-37.png)
+
+### axios err 처리해보자
+- async-await 했으니 간단히 try-catch 해보자
+```js
+methods: {
+  async loginTry() {
+    try {
+      const userData = {
+        username: this.username,
+        password: this.password,
+      };
+
+      const { data } = await loginUser(userData);
+      this.logMessage = `${data.user?.username}님 환영합니다.`;
+      this.initForm();
+    } catch ({ response }) {
+      this.logMessage = response.data;
+    }
+  },
+  initForm() {
+    this.username = '';
+    this.password = '';
+  },
+}
+```
+
+### Validation
