@@ -1,6 +1,17 @@
+## Intro
+
 ### project 설치 옵션
 ![](assets/2022-11-14-10-23-32.png)
 
+
+### 필요 vue 라이브러리 설치
+- 나 같은 경우는 `nvm use v18.12.0` 에 맞춘 profile 로 셋팅했음
+- vue router : ` yarn add vue-router@3.5.3 && yarn add vue-router@3.5.3:`
+- axios : `yarn add axios`
+- vuex : ` yarn add vuex@3.6.2`
+
+
+## 각 기능
 
 ### 화면을 덮는 ESLint 에러 없애기
 - https://joshua1988.github.io/webpack-guide/devtools/webpack-dev-server.html
@@ -69,11 +80,6 @@
   }
 }
 ```
-
-### 필요 vue 라이브러리 설치
-- vue router : ` yarn add vue-router@3.5.3 && yarn add vue-router@3.5.3:`
-- axios : `yarn add axios`
-
 
 ### code splitting [ router 설정 ]
 - 참고링크 :
@@ -247,3 +253,35 @@ export { validateEmail };
     </div>
   </div>
 ```
+
+
+### Login 후 페이지이동 에 관하여
+
+- [Programmatic Navigation](https://router.vuejs.org/guide/essentials/navigation.html)
+  ![](assets/2022-11-15-12-43-43.png)
+
+- 그런데 로그인 form  에서 정보를 App-header 로 옮겨야되는데
+  ![](assets/2022-11-15-12-52-42.png)
+  1. emit -> props 를 하는 방법인데...
+  2. event-bus로 바로 찔러주거나
+  3. 아니면 Store[`vuex`, `pinia`]
+
+- 실습에서는 `vuex`를 씀
+  ![](assets/2022-11-15-13-02-50.png)
+  ![](assets/2022-11-15-13-03-10.png)
+  - state : data
+  - mutations : methods(동기)
+  ![](assets/2022-11-15-13-14-19.png) 
+    ```js 
+    // 호출시
+    this.$store.commit('setUsername', { username: this.username });
+    ```
+    ![](assets/2022-11-15-13-13-50.png)
+  - getters : computed
+  ![](assets/2022-11-15-13-24-55.png)
+  ![](assets/2022-11-15-13-28-47.png)
+------------------------
+- 그럼 로그아웃도 구현하자
+![](assets/2022-11-15-13-37-37.png)
+
+
