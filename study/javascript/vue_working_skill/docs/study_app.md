@@ -200,3 +200,50 @@ methods: {
 ```
 
 ### Validation
+- 간단한 emailVaildate 를 넣고
+```js
+const validateEmail = email => {
+  const re =
+    /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+  return re.test(String(email).toLowerCase());
+};
+
+export { validateEmail };
+```
+- computed에 넣어서 처리한다.
+```js
+  computed: {
+    isUsernameValid() {
+      return validateEmail(this.username);
+    },
+  },
+
+  // template 에서 사용한 예
+  <div class="contents">
+    <div class="form-wrapper form-wrapper-sm">
+      <form @submit.prevent="loginTry" class="form">
+        <div>
+          <label for="username">id: </label>
+          <input id="username" type="text" v-model="username" />
+          <p class="validation-text">
+            <span class="warning" v-if="!isUsernameValid && username">
+              Please enter an email address
+            </span>
+          </p>
+        </div>
+        <div>
+          <label for="password">pw: </label>
+          <input id="password" type="text" v-model="password" />
+        </div>
+        <button
+          :disabled="!(isUsernameValid && password)"
+          type="submit"
+          class="btn"
+        >
+          로그인
+        </button>
+      </form>
+      <p class="log">{{ logMessage }}</p>
+    </div>
+  </div>
+```
