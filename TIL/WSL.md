@@ -4,6 +4,13 @@
 - Awesome-command-line :https://git.herrbischoff.com/awesome-command-line-apps/about/
 - 공식자습서 : https://learn.microsoft.com/ko-kr/windows/wsl/setup/environment?source=recommendations
 
+### WSL 자바환경 셋팅하기
+
+
+
+
+
+
 
 ### WSL Python3 깔기
 - [ms 공식문서 참고](https://learn.microsoft.com/ko-kr/windows/python/web-frameworks)
@@ -15,7 +22,6 @@ sudo apt upgrade python3
 sudo apt install python3-pip
 # 파이썬 가상환경
 sudo apt install python3-venv
-
 ```
 
 
@@ -136,6 +142,11 @@ sudo apt-get install apache2-utils
   # -c : concurrency
   ab -n 100 -c 10 localhost:8080/study/2
   ```
+
+### 포트포워팅
+- [스크립트 실행 오류시 참고](https://samsons.tistory.com/16)
+
+
 
 ### 유용한 유틸
 

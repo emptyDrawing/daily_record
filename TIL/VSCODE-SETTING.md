@@ -79,3 +79,16 @@
 
 ### Code Snippet 만들기
 -- [vscode code-snippet 만들기](https://snippet-generator.app/?description=inputstyle&tabtrigger=my-input-style&snippet=++input%3Afocus+%7B%0A++++outline%3A+none%3B%0A++%7D%0A++.inputBox+%7B%0A++++background%3A+white%3B%0A++++height%3A+50px%3B%0A++++line-height%3A+50px%3B%0A++++border-radius%3A+5px%3B%0A++%7D%0A++.inputBox+input+%7B%0A++++border-style%3A+none%3B%0A++++font-size%3A+0.9rem%3B%0A++%7D%0A++.addContainer+%7B%0A++++float+%3A+right%3B%0A++++background+%3A+linear-gradient%28to+right%2C+%236478FB%2C+%238763F8%29%3B%0A++++display%3A+block%3B%0A++++width+%3A+3rem%3B%0A++++border-radius%3A+0+5px+5px+0%3B%0A++%7D%0A++.addBtn+%7B%0A++++color%3A+white%3B%0A++++vertical-align%3A+middle%3B%0A++%7D&mode=vscode)
+
+
+### comunity server connector
+```xml
+<!-- 중략 -->
+<Engine name="Catalina" defaultHost="localhost">
+  <!-- 중략 -->
+  <Host name="localhost"  appBase="webapps" unpackWARs="true" autoDeploy="true">
+    <Context docBase="./ers-1.0.0" path="/" reloadable="true"></Context>
+  </Host>
+<!-- 중략 -->
+</Engine>
+```
