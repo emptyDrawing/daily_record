@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { loginUser } from '@/api/index';
 import { validateEmail } from '@/utils/validation';
 
 export default {
@@ -53,11 +52,10 @@ export default {
           password: this.password,
         };
 
-        const { data } = await loginUser(userData);
-        // this.logMessage = `${data.user?.username}님 환영합니다.`;
+        await this.$store.dispatch('LOGIN', { userData });
+
         // 로그인이 되면 페이지 이동
         this.$router.push('/main');
-        this.$store.commit('setUsername', { username: data.user.username });
       } catch ({ response }) {
         this.logMessage = response.data;
       } finally {

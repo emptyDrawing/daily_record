@@ -39,7 +39,8 @@
 
 <script>
 const curry = f => (a, ...bs) =>
-bs.length ? f(a, ...bs) : (...bs) => f(a, ...bs); 
+   bs.length ? f(a, ...bs) : (...bs) => f(...[a, ...bs]); 
+
 
 
 const L = {};
@@ -47,7 +48,7 @@ const L = {};
 // 제너레이터 *
 L.range = function *(stop){
     let i = -1;
-    while( ++i < stop ) { console.log("range"); yield i } ;
+    while( ++i < stop ) { yield i } ;
 }
 
 
@@ -66,6 +67,7 @@ L.map = curry(function *(f, iter){
 // 명령은 선언한다.
 const take = curry(function(length, iter) {
     let res = [];
+    console.log("take-iter",)
     for ( const a of iter) {
         res.push(a);
         if(res.length == length) return res;
@@ -73,13 +75,18 @@ const take = curry(function(length, iter) {
 })
 
 const reduce = curry(function(f, acc, iter) {
+    console.log("reduce first",f,acc)
     if ( arguments.length === 2) {
         iter = acc[Symbol.iterator]();
         acc = iter.next().value;
     }
+    console.log("reduce first-next",acc)
 
     for ( const a of iter) {
+        console.log("reduce-function",a)
         acc = f(acc,  a);
+        console.log("reduce-a-end",acc)
+
     }
     return acc;
 })
@@ -136,11 +143,11 @@ go(
 
 
 function main() {
-    log( f1([1, 2, 3, 4, 5], 2) );
-    log( f2([1, 2, 3, 4, 5], 2) );
-    log( f3([1, 2, 3, 4, 5], 2) );
-    log( f4([1, 2, 3, 4, 5], 2) );
-    log( f2(L.range(Infinity), 5));
+    // log( f1([1, 2, 3, 4, 5], 2) );
+    // log( f2([1, 2, 3, 4, 5], 2) );
+    // log( f3([1, 2, 3, 4, 5], 2) );
+    // log( f4([1, 2, 3, 4, 5], 2) );
+    // log( f2(L.range(Infinity), 5));
 }
 
 main();
@@ -164,6 +171,7 @@ const arr = [
 // 순회만 하고 위임하면 됨.
 L.flat = function *(iter) {
     for ( const a of iter) {
+        console.log("flat-yield")
         // 파고 들으려면 파고 들고 아니면 말어 // 그런데 이건 2차원만 됨.
         // if ( a && a[Symbol.iterator]) for ( const b of a ) yield b;
         if ( a && a[Symbol.iterator]) yield *a;
@@ -187,7 +195,7 @@ go(
 ### 유저목록
 
 <script>
-console.clear()
+// console.clear()
 
 var users = [
     { name : 'a', age: 21, family : [
@@ -207,20 +215,20 @@ var users = [
     ] }
 ]
 
-go( 
-    users,
-    //L.map(u => u.family),
-    //L.flat,
-    L.filter(u => u.age > 20),
-    L.map(u => u.age),
-    take(2),
-    reduce(add),
-//    L.map(a => a * a),
+//go( 
+//    users,
+//    //L.map(u => u.family),
+//    //L.flat,
+//    L.filter(u => u.age > 20),
+//    L.map(u => u.age),
+//    take(2),
 //    reduce(add),
-   log
-)
+////    L.map(a => a * a),
+////    reduce(add),
+////   log
+//)
 
-console.clear();
+//console.clear();
 </script>
 
 
@@ -284,13 +292,13 @@ const go1 = ( a, f) =>  a instanceof Promise ? a.then(f) : f(a);
 // go1( delay(1000, 5), log )
 
 
-log(
-go(
-    Promise.resolve(1),
-    a => a+100,
-    a => delay(100,a),
-    log
-))
+// log(
+//go(
+//    Promise.resolve(1),
+//    a => a+100,
+//    a => delay(100,a),
+//    log
+//))
 
 </script>
 
