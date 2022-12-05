@@ -4,12 +4,84 @@
 - Awesome-command-line :https://git.herrbischoff.com/awesome-command-line-apps/about/
 - 공식자습서 : https://learn.microsoft.com/ko-kr/windows/wsl/setup/environment?source=recommendations
 
+![](assets/2022-11-24-17-51-22.png)
+https://forums.docker.com/t/is-there-a-pictorial-diagram-of-how-wsl-2-docker-docker-desktop-are-related/100071
+
+![](assets/2022-11-24-17-52-29.png)
+https://www.reddit.com/r/bashonubuntuonwindows/comments/bna3hq/the_complete_diagram_of_the_wsl2_architecture_as/
+
+![](assets/2022-11-24-17-57-56.png)
+https://dzone.com/articles/docker-containers-and-kubernetes-an-architectural
+
+- https://blog.devgenius.io/dockerizing-the-typescript-react-app-with-nodejs-vs-nginx-with-wsl2-alpine-linux-on-windows-10-8dddd447f43a
+
+### oh-my-zsh 셋팅
+
+```shell
+sudo apt update
+sudo apt-get install zsh
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+vi ~/.zshrc
+####
+ZSH_THEME="agnoster"
+####
+mkdir -p  ~/shell/fonts
+git clone https://github.com/powerline/fonts.git ~/shell/fonts
+cd ~/shell/fonts && sh ./install.sh
+
+### 폰트 : Ubuntu Mono derivative Powerline Regular 로 변경
+```
+
+
+### Window fonts 공유
+
+- [참고링크](http://pinedance.github.io/blog/2021/02/08/WSL-fonts)
+```shell
+
+sudo touch /etc/fonts/local.conf
+
+sudo vim /etc/fonts/local.conf
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+    <dir>/mnt/c/Windows/Fonts</dir>
+</fontconfig>
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+```
+
+
+### WSL Make 파일 명렁어 추가
+```shell
+apt-get install gcc make
+```
+
 ### WSL 자바환경 셋팅하기
+```shell
+sudo apt update
+sudo apt install openjdk-11-jdk
+# java -version
+# which java
+sudo apt -y install maven
+
+################
+# ~/.zshrc
+############
+
+### java PATH ###
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$PATH:$JAVA_HOME/bin
+export PATH=$PATH:/opt/gradle/gradle-7.5.1/bin
+
+export M2_HOME=/usr/local/apache-maven/apache-maven-3.8.4
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
 
 
-
-
-
+```
 
 
 ### WSL Python3 깔기
@@ -49,9 +121,6 @@ nvm install --lts # 설치당신튼 18.12
 npm install --global yarn
 ```
 
-### WSL 에 Java 환경셋팅하기
-
-
 ### WSL 에서 Eclispe  설치
 
 ```shell
@@ -87,39 +156,6 @@ sudo apt install libswt-gtk-4-jni
 
 ```
 
-
-### Window fonts 공유
-
-- [참고링크](http://pinedance.github.io/blog/2021/02/08/WSL-fonts)
-```shell
-
-sudo touch /etc/fonts/local.conf
-
-sudo vim /etc/fonts/local.conf
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-<fontconfig>
-    <dir>/mnt/c/Windows/Fonts</dir>
-</fontconfig>
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-```
-
-
-### Oracle 설치 꿀팁
-
-- [[종합적인 꿀Tips](https://positivemh.tistory.com/485)]
-- [ORA-01034](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=hymne&logNo=221448750630)
-
-
-### WSL Make 파일 명렁어 추가
-```shell
-apt-get install gcc make
-```
-
 ### Jmeter 설치
 ```shell
 mkdir -p ~/util/jmeter && cd ~/util/jmeter
@@ -145,7 +181,6 @@ sudo apt-get install apache2-utils
 
 ### 포트포워팅
 - [스크립트 실행 오류시 참고](https://samsons.tistory.com/16)
-
 
 
 ### 유용한 유틸
