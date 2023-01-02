@@ -7,18 +7,19 @@
     - [WSL 에 Node 환경셋팅하기](#wsl-에-node-환경셋팅하기)
     - [docker-compose 로 만드는 19c](#docker-compose-로-만드는-19c)
     - [현재환경 Export / Import](#현재환경-export--import)
-  - [IDE 셋팅](#ide-셋팅)
-    - [Eclipse](#eclipse)
+    - [WSL 에서 Eclispe  설치](#wsl-에서-eclispe--설치)
   - [부록](#부록)
     - [포트포워팅](#포트포워팅)
     - [SSH Config](#ssh-config)
     - [유용한 유틸](#유용한-유틸)
     - [트러블 슈팅](#트러블-슈팅)
+    - [고정IP 셋팅](#고정ip-셋팅)
 
 ## 준비물
 	1. 현재문서
 	2. Docker Desktop : [링크](https://www.docker.com/products/docker-desktop/)
 	3. Oracle19c.zip : [링크](https://www.oracle.com/kr/database/technologies/oracle19c-windows-downloads.html)
+	4. docker-compose.tar
 
 ## WSL 기본셋팅
 - [공식자습서](https://learn.microsoft.com/ko-kr/windows/wsl/setup/environment?source=recommendations)
@@ -26,7 +27,7 @@
   - [ `WinKey` + `R` ] > `winver` 으로 윈도우 버젼이 Windows 10 2004 이상 인지 확인.
 
 ```shell
-#window10 
+#window10 18363.104 버젼이하일 경우
 # wsl 활성화 명령어
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
 # wsl2 VM platform 옵션을 활성화
@@ -161,8 +162,9 @@ npm install --global yarn
 ```
 
 ### docker-compose 로 만드는 19c
-  - 전제조건 : Docker Desktop 설치
+  - 전제조건 : Docker Desktop 설치 / 준비물 4번 tar
   - [참고영여기사](https://arno-schots.medium.com/building-and-running-oracle-database-19-3-0-ee-docker-containers-8147b5a00a51)
+  - [참고 한글링크](https://growupcoding.tistory.com/27)
 
   ```shell
   mkdir ~/dev/db -p && cd db
@@ -171,6 +173,19 @@ npm install --global yarn
   explorer.exe .
   
   #   ~/dev/db/docker-images/OracleDatabase/SingleInstance/dockerfiles
+  #### Usage: buildDockerImage.sh -v [version] [-e | -s | -x] [-i] [-o] [Docker build option]
+  #### Builds a Docker Image for Oracle Database.
+  #### Parameters:
+  ####   -v: version to build
+  ####       Choose one of: 11.2.0.2  12.1.0.2  12.2.0.1  18.3.0  18.4.0  19.3.0
+  ####   -e: creates image based on 'Enterprise Edition'
+  ####   -s: creates image based on 'Standard Edition 2'
+  ####   -x: creates image based on 'Express Edition'
+  ####   -i: ignores the MD5 checksums
+  ####   -o: passes on Docker build option
+  #### * select one edition only: -e, -s, or -x
+  #### LICENSE UPL 1.0
+  #### Copyright (c) 2014-2019 Oracle and/or its affiliates. All rights reserved.
   ./buildContainerImage.sh -v 19.3.0 -e
 
   mkdir -p ~/dev/compose/oradata/ora19_data
@@ -196,7 +211,10 @@ npm install --global yarn
             volumes:
                 - ./oradata/ora19_data:/opt/oracle/oradata
                 - ./install_db:/app/oracle/install_db
-            privileged: true
+            privileged: true            
+  ```
+  ```shell
+  make oracle-up
   ```
 
 
@@ -204,21 +222,43 @@ npm install --global yarn
 - [window 공식 wsl 관련 명령어](https://learn.microsoft.com/en-us/windows/wsl/basic-commands)
 
 ```shell
+# powerShell
 wsl --export <Distribution Name> <FileName>
 wsl --import <Distribution Name> <InstallLocation> <FileName>
 ```
 
-
-## IDE 셋팅
-### Eclipse
+### WSL 에서 Eclispe  설치
 ```shell
-mkdir -p ~/dev/ide/eclipse && cd ~/dev/ide/eclipse
-wget https://download.eclipse.org/oomph/epp/2020-06/R/eclipse-inst-linux64.tar.gz
-sudo tar -xf eclip위
-### .zshrc -> alias
+################ 다운로드 설치 ###############
+wget https://ftp.yz.yamagata-u.ac.jp/pub/eclipse/technology/epp/downloads/release/2022-09/R/eclipse-jee-2022-09-R-linux-gtk-x86_64.tar.gz
+
+tar xvzf eclipse-jee-2022-09-R-linux-gtk-x86_64.tar.gz
+
+#### 실행용 alias
+alias ecsr='~/util/eclipse/eclipse'
+
+#### 아래 에러 발생시 로 의존성 파일 설치 - ubuntu v20.4
+sudo apt install libswt-gtk-4-jni
+###
+# cat /home/ecsuser/util/eclipse/configuration/1666225081445.log
+###
+# eclipse.buildId=4.25.0.I20220831-1800
+# java.version=17.0.4.1
+# java.vendor=Eclipse Adoptium
+# BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en
+# Framework arguments:  -product org.eclipse.epp.package.jee.product
+# Command-line arguments:  -os linux -ws gtk -arch x86_64 -product org.eclipse.epp.package.jee.product
+# !ENTRY org.eclipse.osgi 4 0 2022-10-20 09:18:02.520
+# !MESSAGE Application error
+# !STACK 1
+# java.lang.UnsatisfiedLinkError: Could not load SWT library. Reasons:
+#         no swt-pi4-gtk-4954r7 in java.library.path: /usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+#         no swt-pi4-gtk in java.library.path: /usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+#         no swt-pi4 in java.library.path: /usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+#         Can't load library: /home/ecsuser/.swt/lib/linux/x86_64/libswt-pi4-gtk-4954r7.so
+##
 
 ```
-
 
 
 ## 부록
@@ -317,3 +357,8 @@ Host myTest
   ```  
   ### 트러블 슈팅
   - [window 공식문서](https://learn.microsoft.com/en-us/windows/wsl/troubleshooting?source=recommendations)
+
+  ### 고정IP 셋팅
+  - 네트워크 픽스 : https://github.com/pawelgnatowski/WSL2-Network-Fix
+  - 한글문서 : https://netmarble.engineering/wsl2-static-ip-scheduler-settings/
+  - https://gist.github.com/wllmsash/1636b86eed45e4024fb9b7ecd25378ce

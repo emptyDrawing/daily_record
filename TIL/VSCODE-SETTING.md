@@ -19,6 +19,10 @@
             "vmArgs": "-javaagent:/home/ecsuser/study/daily_record/study/java/javabasic/bytecode2/target/bytecode2-1.0-SNAPSHOT.jar"
         }
 
+
+
+
+
 ```
 
 ### Makrdown 이미지 복사
@@ -92,3 +96,9 @@
 <!-- 중략 -->
 </Engine>
 ```
+
+### maven / tomcat
+
+- https://github.com/microsoft/vscode-java-debug/blob/main/Configuration.md#attach-to-embedded-maven-tomcat-server
+- https://github.com/microsoft/vscode-java-debug/issues/303
+- https://velog.io/@baer2000/STS-%EB%B2%84%EB%A6%AC%EA%B3%A0-vscode%EB%A1%9C-Spring-%EB%94%94%EB%B2%84%EA%B9%85-%ED%99%98%EA%B2%BD-%EA%B5%AC%EC%B6%95%ED%95%98%EA%B8%B0
