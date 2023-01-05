@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>3. 컬렉션 중심 프로그래밍</title>
-  <script src="js/_.js"></script>
+  <script src="js/_2.js"></script>
 </head>
 <body>
 
 <script>
 // 컬렉션 중심 프로그래밍의 4가지 유형과 함수
-
+// 앞에 있는 함수가 추상화 수준이 높음( 대표 함수 )
 // 1. 수집하기 - map, values, pluck 등
 // 2. 거르기 - filter, reject, compact, without 등
 // 3. 찾아내기 - find, some, every 등
@@ -31,9 +31,21 @@ var users = [
 // 컬렉션 중심 프로그래밍의 유형별 함수 만들기
 
 // 1. 수집하기 - map
-console.log(_values(users[0]));
 //   1. values
+// _identity 를 활용해서 만든다.
+//var _values =  _map(_identity); 
+//function _identity(val) {
+//  return val;
+//}
+
+console.log(_values(users[0]));
+console.log(_map(_identity)(users[0]));
+
+
 //   2. pluck
+//function _pluck(data, key) {
+//  return _map(data, _get(key));
+//}
 console.log( _pluck(users, 'age') );
 console.log( _pluck(users, 'name') );
 console.log( _pluck(users, 'id') );
@@ -45,19 +57,27 @@ console.log(
     return user.age > 30;
   })
 );
-
+//   1. reject
+//function _negate(func) {
+//  return (val) => !func(val);
+//}
+//function _reject(data , predi) {
+//  return _filter(data, _negate(predi));
+//}
 console.log(
   _reject(users, function(user) {
     return user.age > 30;
   })
 );
-//   1. reject
+
+//   2. compact
+//var _compact = _filter(_identity);
 console.log(
   _compact([1, 2, 0, false, null, {}]));
-//   2. compact
+
 
 // 3. 찾아내기 - find
-//   1. find 만들기
+//   1. find 만들기 //   2. find_index
 
 console.log(
   _get(_find(users, function(user) {
@@ -65,6 +85,7 @@ console.log(
   }), 'name')
 );
 
+// 아래꺼 쓸려면 _curryr 로 감싸야됨.
 _go(users,
   _find_index(function(user) { return user.id == 50; }),
   console.log);
@@ -74,10 +95,7 @@ console.log(
     return user.id == 50;
   })
 );
-
-//   2. find_index
 //   3. some
-
 console.log(_some([1, 2, 5, 10, 20], function(val) {
   return val > 20;
 }));
@@ -96,32 +114,32 @@ console.log(_every([12, 24, 5, 10, 20], function(val) {
 }));
 // true
 
-console.log(
+console.log("with _identity / some",
   _some([1, 2, 0, 10])
 )
 // true
-console.log(
+console.log("with _identity / some",
   _some([null, false, 0])
 )
 // false
-console.log(
+console.log("with _identity / some",
   _some([null, false, 1])
 )
 // true
 
-console.log(
+console.log("with _identity / every",
   _every([1, 2, 0, 10])
 )
 // false
-console.log(
+console.log("with _identity / every",
   _every([null, false, 0])
 )
 // false
-console.log(
+console.log("with _identity / every",
   _every([null, false, 1])
 )
 // false
-console.log(
+console.log("with _identity / every",
   _every([1, 2, 10])
 )
 // true
@@ -134,38 +152,15 @@ console.log(
 
 
 // 4. 접기 - reduce
+console.clear();
 
-function _min(data) {
-  return _reduce(data, function(a, b) {
-    return a < b ? a : b;
-  });
-}
-
-function _max(data) {
-  return _reduce(data, function(a, b) {
-    return a > b ? a : b;
-  });
-}
-
+//   1. min, max, min_by, max_by
 console.log(
   _min([1, 2, 4, 10, 5, -4])
 );
 console.log(
   _max([1, 2, 4, 10, 5, -4])
 );
-
-function _min_by(data, iter) {
-  return _reduce(data, function(a, b) {
-    return iter(a) < iter(b) ? a : b;
-  });
-}
-function _max_by(data, iter) {
-  return _reduce(data, function(a, b) {
-    return iter(a) > iter(b) ? a : b;
-  });
-}
-var _min_by = _curryr(_min_by),
-  _max_by = _curryr(_max_by);
 
 console.log(
   _min_by([1, 2, 4, 10, 5, -4], Math.abs)
@@ -175,6 +170,8 @@ console.log(
   _max_by([1, 2, 4, 10, 5, -4, -11], Math.abs)
 );
 
+console.clear();
+
 console.log(
   _min_by(users, function(user) {
     return user.age;
@@ -183,8 +180,8 @@ console.log(
 
 _go(users,
   _filter(user => user.age >= 30),
-  _map(_get('age')),
-  _min,
+  _min_by(users => users.age),
+  _get('age'),
   console.log);
 
 _go(users,
@@ -194,8 +191,6 @@ _go(users,
   console.log);
 
 console.clear();
-
-//   1. min, max, min_by, max_by
 
 //   2. group_by, push
 var users = [
@@ -227,16 +222,17 @@ _go(users,
   }),
   console.log);
 
+_go(
+  users,
+  _group_by(user => user.name[0]),
+  console.log
+)
 
-_go(users,
-  _group_by(function(user) {
-    return user.name[0];
-  }),
-  console.log);
-
-_go(users,
-  _group_by(_pipe(_get('name'), _head)),
-  console.log);
+_go(
+  users,
+  _group_by( _pipe( _get('name'), _first) ),
+  console.log
+)
 
 //   3. count_by, inc
 
@@ -252,22 +248,30 @@ _go(users,
   }),
   console.log);
 
-console.log( _pairs(users[0]) );
+// each, map 에 key 전달
+// _map([1,2,3], console.log)
+// var _pairs = _map( (val, key) => [key, val]);
+// console.log( _pairs(users[0]) );
 
 console.clear();
 
-var f1 = _pipe(
-  _count_by(function(user) { return user.age - user.age % 10; }),
-  _map((count, key) => `<li>${key}대는 ${count}명 입니다.</li>`),
-  list => '<ul>' + list.join('') + '</ul>',
-  document.write.bind(document));
+var _f1 = _pipe(
+  _count_by(user => user.age - user.age % 10),
+  _map( (count, key) => `<li> ${key}대는 ${count} 명입니다. </li>`),
+  list => `<ul>`+ list.join(' ') + `</ul>`,
+  document.write.bind(document)
+);
 
-_go(users, _reject(user => user.age < 20), f1);
-_go(users, _filter(user => user.age < 20), f1);
+_go(users, _f1);
 
+var _f2 = _pipe(
+  _filter(user => user.age < 20),
+  _f1
+);
+
+_go(users, _f2);
 
 </script>
-
 
 
 </body>
