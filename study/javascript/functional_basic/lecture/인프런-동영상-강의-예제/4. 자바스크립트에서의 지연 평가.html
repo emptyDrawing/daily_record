@@ -11,46 +11,41 @@
 // 지연 평가를 시작 시키고 유지 시키는(이어 가는) 함수
   // 1. map
   // 2. filter, reject
-var mi = 0;
-var fi = 0;
-
+  var mi = 0;
+  var fi = 0;
+  
+// 현재 100번 돌고, 100번돌고 5개를 뽑는데..  
 _.go(
   _.range(100),
-  _.map(function(val) {
-    ++mi;
-    return val * val;
+  _.map(val => {
+    mi++;
+    return val* val;
   }),
-  _.filter(function(val) {
-    ++fi;
-    return val % 2;
-  }),
-  _.some(function(val) {
-    return val > 100;
-  }),
-  console.log);
+  _.filter(val => { 
+    fi++;
+    return val % 2 } ),
+  _.take(5),  
+  console.log
+)
+console.log(mi, fi)
 
-console.log(mi, fi);
+mi = 0;
+fi = 0;
 
-
-var mi = 0;
-var fi = 0;
-
+// 순수 함수로 되어있어서 가능한 Lazy
 _.go(
   _.range(100),
-  L.map(function(val) {
-    ++mi;
-    return val * val;
+  L.map(val => {
+    mi++;
+    return val* val;
   }),
-  L.filter(function(val) {
-    ++fi;
-    return val % 2;
-  }),
-  L.some(function(val) {
-    return val > 100;
-  }),
-  console.log);
-
-console.log(mi, fi);
+  L.filter(val => { 
+    fi++;
+    return val % 2 } ),
+  L.take(5),  
+  console.log
+)
+console.log("Lazy", mi, fi)
 
 // 끝을 내는 함수
   // 1. take
