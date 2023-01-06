@@ -41,41 +41,65 @@ var products = [
 ];
 
 //1. 모든 수량
-var total_quantity = _.reduce(function(tq, product) {
-  return _.reduce(product.sizes, function(tq, size) {
-    return tq + size.quantity;
-  }, tq);
-}, 0);
+_.go(
+  products,
+  _.deep_pluck('sizes.quantity'),
+  _.reduce((a,b) => a+b),
+  console.log
+)
 
-_.go(products,
-  total_quantity,
-  console.log);
+var reduce_quantity = _.reduce( (tq, product) => _reduce( 
+  product.sizes, (sum, size) => sum+ size.quantity  , tq) 
+,0);
+
+_.go(
+  products,
+  reduce_quantity,
+  console.log
+)
+
 
 //2. 선택 된 총 수량
-
-_.go(products,
+_.go(
+  products,
   _.filter(_get('is_selected')),
-  total_quantity,
-  console.log);
+  _.deep_pluck('sizes.quantity'),
+  _.reduce((a,b) => a+b),
+  console.log
+)
+
+_.go(
+  products,
+  _.filter(_get('is_selected')),
+  reduce_quantity,
+  console.log
+)
 
 //3. 모든 가격
+var reduce_price = _.reduce( (tp, product) => 
+  _reduce(
+    product.sizes, 
+    (sum, size) => sum + (size.quantity * (product.price + size.price)), 
+    tp
+  ) 
+,0);
 
-var total_price = _.reduce(function(tp, product) {
-  return _.reduce(product.sizes, function(tp, size) {
-    return tp + (product.price + size.price) * size.quantity;
-  }, tp);
-}, 0);
+_.go(
+  products,
+  reduce_price,
+  console.log
+)
 
-_.go(products,
-  total_price,
-  console.log);
 
 //4. 선택 된 총 가격
+var seleted_check =   _.filter(_get('is_selected'));
 
-_.go(products,
-  _.filter(_get('is_selected')),
-  total_price,
-  console.log);
+_.go(
+  products,
+  seleted_check,
+  reduce_price,
+  console.log
+)
 
 
 </script>
