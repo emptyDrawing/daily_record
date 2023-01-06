@@ -13,48 +13,46 @@ function square(a) {
   return new Promise(function(resolve) {
     setTimeout(function() {
       resolve(a * a);
-    }, 500);
+    }, 50);
   });
 }
 
 //function square(a) {
 //  return a * a;
 //}
-/*
 
 square(10)
   .then(square)
   .then(square)
   .then(square)
   .then(console.log);
-
+// _.go 는 promise 이든 아니든 다 됨.
 _.go(square(10),
   square,
   square,
   square,
   console.log);
 
-*/
-
-
 var list = [2, 3, 4];
 
-new Promise(function(resolve) {
+new Promise( (resolve) => {
   (function recur(res) {
-    if (list.length == res.length) return resolve(res);
-    square(list[res.length]).then(function(val) {
+    if(list.length == res.length) return resolve(res);
+    square(list[res.length]).then( (val) => {
       res.push(val);
-      recur(res);
+      recur(res)
     });
   })([]);
-}).then(console.log);
+})
+.then( console.log);
 
 _.go(list,
   _.map(square),
   _.map(square),
   _.map(square),
-  console.log);
 
+  console.log
+)
 
 
 
