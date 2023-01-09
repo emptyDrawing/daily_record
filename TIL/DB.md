@@ -59,3 +59,33 @@
 ### Oracle 설치 꿀팁
 - [종합적인 꿀Tips](https://positivemh.tistory.com/485)
 - [ORA-01034](https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=hymne&logNo=221448750630)
+
+
+### H2 docker
+- https://hub.docker.com/r/oscarfonts/h2/
+- https://velog.io/@seungju0000/docker-compose%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%98%EC%97%AC-spring-boot-h2-%EC%97%B0%EA%B2%B0%ED%95%98%EA%B8%B0feat.redis
+
+```shell
+docker pull oscarfonts/h2
+docker run -d -p 1521:1521 -p 81:81 -v /path/to/local/data_dir:/opt/h2-data -e H2_OPTIONS=-ifNotExists --name=MyH2Instance oscarfonts/h2
+```
+```yml
+version: "1"
+services:
+    h2-db:
+        container_name: h2-db
+        image: oscarfonts/h2
+        volumes: 
+            - ./h2/:/opt/h2-data
+        environment:
+            H2_OPTIONS: -ifNotExists
+        ports: 
+            - "41521:1521"
+            - "48081:81"
+```
+
+
+### Oracle RAC
+- 깃허브 : https://github.com/oracle/docker-images/blob/main/OracleDatabase/RAC/OracleRealApplicationClusters/README.md
+- 공식지원은 21c : https://blogs.oracle.com/maa/post/oracle-rac-on-docker-now-with-full-production-support
+- 오라클 문서 : https://docs.oracle.com/en/database/oracle/oracle-database/21/racdk/oracle-rac-on-docker.html#GUID-1B30E4F3-1EC9-4000-8007-4A1B2A03FE1E
