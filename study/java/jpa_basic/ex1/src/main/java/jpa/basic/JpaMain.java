@@ -3,8 +3,6 @@
  */
 package jpa.basic;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -20,15 +18,31 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // JPQL 맛보기
-            List<Member> resultList = em.createQuery("select m from Member as m", Member.class)
-                .setFirstResult(5)    
-                .setMaxResults(8)
-                .getResultList();
+            // 비영속
+            Member member = new Member();
+            member.setUsername("야2");
+            // member.setRoleType(RoleType.ADMIN);
+            
+            // 영속
+            em.persist(member);
+            // 준영속
+            //em.detach(member);
+            // 삭제
+            //em.remove(member);
 
-            for (Member member : resultList) {
-                System.out.println(member);
-            }    
+            // 플러시 모드 셋팅
+            // em.setFlushMode(FlushModeType.AUTO); // 커밋이나 JPQL 실행시 자동으로 ( 기본값 )
+            // em.setFlushMode(FlushModeType.COMMIT); // 커밋시에만
+
+            // JPQL 맛보기
+            // List<Member> resultList = em.createQuery("select m from Member as m", Member.class)
+            //     .setFirstResult(5)    
+            //     .setMaxResults(8)
+            //     .getResultList();
+
+            // for (Member member : resultList) {
+            //     System.out.println(member);
+            // }    
             
             // Update
             // Member findTest = em.find(Member.class, 1L);
