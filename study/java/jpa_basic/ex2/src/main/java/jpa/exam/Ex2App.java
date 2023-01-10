@@ -1,9 +1,13 @@
 package jpa.exam;
 
+import java.lang.reflect.Member;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+
+import jpa.exam.domain.Order;
 
 /**
  * Hello world!
@@ -21,6 +25,7 @@ public class Ex2App
         tx.begin();
 
         try {
+            Order order = em.find(Order.class, 1L);
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

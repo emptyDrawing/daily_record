@@ -15,22 +15,21 @@ import javax.persistence.Table;
 @Table(name = "ORDERS")
 public class Order {
 
-	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name ="ORDER_ID")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ORDER_ID")
 	private Long id;
 
-	@Column(name ="MEMBER_ID")
+	@Column(name = "MEMBER_ID")
 	private Long memberId;
-	
+
 	private LocalDateTime orderDate;
 
 	@Enumerated(EnumType.STRING)
 	private OrderStatus status;
-	
-	
+
 	public Order() {
 	}
-
 
 	/**
 	 * @return the id
@@ -39,14 +38,12 @@ public class Order {
 		return id;
 	}
 
-
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	/**
 	 * @return the memberId
@@ -55,14 +52,12 @@ public class Order {
 		return memberId;
 	}
 
-
 	/**
 	 * @param memberId the memberId to set
 	 */
 	public void setMemberId(Long memberId) {
 		this.memberId = memberId;
 	}
-
 
 	/**
 	 * @return the orderDate
@@ -71,14 +66,12 @@ public class Order {
 		return orderDate;
 	}
 
-
 	/**
 	 * @param orderDate the orderDate to set
 	 */
 	public void setOrderDate(LocalDateTime orderDate) {
 		this.orderDate = orderDate;
 	}
-
 
 	/**
 	 * @return the status
@@ -87,12 +80,11 @@ public class Order {
 		return status;
 	}
 
-
 	/**
 	 * @param status the status to set
 	 */
 	public void setStatus(OrderStatus status) {
 		this.status = status;
 	}
-	
+
 }

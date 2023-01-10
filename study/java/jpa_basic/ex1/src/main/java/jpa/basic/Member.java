@@ -5,22 +5,40 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-@Table(name = "MBR")
 public class Member {
 
 	public Member() {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "MEMBER_ID")
 	private Long id;
 
-	@Column(name = "name", updatable = false, columnDefinition = "varchar(100) default 'EMPTY'")
+	@Column(name = "USERNAME")
 	private String username;
+
+	// @Column(name = "TEAM_ID")
+	// private Long teamId;
+
+	@ManyToOne
+	@JoinColumn(name = "TEAM_ID")
+	private Team team;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+
+	@Override
+	public String toString() {
+		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
+	}
 
 	/**
 	 * @return the id
@@ -50,4 +68,25 @@ public class Member {
 		this.username = username;
 	}
 
+	/**
+	 * @return the team
+	 */
+	public Team getTeam() {
+		return team;
+	}
+
+	/**
+	 * @param team the team to set
+	 */
+	public void setTeam(Team team) {
+		this.team = team;
+	}
+
+		/**
+	 * @param team the team to set
+	 */
+	public void changeTeam(Team team) {
+		this.team = team;
+		team.getMembers().add(this);
+	}
 }

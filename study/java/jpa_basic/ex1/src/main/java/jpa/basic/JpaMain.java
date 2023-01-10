@@ -1,7 +1,6 @@
-/*
- * Decompiled with CFR 0.152.
- */
 package jpa.basic;
+
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,43 +17,33 @@ public class JpaMain {
         tx.begin();
 
         try {
-            // 비영속
+            Team team = new Team();
+            team.setName("TeamA");
+            
+            em.persist(team);
+
             Member member = new Member();
-            member.setUsername("야2");
-            // member.setRoleType(RoleType.ADMIN);
+            member.setUsername("가나다");
+            member.changeTeam(team);
+
+            Member member3 = new Member();
+            member3.setUsername("라마바");
+            member3.changeTeam(team);
             
-            // 영속
-            em.persist(member);
-            // 준영속
-            //em.detach(member);
-            // 삭제
-            //em.remove(member);
+            // member.setTeamId(team.getId());
+            em.persist(member3);
 
-            // 플러시 모드 셋팅
-            // em.setFlushMode(FlushModeType.AUTO); // 커밋이나 JPQL 실행시 자동으로 ( 기본값 )
-            // em.setFlushMode(FlushModeType.COMMIT); // 커밋시에만
+            em.flush();
+            em.clear();
 
-            // JPQL 맛보기
-            // List<Member> resultList = em.createQuery("select m from Member as m", Member.class)
-            //     .setFirstResult(5)    
-            //     .setMaxResults(8)
-            //     .getResultList();
+            Member findMember = em.find(Member.class, member.getId());
+            List<Member> findMembers = findMember.getTeam().getMembers();
 
-            // for (Member member : resultList) {
-            //     System.out.println(member);
-            // }    
-            
-            // Update
-            // Member findTest = em.find(Member.class, 1L);
-            // System.out.println(findTest); // Member [id=1, name=TEST]
-            // findTest.setName("changeName");
+            for (Member member2 : findMembers) {
+                System.out.println(member2);
+            }
 
-            // Insert
-            // Member member = new Member();
-            // member.setId(2L);
-            // member.setName("TEST2");
-            // em.persist(member);
-            
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

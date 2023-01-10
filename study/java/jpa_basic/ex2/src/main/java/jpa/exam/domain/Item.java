@@ -9,7 +9,8 @@ import javax.persistence.Id;
 @Entity
 public class Item {
 
-	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "ITEM_ID")
 	private Long id;
 
@@ -17,12 +18,8 @@ public class Item {
 	private int price;
 	private int stockQuantity;
 
-
-	
 	public Item() {
 	}
-
-
 
 	/**
 	 * @return the id
@@ -31,16 +28,12 @@ public class Item {
 		return id;
 	}
 
-
-
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-
 
 	/**
 	 * @return the name
@@ -49,16 +42,12 @@ public class Item {
 		return name;
 	}
 
-
-
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
 
 	/**
 	 * @return the price
@@ -67,16 +56,12 @@ public class Item {
 		return price;
 	}
 
-
-
 	/**
 	 * @param price the price to set
 	 */
 	public void setPrice(int price) {
 		this.price = price;
 	}
-
-
 
 	/**
 	 * @return the stockQuantity
@@ -85,13 +70,11 @@ public class Item {
 		return stockQuantity;
 	}
 
-
-
 	/**
 	 * @param stockQuantity the stockQuantity to set
 	 */
 	public void setStockQuantity(int stockQuantity) {
 		this.stockQuantity = stockQuantity;
 	}
-	
+
 }
