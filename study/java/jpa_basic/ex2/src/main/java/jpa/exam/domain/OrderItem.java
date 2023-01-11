@@ -5,30 +5,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
-	@Id	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name ="ORDER_ITEM_ID")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "ORDER_ITEM_ID")
 	private Long id;
-	
-	@Column(name ="ORDER_ID")
-	private Long orderId;
-	@Column(name ="ITEM_ID")
-	private Long itemId;
+
+	@ManyToOne
+	@JoinColumn(name = "ORDER_ID")
+	private Order order;
+
+	@ManyToOne
+	@JoinColumn(name = "ITEM_ID")
+	private Item item;
 
 	private int orderPrice;
 	private int count;
 
-	
-
-
 	public OrderItem() {
 	}
-
-
-
 
 	/**
 	 * @return the id
@@ -37,9 +37,6 @@ public class OrderItem {
 		return id;
 	}
 
-
-
-
 	/**
 	 * @param id the id to set
 	 */
@@ -47,48 +44,33 @@ public class OrderItem {
 		this.id = id;
 	}
 
-
-
-
 	/**
-	 * @return the orderId
+	 * @return the order
 	 */
-	public Long getOrderId() {
-		return orderId;
+	public Order getOrder() {
+		return order;
 	}
 
-
-
-
 	/**
-	 * @param orderId the orderId to set
+	 * @param order the order to set
 	 */
-	public void setOrderId(Long orderId) {
-		this.orderId = orderId;
+	public void setOrder(Order order) {
+		this.order = order;
 	}
 
-
-
-
 	/**
-	 * @return the itemId
+	 * @return the item
 	 */
-	public Long getItemId() {
-		return itemId;
+	public Item getItem() {
+		return item;
 	}
 
-
-
-
 	/**
-	 * @param itemId the itemId to set
+	 * @param item the item to set
 	 */
-	public void setItemId(Long itemId) {
-		this.itemId = itemId;
+	public void setItem(Item item) {
+		this.item = item;
 	}
-
-
-
 
 	/**
 	 * @return the orderPrice
@@ -97,18 +79,12 @@ public class OrderItem {
 		return orderPrice;
 	}
 
-
-
-
 	/**
 	 * @param orderPrice the orderPrice to set
 	 */
 	public void setOrderPrice(int orderPrice) {
 		this.orderPrice = orderPrice;
 	}
-
-
-
 
 	/**
 	 * @return the count
@@ -117,14 +93,11 @@ public class OrderItem {
 		return count;
 	}
 
-
-
-
 	/**
 	 * @param count the count to set
 	 */
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
+
 }

@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -22,7 +23,8 @@ public class Team {
 	private Long id;
 	private String name;
 
-	@OneToMany(mappedBy = "team")
+	@OneToMany
+	@JoinColumn(name = "TEAM_ID")
 	private List<Member> members = new ArrayList<>(); // 관례상 [] 을 표시하기 위해서 나타냄
 
 	/* (non-Javadoc)

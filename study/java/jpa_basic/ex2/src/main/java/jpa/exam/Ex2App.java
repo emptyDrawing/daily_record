@@ -7,7 +7,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
+import jpa.exam.domain.Book;
 import jpa.exam.domain.Order;
+import jpa.exam.domain.OrderItem;
 
 /**
  * Hello world!
@@ -25,7 +27,12 @@ public class Ex2App
         tx.begin();
 
         try {
-            Order order = em.find(Order.class, 1L);
+            Book book = new Book();
+            book.setAuthor("가");
+            book.setName("JPA");
+            
+            em.persist(book);
+
             tx.commit();
         } catch (Exception e) {
             tx.rollback();

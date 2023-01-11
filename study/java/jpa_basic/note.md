@@ -74,11 +74,11 @@
  ![](assets/2023-01-06-16-35-49.png)
 
 - 여기서 중요시 볼 포인트는 
-```
-	<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-```
+    ```
+    <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+    ```
 	- JPA 자체는 특정데이터베이스에 종속적이지 않지만,
-  ![](assets/2023-01-06-16-56-46.png)
+    ![](assets/2023-01-06-16-56-46.png)
 	
 	- 와 같이 각 DB마다 특이점[표준적이지 않는] 이 존재한다.
 	![](assets/2023-01-06-16-58-23.png)
@@ -90,13 +90,13 @@
 ### JPA 구동방식
 ![](assets/2023-01-06-17-02-39.png)
 - java11 일때 추가할것 ([참고링크](https://www.inflearn.com/questions/13985/java11-javax-xml-bind-jaxbexception-%EC%97%90%EB%9F%AC))
-  ```xml
+    ```xml
 	<dependency>
-    <groupId>javax.xml.bind</groupId>
-     <artifactId>jaxb-api</artifactId>
-    <version>2.3.0</version>
- </dependency>
-	```
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.0</version>
+    </dependency>
+    ```
 
 ![](assets/2023-01-06-17-35-27.png)
 - 뭔가 되는거 같지만 안됨.
@@ -114,16 +114,16 @@
 ### JPQL 이란
 - 그래서 검색조건이 다양할때는 어떻게 해야되냐?
   - 이럴때 쓰는게 JPQL
-![](assets/2023-01-06-17-56-13.png)
-![](assets/2023-01-06-17-56-24.png)
-- 특이점은 쿼리가 생긴건데.. JPQL에서 쓴 `m`은 `엔티티`라는 의미임.
+    ![](assets/2023-01-06-17-56-13.png)
+    ![](assets/2023-01-06-17-56-24.png)
+  - 특이점은 쿼리가 생긴건데.. JPQL에서 쓴 `m`은 `엔티티`라는 의미임.
 
 - 이것의 장점은 아래처럼 방언만 바꾸면 쿼리를 알아서 만들어준다.
-![](assets/2023-01-06-17-59-58.png)
-![](assets/2023-01-06-17-59-40.png)
-![](assets/2023-01-06-18-03-46.png)
-![](assets/2023-01-06-18-04-28.png)
-  - GooD
+    ![](assets/2023-01-06-17-59-58.png)
+    ![](assets/2023-01-06-17-59-40.png)
+    ![](assets/2023-01-06-18-03-46.png)
+    ![](assets/2023-01-06-18-04-28.png)
+    - GooD
 	- 객체지향 SQL 다양한 방언으로 변경해주는 거라고 볼수 있음.
 
 ## 영속성관리
@@ -163,7 +163,7 @@
 	** 2차캐시는 하나의 어플리케이션에서 관리 / 1차는 트랜잭션
 	![](assets/2023-01-09-10-39-55.png)
 	![](assets/2023-01-09-09-34-35.png)
-  ![](assets/2023-01-09-09-41-49.png)
+    ![](assets/2023-01-09-09-41-49.png)
 	![](assets/2023-01-09-09-42-08.png)
 	![](assets/2023-01-09-09-42-41.png)
 	![](assets/2023-01-09-09-43-00.png)
@@ -216,8 +216,8 @@
   - IDENTITY : 데이터베이스에 위임 (mysql - AUTO_INCREMENT )
     - em.persist() 시점에 즉시 Insert SQL을 실행해서 식별자 조회함.
   - SEQUENCE : 시퀀스 오브젝트 사용(오라클) / `@SequenceGenerator` 가 필요
-		![](assets/2023-01-09-16-30-17.png)
-		![](assets/2023-01-09-16-32-08.png)
+    ![](assets/2023-01-09-16-30-17.png)
+    ![](assets/2023-01-09-16-32-08.png)
   - TABLE : 키 생성용 테이블 사용, 모든 DB에서 사용가능하지만 `@TableGenerator` 가 필요
 		![](assets/2023-01-09-16-30-36.png)
 		![](assets/2023-01-09-16-36-29.png)
@@ -289,13 +289,57 @@
   - toString(), lombok, JSON 생성 라이브러리.. 등에서
 	- Req 등으로 온 JSON을 바로 Entity로 바꾸는 경우... 큰 문제 발생할 수 있음.
   	- 그래서 Controller에서 Json을 바로 Entity로 바로 리턴하면 안됨 (스펙 변경도 생길 수 있으니)
-    	- 그래서 DTO 로 변환해서 보내라.
+    - 그래서 DTO 로 변환해서 보내라.
 
 - 그래서 제일 좋은건 단방향 매핑으로 끝내는게 좋음.
 
 
+### 일대다 양뱡항...
+![](assets/2023-01-11-13-16-18.png)
+- 사실 일대다에서 일이 FK를 관리한다는게 조금 설계상 미스이긴 하지만
+- 위와 같은 상황을 꼭 해야된다고하면 강제로 셋팅해주는 방법이 있음.
+	![](assets/2023-01-11-13-29-06.png)
+  - `@JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)`
 
+### 일대일 
+- 추가적으로 1:1에서는 이게 안됨( 자기꺼의 FK는 자기가 관리 )
+![](assets/2023-01-11-14-00-27.png)
+![](assets/2023-01-11-14-09-40.png)
 
+### 다대다
+- 이건 그냥 중간에 조인테이블 만들고 엔티티로 올려버리는게 좋음.
+- 만약써야되면 @ManyToMany / @JoinTable(name="객체_객체") 를 써야됨.
+  - 주테이블에 @JoinTable / 대상테이블에 mappedBy 를 지정한다.
 
+### 상속관계 맵핑
+![](assets/2023-01-11-16-09-03.png)
+- 기본전략은 단일 테이블 전략임.
+
+![](assets/2023-01-11-16-13-53.png)
+```java
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
+public class Item {
+	
+```
+- 부모클래스에 @Inheritance(strategy=InheritanceType.XXX) 로 변경 가능
+	- JOINED : 조인
+	- SINGLE_TABLE : 단인테이블(기본값)
+	- TABLE_PER_CLASS : 구현클래스마다 테이블
+	![](assets/2023-01-11-16-17-30.png)
+
+- @DiscriminatorColumn 을 붙이면 DTYPE 이 생기는거 볼 수 있음.
+![](assets/2023-01-11-16-21-35.png)
+
+- 그럼 자식에서는 @DiscriminatorValue 로 위 칼럼에 생기는 값을 지정할 수 있음 ( Default 는 클래스명 )
+![](assets/2023-01-11-16-24-36.png)
+
+### @MappedSuperClass
+![](assets/2023-01-11-17-04-39.png)
+- 객체쪽에서만 속성만 상속받아서 쓰고 싶을때. 
+
+![](assets/2023-01-11-17-15-02.png)
+- @Entity 붙은 클래스는 @Entity나 @MappedSuperClass 붙은 클래스만 상속가능.
 
 

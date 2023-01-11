@@ -17,32 +17,19 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("TeamA");
-            
-            em.persist(team);
 
-            Member member = new Member();
-            member.setUsername("가나다");
-            member.changeTeam(team);
+            Movie movie = new Movie();
+            movie.setDirector("가");
+            movie.setName("A");
+            movie.setName("신규영화");
+            movie.setPrice(10000);
 
-            Member member3 = new Member();
-            member3.setUsername("라마바");
-            member3.changeTeam(team);
-            
-            // member.setTeamId(team.getId());
-            em.persist(member3);
+            em.persist(movie);
 
             em.flush();
             em.clear();
 
-            Member findMember = em.find(Member.class, member.getId());
-            List<Member> findMembers = findMember.getTeam().getMembers();
-
-            for (Member member2 : findMembers) {
-                System.out.println(member2);
-            }
-
+            System.out.println(em.find(Movie.class, movie.getId()).getDirector());
 
             tx.commit();
         } catch (Exception e) {
