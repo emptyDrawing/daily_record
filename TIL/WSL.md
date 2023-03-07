@@ -205,12 +205,8 @@ sudo apt-get install apache2-utils
 - [pbcopy 처럼 쓰기](https://superuser.com/questions/288320/whats-like-osxs-pbcopy-for-linux)
   ```shell
   # alias 등록
-  # command -v xlcip 있을때
-  alias pbcopy='xclip -selection clipboard'
-  alias pbpaste='xclip -selection clipboard -o'
-  # commannd -v xsel 있을때
-  alias pbcopy='xsel --clipboard --input'
-  alias pbpaste='xsel --clipboard --output'
+  alias pbcopy=clipcopy
+  alias pbpaste=clippaste
   
   #########################
   # 사용법

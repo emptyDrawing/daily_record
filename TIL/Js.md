@@ -100,3 +100,18 @@ function* generator(){
 
 https://ko.javascript.info/microtask-queue
 https://velog.io/@yejineee/%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A3%A8%ED%94%84%EC%99%80-%ED%83%9C%EC%8A%A4%ED%81%AC-%ED%81%90-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C-%ED%83%9C%EC%8A%A4%ED%81%AC-%EB%A7%A4%ED%81%AC%EB%A1%9C-%ED%83%9C%EC%8A%A4%ED%81%AC-g6f0joxx
+
+
+
+### Deno
+
+- [Deno 공홈](https://deno.land/)
+- [Deno 소개링크](https://velog.io/@yokitomi/Deno%EB%A5%BC-%EC%86%8C%EA%B0%9C%ED%95%A9%EB%8B%88%EB%8B%A4)
+- [Node.js lib 컨버팅하기](https://velog.io/@lunatk/how-we-converted-our-Nodejs-library-to-Deno)
+
+
+### Electron
+
+- [Electron 으로 앱배포](https://jetalog.net/106)
+- [Electron 으로 앱배포2](https://jeongsu.tistory.com/208)
+

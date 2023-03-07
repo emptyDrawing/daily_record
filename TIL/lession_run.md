@@ -1,19 +1,23 @@
 # WSL + Docker로 개발환경 구성하기.
 - [WSL + Docker로 개발환경 구성하기.](#wsl--docker로-개발환경-구성하기)
-  - [준비물](#준비물)
-  - [WSL 기본셋팅](#wsl-기본셋팅)
-    - [터미널 셋팅](#터미널-셋팅)
-    - [WSL 자바환경 셋팅하기](#wsl-자바환경-셋팅하기)
-    - [WSL 에 Node 환경셋팅하기](#wsl-에-node-환경셋팅하기)
-    - [docker-compose 로 만드는 19c](#docker-compose-로-만드는-19c)
-    - [현재환경 Export / Import](#현재환경-export--import)
-    - [WSL 에서 Eclispe  설치](#wsl-에서-eclispe--설치)
-  - [부록](#부록)
-    - [포트포워팅](#포트포워팅)
-    - [SSH Config](#ssh-config)
-    - [유용한 유틸](#유용한-유틸)
-    - [트러블 슈팅](#트러블-슈팅)
-    - [고정IP 셋팅](#고정ip-셋팅)
+		- [사내 Wiki](#사내-wiki)
+	- [준비물](#준비물)
+	- [WSL 기본셋팅](#wsl-기본셋팅)
+		- [터미널 셋팅](#터미널-셋팅)
+		- [WSL 자바환경 셋팅하기](#wsl-자바환경-셋팅하기)
+		- [WSL 에 Node 환경셋팅하기](#wsl-에-node-환경셋팅하기)
+		- [docker-compose 로 만드는 19c](#docker-compose-로-만드는-19c)
+		- [현재환경 Export / Import](#현재환경-export--import)
+		- [WSL 에서 Eclispe  설치](#wsl-에서-eclispe--설치)
+	- [부록](#부록)
+		- [포트포워팅](#포트포워팅)
+		- [SSH Config](#ssh-config)
+		- [유용한 유틸](#유용한-유틸)
+		- [트러블 슈팅](#트러블-슈팅)
+		- [고정IP 셋팅](#고정ip-셋팅)
+
+### 사내 Wiki
+- [풀스택을 위한 도커와 최신 서버 기술](http://pms.ecstel.co.kr/projects/ecs-solution/wiki/%ED%92%80%EC%8A%A4%ED%83%9D%EC%9D%84_%EC%9C%84%ED%95%9C_%EB%8F%84%EC%BB%A4%EC%99%80_%EC%B5%9C%EC%8B%A0_%EC%84%9C%EB%B2%84_%EA%B8%B0%EC%88%A0)
 
 ## 준비물
 	1. 현재문서
@@ -27,33 +31,35 @@
   - [ `WinKey` + `R` ] > `winver` 으로 윈도우 버젼이 Windows 10 2004 이상 인지 확인.
 
 ```shell
-#window10 18363.104 버젼이하일 경우
-# wsl 활성화 명령어
+## window10 18363.104 버젼이하일 경우
+## wsl 활성화 명령어
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
-# wsl2 VM platform 옵션을 활성화
+## wsl2 VM platform 옵션을 활성화
 dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
 # 위 작업 이후 재시작
 ######################
-# window11 이상부터는 가볍게
-# window powerShell 
+## window11 이상부터는 가볍게
+## window powerShell 
 wsl --list --online
-#wsl --install -d "원하는배포판"
+## wsl --install -d "원하는배포판"
 wsl --install
-# 설치된 Linux들 wsl 버젼확인
+##  설치된 Linux들 wsl 버젼확인
 wsl -l -v
-# 기본배포판 삭제
-wslconfig.exe /u Ubuntu
+## 개별 종료
 wsl --terminate Ubuntu
+## 기본배포판 삭제
+wslconfig.exe /u Ubuntu
 ```
 
 ### 터미널 셋팅
 - window 터미널 설치
+
 ![](assets/2022-12-05-09-25-18.png)
 
 
 ```shell
 ## TODO  git, cURL, make, wget 설치 
-sudo apt update && sudo apg-get update 
+sudo apt update && sudo apt-get update 
 apt-get install git curl wget gcc make
 
 ## zsh + oh my zsh 설치
@@ -105,7 +111,7 @@ cd ~/shell/fonts && sh ./install.sh
 sudo apt install openjdk-11-jdk
 # java -version
 # which java
-# maven 
+
 sudo apt -y install maven
 
 # gradle
@@ -142,23 +148,29 @@ sudo tar -xvf apache-maven-3.8.6-src.tar.gz -C /usr/local/apache-maven/apache-ma
 - [ms 공식문서참고](https://learn.microsoft.com/ko-kr/windows/dev-environment/javascript/nodejs-on-wsl)
   
 ```shell
-sudo apt-get install curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
 
-# 아래 내용 ~/.zshrc 에 자동추가
-#export NVM_DIR="$HOME/.nvm"
-#[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-#[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+##  아래 내용 ~/.zshrc 에 자동추가
+## export NVM_DIR="$HOME/.nvm"
+## [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+## [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-## 명령확인
-command -v nv
+
+### 명령확인
+command -v nvm
 
 ### 설치된 node 확인
 nvm ls
 ### 안정된 노드 버젼 설치
-nvm install --lts # 설치당신튼 18.12
+nvm install --lts # 설치당시는 18.12
 # yarn 설치
 npm install --global yarn
+## https://stackoverflow.com/questions/72921215/getting-glibc-2-28-not-found
+
+## 저같은 경우에는 추가 설정
+export NODE_PATH=/home/ecsuser/.nvm/versions/node/v18.12.0
+export PATH=$NODE_PATH/bin:$PATH
+
 ```
 
 ### docker-compose 로 만드는 19c
@@ -167,7 +179,7 @@ npm install --global yarn
   - [참고 한글링크](https://growupcoding.tistory.com/27)
 
   ```shell
-  mkdir ~/dev/db -p && cd db
+  mkdir ~/dev/db -p && cd ~/dev/db
   git clone https://github.com/oracle/docker-images
   cd docker-images/OracleDatabase/SingleInstance/dockerfiles
   explorer.exe .
@@ -306,13 +318,13 @@ for( $i = 0; $i -lt $ports.length; $i++ ){
 - ssh config 시 쉽게 key 복사하는 법 [링크](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-rhel-8/)
 
 ```shell
-### 키생성
-ssh-keygen
-#  ssh-keygen -t rsa -f ~/.ssh/my_vm_key
-### 복사
-ssh-copy-id 
-#  ssh-copy-id -i ~/.ssh/my_vm_key root@10.0.55.221
+### 키생성 ## ssh-keygen
+ssh-keygen -t rsa -f ~/.ssh/my_vm_key
+### 복사 ## ssh-copy-id 
+ssh-copy-id -i ~/.ssh/my_vm_key root@10.0.55.221
 ### ssh-config 설정
+touch ~/.ssh/config && vim ~/.ssh/config
+##########################
 Host myTest
     HostName 10.0.55.221
     User root
@@ -342,13 +354,9 @@ Host myTest
 - [pbcopy 처럼 쓰기](https://superuser.com/questions/288320/whats-like-osxs-pbcopy-for-linux)
   ```shell
   # alias 등록
-  # command -v xlcip 있을때
-  alias pbcopy='xclip -selection clipboard'
-  alias pbpaste='xclip -selection clipboard -o'
-  # commannd -v xsel 있을때
-  alias pbcopy='xsel --clipboard --input'
-  alias pbpaste='xsel --clipboard --output'
-  
+  alias pbcopy=clipcopy
+  alias pbpaste=clippaste
+
   #########################
   # 사용법
   #########################
