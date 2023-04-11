@@ -11,7 +11,7 @@ public class Movie extends Item {
 	 * @return the director
 	 */
 	public String getDirector() {
-		return director;
+		return this.director;
 	}
 	/**
 	 * @param director the director to set

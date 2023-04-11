@@ -18,14 +18,11 @@ public class JpaMain {
             em.flush();
             em.clear();
             
-            Child child1 = new Child();
-            Child child2 = new Child();
-            Parent parent = new Parent();
-
-            parent.addChild(child1);
-            parent.addChild(child2);
-
-            em.persist(parent);
+            Member member = new Member();
+            member.setPeriod(new MyPeriod());
+            member.setHomeAddress(new MyAddress("서울", "갈현로33", "8-8"));
+            member.setWorkAddress(new MyAddress("서울", "서초대로", "1"));
+            em.persist(member);
 
             tx.commit();
         } catch (Exception e) {
@@ -38,16 +35,4 @@ public class JpaMain {
         emf.close();
     }
 
-    private static void printMember(Member member) {
-        System.out.println("member: " + member.getUsername());
-    }
-
-    private static void printMemberAndTeam(Member member) {
-        String username = member.getUsername();
-        System.out.println("username: " + username);
-
-        Team team = member.getTeam();
-        System.out.println("team: " + team.getName());
-        
-    }
 }

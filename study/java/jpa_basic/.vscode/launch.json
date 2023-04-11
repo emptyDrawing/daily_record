@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "JpaMain",
+            "request": "launch",
+            "mainClass": "jpa.basic.JpaMain",
+            "projectName": "ex1"
+        }
+    ]
+}

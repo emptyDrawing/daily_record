@@ -1,16 +1,15 @@
 package jpa.basic;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class Member extends BaseEntity{
@@ -26,23 +25,21 @@ public class Member extends BaseEntity{
 	@Column(name = "USERNAME")
 	private String username;
 
-	// @Column(name = "TEAM_ID")
-	// private Long teamId;
+	// Preiod
+	@Embedded
+	private MyPeriod period;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
-	private Team team;
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-
-	@Override
-	public String toString() {
-		return "Member [id=" + this.id + ", username=" + this.username + ", team=" + this.team + "]";
-	}
+	// 주소
+	@Embedded
+	private MyAddress homeAddress;
+	
+	@Embedded
+	@AttributeOverrides({
+		@AttributeOverride(name = "city", column = @Column(name= "work_city")),
+		@AttributeOverride(name = "street", column = @Column(name= "work_street")),
+		@AttributeOverride(name = "zipcode", column = @Column(name= "work_zipcode"))
+	})
+	private MyAddress workAddress;
 
 	/**
 	 * @return the id
@@ -73,24 +70,46 @@ public class Member extends BaseEntity{
 	}
 
 	/**
-	 * @return the team
+	 * @return the period
 	 */
-	public Team getTeam() {
-		return this.team;
+	public MyPeriod getPeriod() {
+		return this.period;
 	}
 
 	/**
-	 * @param team the team to set
+	 * @param period the period to set
 	 */
-	public void setTeam(Team team) {
-		this.team = team;
+	public void setPeriod(MyPeriod period) {
+		this.period = period;
 	}
 
-		/**
-	 * @param team the team to set
+	/**
+	 * @return the homeAddress
 	 */
-	public void changeTeam(Team team) {
-		this.team = team;
-		team.getMembers().add(this);
+	public MyAddress getHomeAddress() {
+		return this.homeAddress;
 	}
+
+	/**
+	 * @param homeAddress the homeAddress to set
+	 */
+	public void setHomeAddress(MyAddress homeAddress) {
+		this.homeAddress = homeAddress;
+	}
+
+	/**
+	 * @return the workAddress
+	 */
+	public MyAddress getWorkAddress() {
+		return this.workAddress;
+	}
+
+	/**
+	 * @param workAddress the workAddress to set
+	 */
+	public void setWorkAddress(MyAddress workAddress) {
+		this.workAddress = workAddress;
+	}
+
+	
 }
