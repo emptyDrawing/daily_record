@@ -4,10 +4,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,16 +28,15 @@ public class Order extends BaseEntity{
 	@Column(name = "ORDER_ID")
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "MEMBER_ID")
 	private Member member;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name="DELIVERY_ID")
 	private Delivery delivery;
 
-
-	@OneToMany(mappedBy = "order")
+	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
 	private LocalDateTime orderDate;
@@ -50,7 +51,7 @@ public class Order extends BaseEntity{
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class Order extends BaseEntity{
 	 * @return the member
 	 */
 	public Member getMember() {
-		return member;
+		return this.member;
 	}
 
 	/**
@@ -78,7 +79,7 @@ public class Order extends BaseEntity{
 	 * @return the orderDate
 	 */
 	public LocalDateTime getOrderDate() {
-		return orderDate;
+		return this.orderDate;
 	}
 
 	/**
@@ -92,7 +93,7 @@ public class Order extends BaseEntity{
 	 * @return the status
 	 */
 	public OrderStatus getStatus() {
-		return status;
+		return this.status;
 	}
 
 	/**
@@ -106,7 +107,7 @@ public class Order extends BaseEntity{
 	 * @return the orderItems
 	 */
 	public List<OrderItem> getOrderItems() {
-		return orderItems;
+		return this.orderItems;
 	}
 
 	/**
@@ -117,7 +118,7 @@ public class Order extends BaseEntity{
 	}
 
 	public void addOrderItem(OrderItem item) {
-		orderItems.add(item);
+		this.orderItems.add(item);
 		item.setOrder(this);
 	}
 

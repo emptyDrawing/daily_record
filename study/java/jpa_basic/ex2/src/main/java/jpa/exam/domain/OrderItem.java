@@ -2,6 +2,7 @@ package jpa.exam.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -16,11 +17,11 @@ public class OrderItem extends BaseEntity {
 	@Column(name = "ORDER_ITEM_ID")
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ORDER_ID")
 	private Order order;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ITEM_ID")
 	private Item item;
 
@@ -34,7 +35,7 @@ public class OrderItem extends BaseEntity {
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -48,7 +49,7 @@ public class OrderItem extends BaseEntity {
 	 * @return the order
 	 */
 	public Order getOrder() {
-		return order;
+		return this.order;
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class OrderItem extends BaseEntity {
 	 * @return the item
 	 */
 	public Item getItem() {
-		return item;
+		return this.item;
 	}
 
 	/**
@@ -76,7 +77,7 @@ public class OrderItem extends BaseEntity {
 	 * @return the orderPrice
 	 */
 	public int getOrderPrice() {
-		return orderPrice;
+		return this.orderPrice;
 	}
 
 	/**
@@ -90,7 +91,7 @@ public class OrderItem extends BaseEntity {
 	 * @return the count
 	 */
 	public int getCount() {
-		return count;
+		return this.count;
 	}
 
 	/**

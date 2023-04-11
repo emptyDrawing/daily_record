@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,7 +29,7 @@ public class Member extends BaseEntity{
 	// @Column(name = "TEAM_ID")
 	// private Long teamId;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "TEAM_ID", insertable = false, updatable = false)
 	private Team team;
 
@@ -40,14 +41,14 @@ public class Member extends BaseEntity{
 
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", username=" + username + ", team=" + team + "]";
+		return "Member [id=" + this.id + ", username=" + this.username + ", team=" + this.team + "]";
 	}
 
 	/**
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -61,7 +62,7 @@ public class Member extends BaseEntity{
 	 * @return the username
 	 */
 	public String getUsername() {
-		return username;
+		return this.username;
 	}
 
 	/**
@@ -75,7 +76,7 @@ public class Member extends BaseEntity{
 	 * @return the team
 	 */
 	public Team getTeam() {
-		return team;
+		return this.team;
 	}
 
 	/**

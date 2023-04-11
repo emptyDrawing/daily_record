@@ -33,14 +33,14 @@ public class Team {
 	
 	@Override
 	public String toString() {
-		return "Team [id=" + id + ", name=" + name + "]";
+		return "Team [id=" + this.id + ", name=" + this.name + "]";
 	}
 
 	/**
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class Team {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class Team {
 	 * @return the members
 	 */
 	public List<Member> getMembers() {
-		return members;
+		return this.members;
 	}
 
 	/**
