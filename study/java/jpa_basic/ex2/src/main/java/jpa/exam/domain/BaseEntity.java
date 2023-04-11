@@ -15,7 +15,7 @@ public class BaseEntity {
 	 * @return the createdBy
 	 */
 	public String getCreatedBy() {
-		return createdBy;
+		return this.createdBy;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class BaseEntity {
 	 * @return the createDate
 	 */
 	public LocalDateTime getCreateDate() {
-		return createDate;
+		return this.createDate;
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class BaseEntity {
 	 * @return the lastModifiedBy
 	 */
 	public String getLastModifiedBy() {
-		return lastModifiedBy;
+		return this.lastModifiedBy;
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class BaseEntity {
 	 * @return the lastModifiedDate
 	 */
 	public LocalDateTime getLastModifiedDate() {
-		return lastModifiedDate;
+		return this.lastModifiedDate;
 	}
 
 	/**

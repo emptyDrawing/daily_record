@@ -30,7 +30,7 @@ public class Member extends BaseEntity{
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -44,7 +44,7 @@ public class Member extends BaseEntity{
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -58,7 +58,7 @@ public class Member extends BaseEntity{
 	 * @return the city
 	 */
 	public String getCity() {
-		return city;
+		return this.city;
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class Member extends BaseEntity{
 	 * @return the street
 	 */
 	public String getStreet() {
-		return street;
+		return this.street;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class Member extends BaseEntity{
 	 * @return the zipcode
 	 */
 	public String getZipcode() {
-		return zipcode;
+		return this.zipcode;
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class Member extends BaseEntity{
 	 * @return the orders
 	 */
 	public List<Order> getOrders() {
-		return orders;
+		return this.orders;
 	}
 
 	/**
@@ -110,4 +110,5 @@ public class Member extends BaseEntity{
 		this.orders = orders;
 	}
 
+	
 }

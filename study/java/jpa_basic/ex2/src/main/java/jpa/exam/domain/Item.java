@@ -14,7 +14,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.ManyToMany;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+// @Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn
 public abstract class Item extends BaseEntity {
 
@@ -38,7 +39,7 @@ public abstract class Item extends BaseEntity {
 	 * @return the id
 	 */
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 
 	/**
@@ -52,7 +53,7 @@ public abstract class Item extends BaseEntity {
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
@@ -66,7 +67,7 @@ public abstract class Item extends BaseEntity {
 	 * @return the price
 	 */
 	public int getPrice() {
-		return price;
+		return this.price;
 	}
 
 	/**
@@ -80,7 +81,7 @@ public abstract class Item extends BaseEntity {
 	 * @return the stockQuantity
 	 */
 	public int getStockQuantity() {
-		return stockQuantity;
+		return this.stockQuantity;
 	}
 
 	/**
