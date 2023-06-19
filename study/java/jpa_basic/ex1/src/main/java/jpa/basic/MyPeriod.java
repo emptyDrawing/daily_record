@@ -1,6 +1,7 @@
 package jpa.basic;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
@@ -49,5 +50,23 @@ public class MyPeriod {
         this.endDate = endDate;
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.startDate, this.endDate);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof MyPeriod)) {
+            return false;
+        }
+        MyPeriod other = (MyPeriod) obj;
+        return Objects.equals(this.startDate, other.startDate) && Objects.equals(this.endDate, other.endDate);
+    }
+
+    
     
 }

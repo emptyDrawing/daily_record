@@ -1,13 +1,19 @@
 package jpa.exam.domain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -18,10 +24,20 @@ public class Member extends BaseEntity{
 	@Column(name = "MEMBER_ID")
 	private Long id;
 
-	private String name;
-	private String city;
-	private String street;
-	private String zipcode;
+	@Column(name = "USERANME")
+	private String username;
+	
+	@Embedded
+	private Address homeAddress; 
+
+	@ElementCollection
+	@CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+	@Column(name="FOOD_NAME")
+	private Set<String> favorivateFooos = new HashSet<>();
+	
+	@ElementCollection
+	@CollectionTable(name = "ADDRESS", joinColumns = @JoinColumn(name = "MEMBER_ID"))
+	private List<Address> addressHistory = new ArrayList<>();
 
 	@OneToMany(mappedBy = "member")
 	private List<Order> orders = new ArrayList<>();
@@ -41,59 +57,59 @@ public class Member extends BaseEntity{
 	}
 
 	/**
-	 * @return the name
+	 * @return the username
 	 */
-	public String getName() {
-		return this.name;
+	public String getUsername() {
+		return this.username;
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param username the username to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	/**
-	 * @return the city
+	 * @return the homeAddress
 	 */
-	public String getCity() {
-		return this.city;
+	public Address getHomeAddress() {
+		return this.homeAddress;
 	}
 
 	/**
-	 * @param city the city to set
+	 * @param homeAddress the homeAddress to set
 	 */
-	public void setCity(String city) {
-		this.city = city;
+	public void setHomeAddress(Address homeAddress) {
+		this.homeAddress = homeAddress;
 	}
 
 	/**
-	 * @return the street
+	 * @return the favorivateFooos
 	 */
-	public String getStreet() {
-		return this.street;
+	public Set<String> getFavorivateFooos() {
+		return this.favorivateFooos;
 	}
 
 	/**
-	 * @param street the street to set
+	 * @param favorivateFooos the favorivateFooos to set
 	 */
-	public void setStreet(String street) {
-		this.street = street;
+	public void setFavorivateFooos(Set<String> favorivateFooos) {
+		this.favorivateFooos = favorivateFooos;
 	}
 
 	/**
-	 * @return the zipcode
+	 * @return the addressHistory
 	 */
-	public String getZipcode() {
-		return this.zipcode;
+	public List<Address> getAddressHistory() {
+		return this.addressHistory;
 	}
 
 	/**
-	 * @param zipcode the zipcode to set
+	 * @param addressHistory the addressHistory to set
 	 */
-	public void setZipcode(String zipcode) {
-		this.zipcode = zipcode;
+	public void setAddressHistory(List<Address> addressHistory) {
+		this.addressHistory = addressHistory;
 	}
 
 	/**

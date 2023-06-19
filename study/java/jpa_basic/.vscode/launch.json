@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Ex2App",
+            "request": "launch",
+            "mainClass": "jpa.exam.Ex2App",
+            "projectName": "ex2"
+        },
+        {
+            "type": "java",
             "name": "JpaMain",
             "request": "launch",
             "mainClass": "jpa.basic.JpaMain",
