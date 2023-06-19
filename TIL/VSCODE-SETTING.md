@@ -172,7 +172,7 @@
 - [참고링크1](https://stackoverflow.com/questions/43542247/can-vs-code-automatically-update-javascript-and-typescript-import-paths-on-file)
 - [참고링크2](https://github.com/microsoft/vscode/issues/66937#issuecomment-475087628)
 - [jsconfig.json 설정](https://github.com/microsoft/vscode/issues/66937#issuecomment-475087628)
-  ```json
+```json
 {
     "compilerOptions": {
         "module": "commonjs",
@@ -184,4 +184,10 @@
         "**/node_modules/*"
     ]
 }
-  ```
+```
+
+## mvn - custom setting.xml 적용하기
+
+- [스택오버플로우 링크](https://stackoverflow.com/questions/70405078/vscode-with-custom-settings-xml-maven-file-per-project-in-a-workspace)
+    ![](assets/2023-04-06-09-14-03.png)
+- 이렇게 하라는데..
