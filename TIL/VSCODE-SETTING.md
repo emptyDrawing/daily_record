@@ -149,8 +149,8 @@
 
 ### gradle task + launch
 
-- [참고링크](https://www.syncfusion.com/succinctly-free-ebooks/gradle-succinctly/running-gradle-from-visual-studio-code)
-
+- [참고링크1](https://www.syncfusion.com/succinctly-free-ebooks/gradle-succinctly/running-gradle-from-visual-studio-code)
+- [참고링크2](https://stackoverflow.com/questions/63645177/vscode-gradle-java-run-and-debug)
 
 ### comunity server connector
 ```xml
