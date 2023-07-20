@@ -214,3 +214,19 @@ sudo apt-get install apache2-utils
   echo 'go to my clipboard' | pbcopy
   pbpaste # 'go to my clipboard'
   ```  
+
+
+### jvm 지우기
+- [관련링크](https://askubuntu.com/questions/335457/how-to-uninstall-openjdk)
+
+```shell
+#script to remove any openjdk package and purge it, regardless of the version
+
+for i in $(dpkg -l | grep openjdk | awk '{print $2}'); do
+    echo removing "$i"
+    sudo apt remove "$i"
+    echo purging "$i"
+    sudo apt purge "$i"
+    echo -------
+done
+```

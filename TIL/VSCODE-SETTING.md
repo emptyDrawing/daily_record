@@ -147,6 +147,10 @@
 ```
 
 
+### gradle task + launch
+
+- [참고링크](https://www.syncfusion.com/succinctly-free-ebooks/gradle-succinctly/running-gradle-from-visual-studio-code)
+
 
 ### comunity server connector
 ```xml
@@ -190,4 +194,4 @@
 
 - [스택오버플로우 링크](https://stackoverflow.com/questions/70405078/vscode-with-custom-settings-xml-maven-file-per-project-in-a-workspace)
     ![](assets/2023-04-06-09-14-03.png)
-- 이렇게 하라는데..
+- 이렇게 하라는데
