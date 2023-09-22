@@ -117,8 +117,11 @@ sudo apt -y install maven
 # gradle
 # https://linuxize.com/post/how-to-install-gradle-on-ubuntu-20-04/
 sudo mkdir -p /opt/gradle 
-sudo wget https://services.gradle.org/distributions/gradle-7.5.1-all.zip
-sudo unzip -d /opt/gradle gradle-7.5.1-all.zip
+# sudo wget https://services.gradle.org/distributions/gradle-7.5.1-all.zip
+# sudo unzip -d /opt/gradle gradle-7.5.1-all.zip
+sudo wget https://services.gradle.org/distributions/gradle-6.6-all.zip
+sudo unzip -d /opt/gradle gradle-6.6-all.zip
+
 
 ################################################
 # ~/.zshrc
