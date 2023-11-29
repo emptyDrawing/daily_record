@@ -246,4 +246,13 @@ curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo 
 ###### update
 sudo apt update
 sudo apt install gh
+
+##### gh 등록및 extendsion 설치
+gh auth login
+gh extension install github/gh-copilot
+gh extension upgrade gh-copilot
+
+## alias 등록
+##  alias co='gh copilot suggest'
+co find logfile
 ```
