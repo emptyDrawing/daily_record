@@ -100,7 +100,7 @@ sudo apt install python3-venv
 ### WSL 에 Node 환경셋팅하기
 
 - [ms 공식문서참고](https://learn.microsoft.com/ko-kr/windows/dev-environment/javascript/nodejs-on-wsl)
-  
+
 ```shell
 sudo apt-get install curl
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
@@ -200,20 +200,20 @@ sudo apt-get install apache2-utils
 - [jq](https://stedolan.github.io/jq/) : json 결과 예쁘게 보여주기
 - [httpip](https://httpie.io/) : curl 비슷한건데 http 콜을 편하게 보여줄 수 있음
   ```shell
-  apt install httpie 
+  apt install httpie
   ```
 - [pbcopy 처럼 쓰기](https://superuser.com/questions/288320/whats-like-osxs-pbcopy-for-linux)
   ```shell
   # alias 등록
   alias pbcopy=clipcopy
   alias pbpaste=clippaste
-  
+
   #########################
   # 사용법
   #########################
   echo 'go to my clipboard' | pbcopy
   pbpaste # 'go to my clipboard'
-  ```  
+  ```
 
 
 ### jvm 지우기
@@ -229,4 +229,21 @@ for i in $(dpkg -l | grep openjdk | awk '{print $2}'); do
     sudo apt purge "$i"
     echo -------
 done
+```
+
+### copilot cli 설치
+```shell
+### https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+
+###### install
+type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
+curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
+&& echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+&& sudo apt update \
+&& sudo apt install gh -y
+
+###### update
+sudo apt update
+sudo apt install gh
 ```

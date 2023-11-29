@@ -51,3 +51,9 @@ icacls.exe myec2.pem /inheritance:r
 ```
 
 - 출처 : [참고링크](https://dabid.tistory.com/11)
+
+
+
+### 적용
+
+https://velog.io/@coastby/Nginx-SSL-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0

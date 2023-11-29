@@ -5,3 +5,4 @@ study/java/java_test/junit/memory:
 study/java/java_test/junit/memory:
 **/*.code-workspace
 **/node_modules
+**/.history
