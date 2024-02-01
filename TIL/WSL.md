@@ -234,8 +234,12 @@ done
 ### copilot cli 설치
 ```shell
 ### https://github.com/cli/cli/blob/trunk/docs/install_linux.md
+### https://docs.github.com/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli
 
 ###### install
+
+brew install gh	
+
 type -p curl >/dev/null || (sudo apt update && sudo apt install curl -y)
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg \
 && sudo chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg \
